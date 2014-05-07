@@ -1,0 +1,94 @@
+body  {
+	font-family : tahoma, verdana, arial, helvetica;
+	font-size : 12px;
+	line-height : 12px;
+	color : black;
+	background-color : #E4E4E4;
+}
+
+th  {
+	font-family : tahoma, verdana, arial, helvetica;
+	font-size : 12px;
+	line-height : 12px;
+	color : black;
+	font-weight : bold;
+	border-color : black;
+	border-width : 1px;
+	border-style : solid;
+	padding : 1px;
+	background-color : Silver;
+}
+
+td  {
+	font-family : tahoma, verdana, arial, helvetica;
+	font-size : 11px;
+	line-height : 11px;
+	color : Black;
+}
+
+
+.tdsmall  {
+	font-family : tahoma, verdana, arial, helvetica;
+	font-size : 07px;
+	line-height : 07px;
+	color : Black;
+}
+
+.titulotabla  {
+	font-family : verdana, arial, helvetica;
+	font-size : 13px;
+	line-height : 13px;
+	color : black;
+	text-align : center;
+	font-weight : bold;
+	border-left-width : 1px;
+	border-color : Gray;
+	border-style : solid;
+	border-right-width : 1px;
+	border-top-width : 1px;
+	border-bottom-width : 0px;
+	padding-bottom : 0px;
+	float : none;
+}
+
+A  {
+	font-family : tahoma, arial, helvetica;
+	font-size : 11px;
+	text-decoration:none;
+	color : #000000;
+}
+
+A:hover  {
+	font-family : tahoma, arial, helvetica;
+	font-size : 11px;
+	color : #000000;
+}
+
+.titulo  {
+	font-family : verdana, arial, helvetica;
+	font-size : 14px;
+	line-height : 14px;
+	font-weight : bold;
+	color : black;
+}
+
+.titulobig  {
+	font-family : arial, helvetica;
+	font-size : 16px;
+	line-height : 16px;
+	font-weight : bold;
+	color : black;
+}
+
+hr  {
+	color : Gray;
+	border-width : 1px;
+}
+
+input  {
+	font-family : tahoma, verdana, arial, helvetica;
+	font-size : 12px;
+	line-height : 12px;
+}
+
+

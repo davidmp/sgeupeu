@@ -1,0 +1,23 @@
+/* 
+    Document   : table.sortable
+    Created on : 07/07/2013, 12:16:04 PM
+    Author     : Edwin
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.footable > thead > tr > th > span.footable-sort-indicator {
+  width: 16px;
+  height: 16px;
+  display: block;
+  float:right;
+  background: url('img/sorting_sprite.png') no-repeat top left;
+}
+
+.footable > thead > tr > th.footable-sortable:hover {
+  cursor:pointer;
+}
+
+.footable > thead > tr > th.footable-sortable > span {
+  
+}
+

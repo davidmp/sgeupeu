@@ -1,0 +1,133 @@
+/* 
+    Document   : salir
+    Created on : 11/02/2013, 02:43:12 AM
+    Author     : oscdmdz
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+@-webkit-keyframes giro {
+from { -webkit-transform: rotate(0deg); }
+to { -webkit-transform: rotate(360deg); }
+}
+
+@-moz-keyframes giro {
+from { -moz-transform: rotate(0deg); }
+to { -moz-transform: rotate(360deg); }
+}
+
+@-ms-keyframes giro {
+from { -ms-transform: rotate(0deg); }
+to { -ms-transform: rotate(360deg); }
+}
+
+/* Añadimos el degradado y el giro solo con CSS */
+
+.rojo {
+border-radius: 50%;
+width: 50px;
+height: 50px;
+background-image: -moz-radial-gradient(35px 35px 35deg, circle cover, orange 0%, red 100%, orange 95%);
+background-image: -webkit-radial-gradient(35px 35px, circle cover, orange, red);
+background-image: radial-gradient(35px 35px 35deg, circle cover, orange 0%, red 100%, orange 95%);
+
+/* webkit chrome, safari, mobile */
+-webkit-animation-name: giro; /* Nombre de la animacion */
+-webkit-animation-duration: 2s; /* 2 Segundos */
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-timing-function: linear;
+
+/* mozilla ff */
+-moz-animation-name: giro; /* Nombre de la animacion */
+-moz-animation-duration: 2s; /* 2 Segundos */
+-moz-animation-iteration-count: infinite;
+-moz-animation-timing-function: linear;
+
+/* microsoft ie */
+-ms-animation-name: giro; /* Nombre de la animacion */
+-ms-animation-duration: 2s; /* 2 Segundos */
+-ms-animation-iteration-count: infinite;
+-ms-animation-timing-function: linear;
+}
+
+.amarillo {
+border-radius: 50%;
+width: 50px;
+height: 50px;
+background-image: -moz-radial-gradient(35px 35px 35deg, circle cover, lemonchiffon 0%, gold 100%, lemonchiffon 95%);
+background-image: -webkit-radial-gradient(35px 35px, circle cover, lemonchiffon, gold);
+background-image: radial-gradient(35px 35px 35deg, circle cover, lemonchiffon 0%, gold 100%, lemonchiffon 95%);
+
+/* webkit chrome, safari, mobile */
+-webkit-animation-name: giro; /* Nombre de la animacion */
+-webkit-animation-duration: 2s; /* 2 Segundos */
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-timing-function: linear;
+
+/* mozilla ff */
+-moz-animation-name: giro; /* Nombre de la animacion */
+-moz-animation-duration: 2s; /* 2 Segundos */
+-moz-animation-iteration-count: infinite;
+-moz-animation-timing-function: linear;
+
+/* microsoft ie */
+-ms-animation-name: giro; /* Nombre de la animacion */
+-ms-animation-duration: 2s; /* 2 Segundos */
+-ms-animation-iteration-count: infinite;
+-ms-animation-timing-function: linear;
+}
+
+
+.verde {
+border-radius: 50%;
+width: 50px;
+height: 50px;
+background-image: -moz-radial-gradient(35px 35px 35deg, circle cover, lime 0%, green 100%, lime 95%);
+background-image: -webkit-radial-gradient(35px 35px, circle cover, lime, green);
+background-image: radial-gradient(35px 35px 35deg, circle cover, lime 0%, green 100%, lime 95%);
+
+/* webkit chrome, safari, mobile */
+-webkit-animation-name: giro; /* Nombre de la animacion */
+-webkit-animation-duration: 2s; /* 2 Segundos */
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-timing-function: linear;
+
+/* mozilla ff */
+-moz-animation-name: giro; /* Nombre de la animacion */
+-moz-animation-duration: 2s; /* 2 Segundos */
+-moz-animation-iteration-count: infinite;
+-moz-animation-timing-function: linear;
+
+/* microsoft ie */
+-ms-animation-name: giro; /* Nombre de la animacion */
+-ms-animation-duration: 2s; /* 2 Segundos */
+-ms-animation-iteration-count: infinite;
+-ms-animation-timing-function: linear;
+}
+
+.azul {
+border-radius: 50%;
+width: 50px;
+height: 50px;
+background-image: -moz-radial-gradient(35px 35px 35deg, circle cover, lightblue 0%, blue 100%, lightblue 95%);
+background-image: -webkit-radial-gradient(35px 35px, circle cover, lightblue, blue);
+background-image: radial-gradient(35px 35px 35deg, circle cover, lightblue 0%, blue 100%, lightblue 95%);
+
+/* webkit chrome, safari, mobile */
+-webkit-animation-name: giro; /* Nombre de la animacion */
+-webkit-animation-duration: 2s; /* 2 Segundos */
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-timing-function: linear;
+
+/* mozilla ff */
+-moz-animation-name: giro; /* Nombre de la animacion */
+-moz-animation-duration: 2s; /* 2 Segundos */
+-moz-animation-iteration-count: infinite;
+-moz-animation-timing-function: linear;
+
+/* microsoft ie */
+-ms-animation-name: giro; /* Nombre de la animacion */
+-ms-animation-duration: 2s; /* 2 Segundos */
+-ms-animation-iteration-count: infinite;
+-ms-animation-timing-function: linear;
+}

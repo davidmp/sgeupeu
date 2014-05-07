@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idEapfacultad" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["E:\\PLANIFICACION Y DESARROLLO 2014\\DESARROLLO 3\\SGE\\sgeupeu\\web\\apps\\app_informesactividad\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idEjeEstrategico" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT i.razonsocial, i.rector, fi.direccion,fi.celular, fi.idfilial, fi.categoria, (CASE WHEN fi.categoria='Filial' THEN CONCAT('Filial - ',LOWER(fi.direccion) ) ELSE  CONCAT(fi.categoria,' - ',LOWER(fi.direccion) ) END) AS nombrecategoria, fi.rector AS rectorfilial, 
+f.nombre AS nombrefacultad, f.idfacultad,  ff.idfilialfacultad
+,e.nombre AS nombreeap, e.idtipoarea, (CASE WHEN e.idtipoarea=1 THEN 'Pregrado' WHEN e.idtipoarea=2 THEN 'Postgrado' WHEN e.idtipoarea=3 THEN 'Areas de Apoyo' ELSE 'Otros' END) AS nombretipoarea, e.ideap, ef.ideapfacultad, ef.idcoordinadoreap,
+(SELECT CONCAT(p.nombre,' ',p.apellipaterno,' ',p.apellimaterno) AS coordinador FROM coordinadoreap ce, persona p
+WHERE p.idpersona=ce.idpersona AND  ce.idcoordinadoreap=ef.idcoordinadoreap) AS coordinador
+FROM eapfacultad ef, eap e, filialfacultad ff, facultad f, filial fi, institucion i
+WHERE ef.ideap=e.ideap 
+AND ff.idfilialfacultad=ef.idfilialfacultad 
+AND f.idfacultad=ff.idfacultad 
+AND fi.idfilial=ff.idfilial
+AND fi.idinstitucion=i.idinstitucion
+AND ef.ideapfacultad=$P{idEapfacultad}]]>
+	</queryString>
+	<field name="razonsocial" class="java.lang.String"/>
+	<field name="rector" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="celular" class="java.lang.String"/>
+	<field name="idfilial" class="java.lang.Integer"/>
+	<field name="categoria" class="java.lang.String"/>
+	<field name="nombrecategoria" class="java.lang.String"/>
+	<field name="rectorfilial" class="java.lang.String"/>
+	<field name="nombrefacultad" class="java.lang.String"/>
+	<field name="idfacultad" class="java.lang.Integer"/>
+	<field name="idfilialfacultad" class="java.lang.Integer"/>
+	<field name="nombreeap" class="java.lang.String"/>
+	<field name="idtipoarea" class="java.lang.Integer"/>
+	<field name="nombretipoarea" class="java.lang.String"/>
+	<field name="ideap" class="java.lang.Integer"/>
+	<field name="ideapfacultad" class="java.lang.Integer"/>
+	<field name="idcoordinadoreap" class="java.lang.Integer"/>
+	<field name="coordinador" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<image>
+				<reportElement x="4" y="2" width="69" height="72"/>
+				<imageExpression><![CDATA["E:\\PLANIFICACION Y DESARROLLO 2014\\DESARROLLO 3\\SGE\\sgeupeu\\web\\apps\\app_informesactividad\\logoupeu.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="154" y="3" width="264" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razonsocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="232" y="18" width="113" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{nombrecategoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="154" y="30" width="264" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombrefacultad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="153" y="46" width="264" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["EAP de "+$F{nombreeap}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="60" width="263" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EJES ESTRATÉGICOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="7" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="8" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<subreport>
+				<reportElement x="-15" y="0" width="200" height="41"/>
+				<subreportParameter name="idEapfacultadPoa">
+					<subreportParameterExpression><![CDATA[$P{idEapfacultad}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idEjeEstrategicoPoa">
+					<subreportParameterExpression><![CDATA[$P{idEjeEstrategico}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "mainPoa.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="9" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="8" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="11" splitType="Stretch"/>
+	</summary>
+</jasperReport>

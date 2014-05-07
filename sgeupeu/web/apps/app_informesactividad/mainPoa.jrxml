@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idEapfacultadPoa" class="java.lang.Integer"/>
+	<parameter name="idEjeEstrategicoPoa" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["E:\\PLANIFICACION Y DESARROLLO 2014\\DESARROLLO 3\\SGE\\sgeupeu\\web\\apps\\app_informesactividad\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM (
+SELECT  eje.idejeestrategico, eje.nombre AS nombreejeestrategico, eje.codigo AS  ejeestrategicocodigo, m.ideapfacultad, m.idperiodo
+FROM 
+estrategia e, 
+perspectiva p, 
+ejeestrategia ej,
+estrategiaindicador ei,
+indicador i,
+ejeestrategico eje,
+meta m
+WHERE
+p.idperspectiva=e.idperspectiva 
+AND ej.idestrategia=e.idestrategia
+AND ei.idejeestrategia=ej.idejeestrategia
+AND ei.idindicador=i.idindicador
+AND eje.idejeestrategico=i.idejeestrategico
+AND m.idestrategiaIndicador=ei.idestrategiaIndicador
+ ) AS r 
+WHERE r.ideapfacultad=$P{idEapfacultadPoa}
+AND (CASE WHEN $P{idEjeEstrategicoPoa}=0 THEN 0 ELSE idejeestrategico END)= (CASE WHEN $P{idEjeEstrategicoPoa}=0 THEN 0 WHEN $P{idEjeEstrategicoPoa}<>0 THEN $P{idEjeEstrategicoPoa} END)
+GROUP BY r.idperiodo, r.ideapfacultad, r.ejeestrategicocodigo,  r.nombreejeestrategico
+ORDER BY r.ejeestrategicocodigo ASC;]]>
+	</queryString>
+	<field name="idejeestrategico" class="java.lang.Integer"/>
+	<field name="nombreejeestrategico" class="java.lang.String"/>
+	<field name="ejeestrategicocodigo" class="java.lang.String"/>
+	<field name="ideapfacultad" class="java.lang.Integer"/>
+	<field name="idperiodo" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="8" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="9" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="164" y="5" width="242" height="13"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreejeestrategico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="164" y="18" width="242" height="13"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[PLAN OPERATIVO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="48" splitType="Stretch">
+			<subreport>
+				<reportElement x="-15" y="0" width="199" height="45"/>
+				<subreportParameter name="idFacultadN3">
+					<subreportParameterExpression><![CDATA[$F{ideapfacultad}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cabeceraAcciones.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="10" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="6" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="8" splitType="Stretch"/>
+	</summary>
+</jasperReport>
