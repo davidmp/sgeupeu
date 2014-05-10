@@ -45,7 +45,7 @@
 
       /* Sticky footer styles
       -------------------------------------------------- */
-      // Holas Preiosa
+      // 
      /* Wrapper for page content to push down footer */
       #wrap {
         min-height: 100%;
