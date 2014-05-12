@@ -159,6 +159,10 @@ public class IndicadorService {
         dao = new IndicadorDAO();
         return dao.listaEjeIndividual(ideje);
         }
+        public List<Ejeestrategico> listaEjeIndividualAreas(int idtipoarea, int idcodigo){
+        dao = new IndicadorDAO();
+        return dao.listaEjeIndividualAreas(idtipoarea, idcodigo);
+        }
         
         public Ejeestrategico Eje(HttpServletRequest rq){
         dao = new IndicadorDAO();

@@ -294,6 +294,33 @@ public class UsuarioDao  extends DBConn{
    finally{getCerrarConexion();}
     return Toto;
     } 
+  
+  public Facultad facultadUsuarioRealSelect(int idUsuario){
+    String sql="SELECT ff.idfilialfacultad,f.idfacultad,f.nombre,f.descripcion FROM persona p INNER JOIN usuario u ON p.idpersona=u.idpersona INNER JOIN coordinadorfacultad ce ON ce.idpersona=p.idpersona "
+            + "  INNER JOIN filialfacultad ff ON ce.idcoordinadorfacultad=ff.idcoordinadorfacultad INNER JOIN facultad f ON f.idfacultad=ff.idfacultad AND u.idusuario=?  ";
+      Facultad Toto = null;
+    int id=0;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            ps.setInt(1, idUsuario);
+            rs=ps.executeQuery();
+        if (rs.next()) 
+        {            
+           Toto  = new Facultad();
+           Toto.setIdfilialfacultad(rs.getInt("idfilialfacultad"));
+           Toto.setIdfacultad(rs.getInt("idfacultad"));
+           Toto.setNombre(rs.getString("nombre"));
+           Toto.setDescripcion(rs.getString("descripcion"));
+        }
+
+} catch (Exception e) {
+        }
+   finally{getCerrarConexion();}
+    return Toto;
+    } 
+  
+  
   public Facultad facultadUsuarioEje(int to, int idFilial){
     String sql=" SELECT ff.idfilialfacultad,f.idfacultad,f.nombre,f.descripcion FROM persona p "
             + " INNER JOIN usuario u ON p.idpersona=u.idpersona "

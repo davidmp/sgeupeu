@@ -118,6 +118,7 @@ $(document).ready(function() {
                       <li><a href="<%=request.getContextPath()%>/GestionEstrategico?opt=17"><div class="icon-chevron-right"></div>&nbsp;Admin - Temporadas</a></li>
                       <li><a href="<%=request.getContextPath()%>/GestionEstrategico?opt=14"><div class="icon-chevron-right"></div>&nbsp;Admin - Gestión Estratégica (Acad&eacute;mica)</a></li>
                       <li><a href="<%=request.getContextPath()%>/GestionEstrategicoApoyo?opt=14"><div class="icon-chevron-right"></div>&nbsp;Admin - Gestión Estratégica (Direcciones de Apoyo)</a></li>
+                      <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
                       
                   </ul>
                 </li>
@@ -134,6 +135,7 @@ $(document).ready(function() {
                    <li><a href="<%=request.getContextPath()%>/UsuarioApoyo?opt=66"><div class="icon-chevron-right"></div> Mis Unidades de Apoyo/&Aacute;reas de Apoyo</a></li>
                    <li><a href="<%=request.getContextPath()%>/GestionEstrategico?opt=14"><div class="icon-chevron-right"></div>&nbsp;Gestión Estratégica (Area Acad&eacute;mica)</a></li>
                    <li><a href="<%=request.getContextPath()%>/GestionEstrategicoApoyo?opt=14"><div class="icon-chevron-right"></div>&nbsp;Gestión Estratégica (Areas de Apoyo)</a></li>                   
+                   <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
                   </ul>
                 </li> 
                 
@@ -144,7 +146,7 @@ $(document).ready(function() {
                   <a href="#" data-toggle="dropdown" class="dropdown-toggle"><div class="icon-user icon-white"></div>&nbsp;<%=w.getIdcategoriausuario_nombre()%>&nbsp;<b class="caret"></b></a>
                   <ul  class="dropdown-menu">
                    <li><a href="<%=request.getContextPath()%>/GestionEstrategico?opt=14"><div class="icon-chevron-right"></div>&nbsp;Gestión Estratégica (Area Acad&eacute;mica)</a></li>
-                  
+                   <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
                   </ul>
                 </li>
                    <% } else if(opt==4){ %>

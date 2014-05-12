@@ -74,6 +74,21 @@ function formindicador(numero)
     var nro_indicador = document.getElementById("nro_indicador");
     nro_indicador.value = numero;
 }
+
+function validarExtencion(){
+    var data=($("#fichero").val()).split(".");
+    var tama=data.length;
+    var validar=false;
+    if(data[tama-1].toLowerCase()=="docx" || data[tama-1].toLowerCase()=="doc" || data[tama-1].toLowerCase()=="pdf" || data[tama-1].toLowerCase()=="zip" || data[tama-1].toLowerCase()=="rar")  
+    {
+      $('#loadingx').html('<img src="../../resources/gif/loading.gif"> Subiendo...');  
+      validar=true; }else{
+      alert("Solo las extenciones mencionadas es posible subir al sistema!");
+      validar=false;  
+    }
+    return validar;
+}
+
  </script>
          
     <body>
@@ -117,24 +132,25 @@ function formindicador(numero)
                     
 
                     
-            <form name="emailForm" class="emailForm" method="POST"action="<%=request.getContextPath()%>/Indicador?opt=5&idtemporadaejeestrategico=<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>&idperiodometa=<%=p.getIdperiodometa()%>&nro_indicador_4=<%=vr.getNro()%>&idmeta<%=vr.getNro()%>=<%=in.getIdmeta()%>&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>&idusuario=<%if(w!=null){%><%=w.getIdusuario()%><%}else{%>0<%}%>&idestrategiaindicador<%=vr.getNro()%>=<%=in.getIdestrategiaindicador()%>&idavancevalida<%=vr.getNro()%>=<%=in.getIdavancevalida() %>" enctype="multipart/form-data">
+                  <form name="emailForm" class="emailForm" method="POST" onsubmit="return validarExtencion()" action="<%=request.getContextPath()%>/Indicador?opt=5&idtemporadaejeestrategico=<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>&idperiodometa=<%=p.getIdperiodometa()%>&nro_indicador_4=<%=vr.getNro()%>&idmeta<%=vr.getNro()%>=<%=in.getIdmeta()%>&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>&idusuario=<%if(w!=null){%><%=w.getIdusuario()%><%}else{%>0<%}%>&idestrategiaindicador<%=vr.getNro()%>=<%=in.getIdestrategiaindicador()%>&idavancevalida<%=vr.getNro()%>=<%=in.getIdavancevalida() %>" enctype="multipart/form-data">
                     <center>
+                        20 MB (Maximo) &DoubleRightArrow;  Formatos: DOCX, DOC, PDF, ZIP, RAR
                     <div class="fileupload fileupload-new" data-provides="fileupload">
                     <div class="input-append">
-                    <div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> 
+                    <div class="uneditable-input span4"><i class="icon-file fileupload-exists"></i> 
                      <span class="fileupload-preview"></span></div>
                      <span class="btn btn-file"><span class="fileupload-new">Buscar</span>
-                         <span class="fileupload-exists">Cambiar</span><input type="file" name="fichero"/>
+                         <span class="fileupload-exists">Cambiar</span><input type="file" name="fichero" id="fichero"/>
                      </span>
                      <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Eliminar  </a> 
                     </div>
                     </div>                                   
                     </center>   
                     <center>                        
-                     <input type="submit" value="Subir" class="btn  btn-success"/>   
+                        <input type="submit" value="Subir" class="btn  btn-success"/>   
                     </center>
             </form>  
-            
+            <center><div id="loadingx"></div></center>
     
  <table class="table table-bordered table-hover"    >
      <thead>

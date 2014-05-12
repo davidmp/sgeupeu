@@ -388,6 +388,10 @@ public int extraUltimoIdPersona(String dni){
  UsuarioDao daoidf= new UsuarioDao();
  return daoidf.facultadUsuario(idusuario);
  }  
+ public Facultad facultadUsuarioRealSelect(int idUsuario){
+ UsuarioDao daoidf= new UsuarioDao();
+ return daoidf.facultadUsuarioRealSelect(idUsuario);
+ }  
   public Facultad facultadUsuarioEje(int idusuario, int idFilial){
  UsuarioDao daoidf= new UsuarioDao();
  return daoidf.facultadUsuarioEje(idusuario, idFilial);

@@ -100,6 +100,56 @@ public class ReportesDAO extends DBConn{
         System.out.println(" Muetra la ejes!!! ..>"+Lista.toArray().length);
     return Lista;
     }    
+    public ArrayList reporEapFacultadFilial(int idfilial){        
+    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, \" (Pregrado)\") WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, \" (Postgrado)\") ELSE CONCAT(e.nombre, \" (A.Apoyo)\") END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
+            + " WHERE f.idfilial=ff.idfilial  "
+            + " AND ff.idfilialfacultad=ef.idfilialfacultad AND e.ideap=ef.ideap AND f.idfilial='"+idfilial+"' ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql); 
+            rs=ps.executeQuery();            
+            while (rs.next()){            
+                userPriv = new HashMap();
+                userPriv.put("ideapfacultad", rs.getInt("ideapfacultad"));
+                userPriv.put("idtipoarea", rs.getInt("idtipoarea"));
+                userPriv.put("codigo", rs.getString("codigo"));
+                userPriv.put("nombreeap", rs.getString("nombreeap"));
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra las EAPs!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }    
+    public ArrayList reporEapFacultadFilialEap(int idfilial, int idfilialfacultad){        
+    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, \" (Pregrado)\") WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, \" (Postgrado)\") ELSE CONCAT(e.nombre, \" (A.Apoyo)\") END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
+            + " WHERE f.idfilial=ff.idfilial  "
+            + " AND ff.idfilialfacultad=ef.idfilialfacultad AND e.ideap=ef.ideap AND f.idfilial='"+idfilial+"' and ff.idfilialfacultad='"+idfilialfacultad+"' ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql); 
+            rs=ps.executeQuery();            
+            while (rs.next()){            
+                userPriv = new HashMap();
+                userPriv.put("ideapfacultad", rs.getInt("ideapfacultad"));
+                userPriv.put("idtipoarea", rs.getInt("idtipoarea"));
+                userPriv.put("codigo", rs.getString("codigo"));
+                userPriv.put("nombreeap", rs.getString("nombreeap"));
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra las EAPs!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }    
+    
+    
+    
+    
     
     
     public ArrayList objetivosEstrategicosPOA(int ideapfacultad, int ideje){

@@ -20,6 +20,14 @@ public class ReporteService {
       dao=new ReportesDAO();
       return dao.cabeceraPOA(ideapfacultad);
   }
+  public ArrayList reporEapFacultadFilial(int idfilial){
+      dao=new ReportesDAO();
+      return dao.reporEapFacultadFilial(idfilial);
+  }
+  public ArrayList reporEapFacultadFilialEap(int idfilial, int idfilialfacultad){
+      dao=new ReportesDAO();
+      return dao.reporEapFacultadFilialEap(idfilial,idfilialfacultad);
+  }
   public ArrayList ejesSeleccionadosPOA(int ideapfacultad, int  ideje){
       dao=new ReportesDAO();
       return dao.ejesSeleccionadosPOA(ideapfacultad, ideje);

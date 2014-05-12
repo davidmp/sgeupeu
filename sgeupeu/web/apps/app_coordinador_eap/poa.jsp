@@ -50,7 +50,7 @@
         form.submit(function () {
 
            
-
+      
         if (regex.test(($("#presupuesto").val()).trim()) || regex2.test(($("#presupuesto").val()).trim())){
          
         $.ajax({
@@ -68,7 +68,7 @@
         }else{
             alert("El presupuesto debe ser un valor numerico!");
         }
- 
+       
         return false;
         });
         
@@ -222,7 +222,7 @@ function validarNumeroDecimales(){
                         
                         <tr>
                         <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
-                            <textarea rows="3" type="text" name="accion" placeholder="Acción"></textarea>
+                            <textarea rows="3" type="text" name="accion" id="accion" placeholder="Acción"></textarea>
                         </td>
                         </tr>
                         <tr>

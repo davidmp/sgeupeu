@@ -353,6 +353,38 @@ public class IndicadorDAO extends DBConn{
         finally{getCerrarConexion();}
     return Lista;
     }
+    public List<Ejeestrategico> listaEjeIndividualAreas(int idtipoarea, int idcodigo){
+    String sql="SELECT e.idejeestrategico, concat(e.codigo,' - ',e.nombre) as nombre ,e.descripcion,e.estado,e.objetivoestrategico,e.mapaestrategico, te.idtemporadaejeestrategico, " +
+        " te.nro FROM ejeestrategico e INNER JOIN temporadaejeestrategico te ON e.idejeestrategico=te.idejeestrategico " +
+        " INNER JOIN temporada t ON t.idtemporada=te.idtemporada AND (t.estado='1' AND e.codigo="+idcodigo+"  and e.idtipoarea="+idtipoarea+" )  ORDER BY te.nro ";
+
+    List<Ejeestrategico> Lista = new ArrayList<Ejeestrategico>(); 
+      Ejeestrategico Toto = null;
+    int i=0;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+        while (rs.next()) 
+        {            
+           Toto  = new Ejeestrategico();
+           
+           Toto.setIdejeestrategico(rs.getInt("idejeestrategico"));
+           Toto.setNombre(rs.getString("nombre"));
+           Toto.setDescripcion(rs.getString("descripcion"));
+           Toto.setEstado(rs.getInt("estado"));
+           Toto.setMapaestrategico(rs.getString("mapaestrategico"));
+           Toto.setObjetivoestrategico(rs.getString("objetivoestrategico"));
+           Toto.setIdtemporadaejeestrategico(rs.getInt("idtemporadaejeestrategico"));
+           Toto.setCodigo(rs.getString("nro"));
+
+           Lista.add(Toto);
+        }
+        } catch (Exception e) {
+        }
+        finally{getCerrarConexion();}
+    return Lista;
+    }
     
     
     
