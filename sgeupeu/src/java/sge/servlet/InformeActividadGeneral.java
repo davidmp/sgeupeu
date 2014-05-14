@@ -72,9 +72,16 @@ public class InformeActividadGeneral extends HttpServlet {
                 rs=new ReporteService();
                 us=new UsuarioService();
                 Facultad fa= null;
+                int idfacultadPoa = Integer.parseInt(request.getParameter("idfilialfacultad")==null ? "0": request.getParameter("idfilialfacultad"));
                 fa= us.facultadUsuarioRealSelect(Integer.parseInt(idUsuarioPri));
-                if(fa!=null){
-                request.getSession().setAttribute("listarEapTempReporte", rs.reporEapFacultadFilialEap(Integer.parseInt(idFilialPri), fa.getIdfilialfacultad()));
+                System.out.println("Probarr>>>"+Integer.parseInt(idUsuarioPri));                
+                if(fa!=null && Integer.parseInt(idCategoriaUsuarioPri)!=7){
+                if(idfacultadPoa!=0){   
+                    System.out.println("Probarr>>>"+fa.getIdfilialfacultad());
+                request.getSession().setAttribute("listarEapTempReporte", rs.reporEapFacultadFilialEap(Integer.parseInt(idFilialPri), idfacultadPoa));
+                }else{
+                request.getSession().setAttribute("listarEapTempReporte", rs.reporEapFacultadFilialEap(Integer.parseInt(idFilialPri), fa.getIdfilialfacultad().intValue()));
+                }
                 }else{
                 request.getSession().setAttribute("listarEapTempReporte", rs.reporEapFacultadFilial(Integer.parseInt(idFilialPri)));
                 }                

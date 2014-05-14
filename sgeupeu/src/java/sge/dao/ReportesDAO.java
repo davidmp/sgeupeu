@@ -124,14 +124,17 @@ public class ReportesDAO extends DBConn{
     return Lista;
     }    
     public ArrayList reporEapFacultadFilialEap(int idfilial, int idfilialfacultad){        
-    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, \" (Pregrado)\") WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, \" (Postgrado)\") ELSE CONCAT(e.nombre, \" (A.Apoyo)\") END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
+    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, ' (Pregrado)') WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, ' (Postgrado)') ELSE CONCAT(e.nombre, ' (A.Apoyo)') END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
             + " WHERE f.idfilial=ff.idfilial  "
-            + " AND ff.idfilialfacultad=ef.idfilialfacultad AND e.ideap=ef.ideap AND f.idfilial='"+idfilial+"' and ff.idfilialfacultad='"+idfilialfacultad+"' ";
+            + " AND ff.idfilialfacultad=ef.idfilialfacultad AND e.ideap=ef.ideap AND f.idfilial=? and ff.idfilialfacultad=? ";
         ArrayList Lista = new ArrayList(); 
         Map userPriv;
         try {
+            System.out.println("sillaga::::"+idfilialfacultad+" dddd:::"+idfilial);
             getConexionDb();
-            ps=con.prepareStatement(sql); 
+            ps=con.prepareStatement(sql);
+            ps.setInt(1, idfilial);
+            ps.setInt(2, idfilialfacultad);
             rs=ps.executeQuery();            
             while (rs.next()){            
                 userPriv = new HashMap();

@@ -144,8 +144,7 @@ $(document).ready(function() {
                  <!-- Menu del administrador de Facultad -->
                  <li class="dropdown">
                   <a href="#" data-toggle="dropdown" class="dropdown-toggle"><div class="icon-user icon-white"></div>&nbsp;<%=w.getIdcategoriausuario_nombre()%>&nbsp;<b class="caret"></b></a>
-                  <ul  class="dropdown-menu">
-                   <li><a href="<%=request.getContextPath()%>/GestionEstrategico?opt=14"><div class="icon-chevron-right"></div>&nbsp;Gestión Estratégica (Area Acad&eacute;mica)</a></li>
+                  <ul  class="dropdown-menu">                   
                    <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
                   </ul>
                 </li>
@@ -190,7 +189,16 @@ $(document).ready(function() {
                         </ul>
                         </li>                    
                   
-                  <%}else  
+                  <%}else  if(opt==7){ %>
+                  
+                <li class="dropdown">
+                  <a href="#" data-toggle="dropdown" class="dropdown-toggle"><div class="icon-user icon-white"></div>&nbsp;<%=w.getIdcategoriausuario_nombre()%>&nbsp;<b class="caret"></b></a>
+                  <ul  class="dropdown-menu">                      
+                      <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
+                      
+                  </ul>
+                </li>                  
+                  <% } else
                     {response.sendRedirect(request.getContextPath()+"/apps/app_errors/http_500.jsp"); }%>
                 
                 
@@ -221,7 +229,7 @@ $(document).ready(function() {
             <%@include file="__perfil_filial.jsp"%>
             <%}else if(perfil_counter==3){%>
             <%@include file="__perfil_facultad.jsp"%>
-            <%}else if(perfil_counter==4 || perfil_counter==5 || perfil_counter==6){%>
+            <%}else if(perfil_counter==4 || perfil_counter==5 || perfil_counter==6 || perfil_counter==7){%>
             <%@include file="../inicio_coordinador_eap/index.jsp"%>
             <%}else{ out.println(" esta en construccion");}%>
         </div>
