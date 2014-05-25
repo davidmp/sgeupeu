@@ -162,11 +162,14 @@
       <section id="inicio" style="text-align: left;">
       <div class="row-fluid">
           <div class="span9">
-              <table width="100%" cellspacing="10%"><td width="45%"><h4 class="text-info"> Visión Institucional :: </h4>
-          <p  align="justify"> “La Universidad Peruana Unión es una institución educativa de la Iglesia Adventista del Séptimo Día que forma integralmente profesionales e investigadores competentes y creativos, capaces de brindar un servicio cristiano a la Iglesia y sociedad para restaurar en el ser humano la imagen de Dios.”</p> 
-           <td>&nbsp;</td>
-          </td><td width="45%"><h4 class="text-info"> Misión Institucional :: </h4>
+              <table width="100%" cellspacing="10%"><td width="45%">
+          <h4 class="text-info"> Visión Institucional :: </h4>
               <p  align="justify">“Ser una Universidad modelo, acreditada, reconocida en la Iglesia Adventista del Séptimo Día y la sociedad por la práctica de valores cristianos y su espíritu misionero.” </p>
+
+           <td>&nbsp;</td>
+          </td><td width="45%">
+          <h4 class="text-info"> Misión Institucional :: </h4>
+          <p  align="justify"> “La Universidad Peruana Unión es una institución educativa de la Iglesia Adventista del Séptimo Día que forma integralmente profesionales e investigadores competentes y creativos, capaces de brindar un servicio cristiano a la Iglesia y sociedad para restaurar en el ser humano la imagen de Dios.”</p>               
                   </td></table>
              <br/>
              
