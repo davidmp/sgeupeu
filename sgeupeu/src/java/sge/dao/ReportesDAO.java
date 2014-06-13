@@ -20,7 +20,7 @@ public class ReportesDAO extends DBConn{
     public ArrayList cabeceraPOA(int ideapfacultad){
     String sql=" SELECT i.razonsocial, i.rector, fi.direccion,fi.celular, fi.idfilial, fi.categoria, fi.rector AS rectorfilial, "
             + " f.nombre AS nombrefacultad, f.idfacultad,  ff.idfilialfacultad ,e.nombre AS nombreeap, e.idtipoarea, "
-            + " (CASE WHEN e.idtipoarea=1 THEN 'Pregrado' WHEN e.idtipoarea=2 THEN 'Postgrado' WHEN e.idtipoarea=3 THEN 'Areas de Apoyo' ELSE 'Otros' END) AS nombretipoarea, e.ideap, ef.ideapfacultad, ef.idcoordinadoreap, "
+            + " (CASE WHEN e.idtipoarea=1 THEN 'Pregrado' WHEN e.idtipoarea=2 THEN 'Posgrado' WHEN e.idtipoarea=3 THEN 'Areas de Apoyo' ELSE 'Otros' END) AS nombretipoarea, e.ideap, ef.ideapfacultad, ef.idcoordinadoreap, "
             + " (SELECT CONCAT(p.nombre,' ',p.apellipaterno,' ',p.apellimaterno) AS coordinador "
             + " FROM coordinadoreap ce, persona p "
             + " WHERE p.idpersona=ce.idpersona AND  ce.idcoordinadoreap=ef.idcoordinadoreap) AS coordinador, (SELECT  pp.periodo FROM periodo pp WHERE pp.idperiodo=(SELECT cea.idperiodo FROM  coordinadoreap  cea WHERE ef.idcoordinadoreap=cea.idcoordinadoreap )) AS periodo "
@@ -99,9 +99,10 @@ public class ReportesDAO extends DBConn{
         finally{getCerrarConexion();}
         System.out.println(" Muetra la ejes!!! ..>"+Lista.toArray().length);
     return Lista;
-    }    
+    }   
+    
     public ArrayList reporEapFacultadFilial(int idfilial){        
-    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, \" (Pregrado)\") WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, \" (Postgrado)\") ELSE CONCAT(e.nombre, \" (A.Apoyo)\") END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
+    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, \" (Pregrado)\") WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, \" (Posgrado)\") ELSE CONCAT(e.nombre, \" (A.Apoyo)\") END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
             + " WHERE f.idfilial=ff.idfilial  "
             + " AND ff.idfilialfacultad=ef.idfilialfacultad AND e.ideap=ef.ideap AND f.idfilial='"+idfilial+"' ";
         ArrayList Lista = new ArrayList(); 
@@ -123,8 +124,30 @@ public class ReportesDAO extends DBConn{
         System.out.println(" Muetra las EAPs!!! ..>"+Lista.toArray().length);
     return Lista;
     }    
+    public ArrayList reporEapFacultadFilialAudit(int idfilial){        
+    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, ' (Pregrado)') WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, ' (Posgrado)') ELSE CONCAT(e.nombre, ' (A.Apoyo)') END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
+            + " WHERE f.idfilial=ff.idfilial  AND ff.idfilialfacultad=ef.idfilialfacultad AND e.ideap=ef.ideap AND e.idtipoarea=1 AND f.idfilial='"+idfilial+"' ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql); 
+            rs=ps.executeQuery();            
+            while (rs.next()){            
+                userPriv = new HashMap();
+                userPriv.put("ideapfacultad", rs.getInt("ideapfacultad"));
+                userPriv.put("idtipoarea", rs.getInt("idtipoarea"));
+                userPriv.put("codigo", rs.getString("codigo"));
+                userPriv.put("nombreeap", rs.getString("nombreeap"));
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra las EAPs!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }                  
     public ArrayList reporEapFacultadFilialEap(int idfilial, int idfilialfacultad){        
-    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, ' (Pregrado)') WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, ' (Postgrado)') ELSE CONCAT(e.nombre, ' (A.Apoyo)') END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
+    String sql=" SELECT ef.ideapfacultad, e.idtipoarea, e.codigo, (CASE WHEN e.idtipoarea=1 THEN  CONCAT(e.nombre, ' (Pregrado)') WHEN e.idtipoarea=2 THEN  CONCAT(e.nombre, ' (Posgrado)') ELSE CONCAT(e.nombre, ' (A.Apoyo)') END) AS nombreeap FROM filial f, filialfacultad ff, eapfacultad ef, eap e "
             + " WHERE f.idfilial=ff.idfilial  "
             + " AND ff.idfilialfacultad=ef.idfilialfacultad AND e.ideap=ef.ideap AND f.idfilial=? and ff.idfilialfacultad=? ";
         ArrayList Lista = new ArrayList(); 
@@ -203,6 +226,49 @@ public class ReportesDAO extends DBConn{
     public ArrayList actividadesPOA(int idmeta, int mes1, int mes2){
         
     String sql=" SELECT * FROM (SELECT validar_mes(?,?,a.idactividad) AS validar,  a.nro, a.accion, a.cantidad, a.responsable, a.idmeta,  a.enero, a.febrero, a.marzo, a.abril, a.mayo, a.junio, a.julio, a.agosto, a.setiembre, a.octubre, a.noviembre, a.diciembre, (CASE WHEN a.presupuesto IS NULL THEN '0' ELSE a.presupuesto END) AS presupuesto "
+            + " FROM actividad a, meta m WHERE a.idmeta=m.idmeta AND a.idmeta=? )  AS r WHERE validar=1  ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql); 
+            ps.setInt(1, mes1);           
+            ps.setInt(2, mes2);           
+            ps.setInt(3, idmeta);           
+            rs=ps.executeQuery();            
+            while (rs.next()){          
+                userPriv = new HashMap();
+                userPriv.put("validar", rs.getInt("validar"));
+                userPriv.put("nro", rs.getInt("nro"));
+                userPriv.put("accion", rs.getString("accion"));
+                userPriv.put("cantidad", rs.getInt("cantidad"));
+                userPriv.put("responsable", rs.getString("responsable"));
+                userPriv.put("idmeta", rs.getInt("idmeta"));
+                userPriv.put("enero", rs.getString("enero"));
+                userPriv.put("febrero", rs.getString("febrero"));
+                userPriv.put("marzo", rs.getString("marzo"));
+                userPriv.put("abril", rs.getString("abril"));
+                userPriv.put("mayo", rs.getString("mayo"));
+                userPriv.put("junio", rs.getString("junio"));
+                userPriv.put("julio", rs.getString("julio"));
+                userPriv.put("agosto", rs.getString("agosto"));
+                userPriv.put("setiembre", rs.getString("setiembre"));
+                userPriv.put("octubre", rs.getString("octubre"));
+                userPriv.put("noviembre", rs.getString("noviembre"));
+                userPriv.put("diciembre", rs.getString("diciembre"));
+                
+                userPriv.put("presupuesto", rs.getDouble("presupuesto"));
+                
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra las actividades!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }    
+    public ArrayList actividadesPOAVencidos(int idmeta, int mes1, int mes2){
+        
+    String sql=" SELECT * FROM (SELECT validar_vencidos(?,?,a.idactividad) AS validar,  a.nro, a.accion, a.cantidad, a.responsable, a.idmeta,  a.enero, a.febrero, a.marzo, a.abril, a.mayo, a.junio, a.julio, a.agosto, a.setiembre, a.octubre, a.noviembre, a.diciembre, (CASE WHEN a.presupuesto IS NULL THEN '0' ELSE a.presupuesto END) AS presupuesto "
             + " FROM actividad a, meta m WHERE a.idmeta=m.idmeta AND a.idmeta=? )  AS r WHERE validar=1  ";
         ArrayList Lista = new ArrayList(); 
         Map userPriv;

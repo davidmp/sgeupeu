@@ -25,15 +25,9 @@ function cambiarPagina(){
     if(selectObjt=="1"){
         $("#form1").attr("style","display: normal");
         $("#form2").attr("style","display: none");
-        $("#form3").attr("style","display: none");
-    }else if(selectObjt=="2"){        
+    }else{        
       $("#form2").attr("style","display: normal");
       $("#form1").attr("style","display: none");
-      $("#form3").attr("style","display: none");
-    }else{
-      $("#form2").attr("style","display: none");
-      $("#form1").attr("style","display: none");        
-      $("#form3").attr("style","display: normal");        
     }
     
 }
@@ -47,7 +41,7 @@ function validarEjes(eap, ideje){
     
     $.ajax({
         type: "GET",
-        url: "../../InformeActividadGeneral",
+        url: "../../InformeActividadAuditEapAreas",
         data: "opt=4&idtipoarea=" + datosv[1]+"&codigo="+ver,
         success: function(datos) {
             $("#"+ideje).html(datos);
@@ -56,7 +50,7 @@ function validarEjes(eap, ideje){
 }
 
 
-function validarFecha(){   
+function validarFecha(){    
        var mes1= parseInt($("#mesinicio1").val());
        var mes2= parseInt($("#mesfin1").val());
        if(mes1<=mes2){           
@@ -64,7 +58,7 @@ function validarFecha(){
            $("#mesfin1").val(mes1);
        }    
 }
-function validarFecha2(){   
+function validarFecha2(){    
        var mes1= parseInt($("#mesinicio2").val());
        var mes2= parseInt($("#mesfin2").val());
        if(mes1<=mes2){           
@@ -73,41 +67,51 @@ function validarFecha2(){
        }    
 }
 
-function validarFecha3(){  
-       var mes1= parseInt($("#mesinicio3").val());
-       var mes2= parseInt($("#mesfin3").val());
-       if(mes1<=mes2){           
-       }else{
-           $("#mesfin3").val(mes1);
-       }    
+function accionForm(){
+var condicion=false; 
+if(($("#eap1").val())!="0"){
+  condicion=true;   
+ }else{
+     condicion=false; 
+     alert("Seleccione una EAP!");
+ }
+ return condicion;
 }
-
+function accionForm2(){
+var condicion=false; 
+if(($("#eap2").val())!="0"){
+  condicion=true;   
+ }else{
+     condicion=false; 
+     alert("Seleccione una EAP!");
+ }
+ return condicion;
+}
 </script>   
 <div >
 <center>
 <%
 List<Periodometa> periodoM=null;
  List<Ejeestrategico> ejeEs=null;
+ ArrayList lista=null;
+ Iterator<Object> inter;
 %>  
 <div class="row-fluid">
     <div class="span2">
         Rep.
         <select style="width:130px" id="selecTipoReporte" name="selecTipoReporte" onchange="cambiarPagina()" >
-            <option value="1">General de Actividades</option>       
-            <option value="2">Reporte Resumido de Actividades</option>       
-            <option value="3">Actividades Vencidas</option>       
+            <option value="1">General de Actividades</option>          
+            <option value="3">Actividades Vencidas</option>          
         </select>
     </div>
- <% 
- ArrayList lista=null;
- Iterator<Object> inter;
- %>
+
     <div class="span10">
-        <form  id="form1" style="display: none" name="form1" action="../../InformeActividadGeneral" target="viewMain" >
+        <form  id="form1" style="display: none" name="form1" action="../../InformeActividadAuditEapAreas" onsubmit="return accionForm()" target="viewMain" >
         EAP
         <select style="width: 160px"  id="eap1" name="eap1" onchange="validarEjes('eap1','ideje1')">
+            <option value="0">Seleccione...</option>      
             <%
-            
+          
             lista = (ArrayList)request.getSession().getAttribute("listarEapTempReporte");                        
             inter=lista.iterator();
          while(inter.hasNext()){
@@ -160,7 +164,7 @@ List<Periodometa> periodoM=null;
         </select>
         Eje
         <select style="width: 180px" id="ideje1" name="ideje1">
-            <option value="0">Todos</option>
+            
         </select>
         <input type="hidden" id="opt" name="opt" value="3"/>
         <input type="submit" value="Reportar" class="btn btn-mini btn-success"/>
@@ -168,13 +172,15 @@ List<Periodometa> periodoM=null;
         
         
         
-        <form  id="form2" style="display: none" name="form2" action="../../InformeActividadGeneral" target="viewMain" >
+        
+        <form  id="form2" style="display: none" name="form2" action="../../InformeActividadAuditEapAreas" onsubmit="return accionForm2()" target="viewMain" >
         EAP
         <select style="width: 160px"  id="eap2" name="eap2" onchange="validarEjes('eap2','ideje2')">
+            <option value="0">Seleccione...</option>      
             <%
-            lista=null;
+             lista=null;
             lista = (ArrayList)request.getSession().getAttribute("listarEapTempReporte");                        
-            inter=lista.iterator();
+             inter=lista.iterator();
          while(inter.hasNext()){
          Map datos=  (Map)inter.next();
             %>
@@ -225,76 +231,9 @@ List<Periodometa> periodoM=null;
         </select>
         Eje
         <select style="width: 180px" id="ideje2" name="ideje2">
-            <option value="0">Todos</option>
+            
         </select>
         <input type="hidden" id="opt" name="opt" value="5"/>
-        <input type="submit" value="Reportar" class="btn btn-mini btn-success"/>
-        </form>
-        
-        
-        
-        
-        
-        <form  id="form3" style="display: none" name="form3" action="../../InformeActividadGeneral" target="viewMain" >
-        EAP
-        <select style="width: 160px"  id="eap3" name="eap3" onchange="validarEjes('eap3','ideje3')">
-            <%
-            lista=null;
-            lista = (ArrayList)request.getSession().getAttribute("listarEapTempReporte");                        
-            inter=lista.iterator();
-         while(inter.hasNext()){
-         Map datos=  (Map)inter.next();
-            %>
-            <option value='<%=datos.get("ideapfacultad")%>*<%=datos.get("idtipoarea")%>*<%=datos.get("codigo")%>'><%=datos.get("nombreeap")%> </option>
-            <%  } %>
-        </select>
-        
-        Periodo
-        <select style="width: 80px" id="perido3" name="perido3">
-            <%
-   
-    periodoM=(List<Periodometa>)request.getSession().getAttribute("listar_periodo_meta");            
-           if(periodoM!=null){
-            for(Periodometa per: periodoM){
-            %>
-            <option value="<%=per.getIdperiodometa() %>"><%=per.getPeriodo()%> </option>
-            <% } } %>
-        </select>
-        M.Inicio
-        <select style="width: 100px" id="mesinicio3" name="mesinicio3" onchange="validarFecha2()">
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Setiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
-        </select>
-        M.Fin
-        <select style="width: 100px" id="mesfin3" name="mesfin3" onchange="validarFecha2()">
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Setiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>            
-        </select>
-        Eje
-        <select style="width: 180px" id="ideje3" name="ideje3">
-            <option value="0">Todos</option>
-        </select>
-        <input type="hidden" id="opt" name="opt" value="6"/>
         <input type="submit" value="Reportar" class="btn btn-mini btn-success"/>
         </form>
         

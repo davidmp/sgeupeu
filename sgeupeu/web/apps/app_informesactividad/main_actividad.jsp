@@ -38,6 +38,15 @@ function validarFecha(){
        }
     
 }
+function validarFecha2(){    
+       var mes1= parseInt($("#mesinicio2").val());
+       var mes2= parseInt($("#mesfin2").val());
+       if(mes1<=mes2){           
+       }else{
+           $("#mesfin2").val(mes1);
+       }
+    
+}
 
 </script>   
 <div >
@@ -51,7 +60,7 @@ List<Periodometa> periodoM=null;
         T. Reporte
         <select style="width: 180px" id="selecTipoReporte" name="selecTipoReporte" onchange="cambiarPagina()" >
             <option value="1">General de Actividades</option>
-            <option value="2">Actividades Por Meses</option>
+            <option value="3">Actividades Vencidas</option>
         </select>
     </div>
     
@@ -123,7 +132,7 @@ List<Periodometa> periodoM=null;
         Periodo
         <select style="width: 80px" id="perido2" name="perido2">
             <%
-    
+   
     periodoM=(List<Periodometa>)request.getSession().getAttribute("listar_periodo_meta");            
            if(periodoM!=null){
             for(Periodometa per: periodoM){
@@ -132,7 +141,7 @@ List<Periodometa> periodoM=null;
             <% } } %>
         </select>
         M.Inicio
-        <select style="width: 100px" id="mesinicio2" name="mesinicio2">
+        <select style="width: 100px" id="mesinicio2" name="mesinicio2" onchange="validarFecha2()">
             <option value="1">Enero</option>
             <option value="2">Febrero</option>
             <option value="3">Marzo</option>
@@ -147,7 +156,7 @@ List<Periodometa> periodoM=null;
             <option value="12">Diciembre</option>
         </select>
         M.Fin
-        <select style="width: 100px" id="mesfin2" name="mesfin2">
+        <select style="width: 100px" id="mesfin2" name="mesfin2" onchange="validarFecha2()">
             <option value="1">Enero</option>
             <option value="2">Febrero</option>
             <option value="3">Marzo</option>
@@ -162,10 +171,10 @@ List<Periodometa> periodoM=null;
             <option value="12">Diciembre</option>            
         </select>
         Eje
-        <select style="width: 180px" id="ideje2" name="ideje2" >
+        <select style="width: 180px" id="ideje2" name="ideje2">
             <option value="0">Todos</option>
             <%
-   
+
     ejeEs=(List<Ejeestrategico>)request.getSession().getAttribute("listar_eje");              
             if(ejeEs!=null){
                 for(Ejeestrategico ejeE:ejeEs){
@@ -175,8 +184,11 @@ List<Periodometa> periodoM=null;
             <% } } %>
         </select>
         <input type="hidden" id="opt" name="opt" value="4"/>
-        <input type="submit" value="Reportar2" class="btn btn-mini btn-success"/>
+        <input type="submit" value="Reportar" class="btn btn-mini btn-success"/>
         </form>
+        
+        
+
     </div>
 
 </div>

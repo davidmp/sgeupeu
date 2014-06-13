@@ -102,7 +102,7 @@
           <div class="pull-right">
             <ul class="nav">
               <li>
-                  <a href="#"><div class="fb-like" data-href="https://www.facebook.com/edwin.edu.developer" data-width="The pixel width of the plugin" data-height="The pixel height of the plugin" data-colorscheme="light" data-layout="button_count" data-action="like" data-show-faces="true" data-send="false"></div></a>
+                  <a href="#"></a>
               </li>  
               <li>
                   <a href="#myModal" role="button" data-toggle="modal"><div class="icon-user icon-white"></div>&nbsp;<strong>Iniciar Sesión</strong></a>

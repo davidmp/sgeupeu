@@ -24,6 +24,11 @@ public class ReporteService {
       dao=new ReportesDAO();
       return dao.reporEapFacultadFilial(idfilial);
   }
+  public ArrayList reporEapFacultadFilialAudit(int idfilial){
+      dao=new ReportesDAO();
+      return dao.reporEapFacultadFilialAudit(idfilial);
+  }
+  
   public ArrayList reporEapFacultadFilialEap(int idfilial, int idfilialfacultad){
       dao=new ReportesDAO();
       return dao.reporEapFacultadFilialEap(idfilial,idfilialfacultad);
@@ -39,6 +44,10 @@ public class ReporteService {
   public ArrayList actividadesPOA(int idmeta, int mes1, int mes2){
       dao=new ReportesDAO();
       return dao.actividadesPOA(idmeta, mes1, mes2);
+  }
+  public ArrayList actividadesPOAVencidos(int idmeta, int mes1, int mes2){
+      dao=new ReportesDAO();
+      return dao.actividadesPOAVencidos(idmeta, mes1, mes2);
   }
     
 }

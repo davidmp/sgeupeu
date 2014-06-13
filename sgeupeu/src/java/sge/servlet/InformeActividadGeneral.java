@@ -32,6 +32,8 @@ public class InformeActividadGeneral extends HttpServlet {
    private static String INDEXCOORDINADOREAPINFORME= "apps/app_informesactividad/indexGeneral.jsp";
    private static String INDEXCOORDINADOREAPMAIN= "apps/app_informesactividad/main_actividadGeneral.jsp";
    private static String INDEXCOORDINADOREAPREPOR1= "apps/app_informesactividad/reportGeneral.jsp";
+   private static String INDEXCOORDINADOREAPREPOR3= "apps/app_informesactividad/reportResumen.jsp";   
+   private static String INDEXCOORDINADOREAPREPOR4= "apps/app_informesactividad/reportVencidos.jsp";   
    private static String INDEXCOORDINADOREAPREPOR2= "apps/app_informesactividad/reporteGeneralAreaApoyo.jsp";
    
    
@@ -140,6 +142,62 @@ public class InformeActividadGeneral extends HttpServlet {
                  }
                 }
                 break;
+                case 5: {
+                String periodo="";
+                int mes1=0;
+                int mes2=0;
+                int eje=0;
+                int ideapfacultad;
+                String datosGeneral="";
+                eje=Integer.parseInt(request.getParameter("ideje2")==null?"0":request.getParameter("ideje2") );
+                mes1=Integer.parseInt(request.getParameter("mesinicio2")==null?"0":request.getParameter("mesinicio2") );
+                mes2=Integer.parseInt(request.getParameter("mesfin2")==null?"0":request.getParameter("mesfin2") );                
+                datosGeneral=(request.getParameter("eap2")==null?"0":request.getParameter("eap2")).toString();
+                
+                String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
+                
+                rs=new ReporteService();
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                request.getSession().setAttribute("cabeceraInformePOA", lista);
+                System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
+                rs=new ReporteService();                
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
+                
+                if(Integer.parseInt(vectorDatos[1])==3){
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2);    
+                }else{
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR3+"?mes1="+mes1+"&mes2="+mes2);                
+                }
+                } break;
+                case 6: {
+                String periodo="";
+                int mes1=0;
+                int mes2=0;
+                int eje=0;
+                int ideapfacultad;
+                String datosGeneral="";
+                eje=Integer.parseInt(request.getParameter("ideje3")==null?"0":request.getParameter("ideje3") );
+                mes1=Integer.parseInt(request.getParameter("mesinicio3")==null?"0":request.getParameter("mesinicio3") );
+                mes2=Integer.parseInt(request.getParameter("mesfin3")==null?"0":request.getParameter("mesfin3") );                
+                datosGeneral=(request.getParameter("eap3")==null?"0":request.getParameter("eap3")).toString();
+                
+                String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
+                
+                rs=new ReporteService();
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                request.getSession().setAttribute("cabeceraInformePOA", lista);
+                System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
+                rs=new ReporteService();                
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
+                
+                if(Integer.parseInt(vectorDatos[1])==3){
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2);    
+                }else{
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR4+"?mes1="+mes1+"&mes2="+mes2);                
+                }
+                } break;
                 default:{
                     System.out.println("Error...El valor es: "+opt);
                 }

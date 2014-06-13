@@ -163,6 +163,10 @@ public class IndicadorService {
         dao = new IndicadorDAO();
         return dao.listaEjeIndividualAreas(idtipoarea, idcodigo);
         }
+        public List<Ejeestrategico> listaEjeIndividualAreasAudit( int idusuario){
+        dao = new IndicadorDAO();
+        return dao.listaEjeIndividualAreasAudit(idusuario);
+        }
         
         public Ejeestrategico Eje(HttpServletRequest rq){
         dao = new IndicadorDAO();

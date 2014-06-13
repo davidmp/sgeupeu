@@ -178,13 +178,16 @@ $(document).ready(function() {
                 
                 
                   <%  } else if(opt==6){ %>
-                        <!-- Menu de Coordinadores de Ejes de EAP con acceso a sus indicadores -->
+                        <!-- Menu de Coordinadores de Ejes de Areas de Apoyo con acceso a sus indicadores -->
                         <li class="dropdown">
                          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><div class="icon-user icon-white"></div>&nbsp;<%=w.getIdcategoriausuario_nombre()%>&nbsp;<b class="caret"></b></a>
                         <ul  class="dropdown-menu">
                          <li><a data-target=".marketing" data-toggle="tab" href="../app_coordinadores_apoyo/index.jsp"><div class="icon-home"></div>&nbsp;Inicio</a></li>
                          <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/IndicadorApoyo?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Indicadores</a></li>
-                         <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformesActividadApoyo?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
+                         <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformesActividadApoyo?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades </a></li>
+                         <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadAuditEapAreas?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades de EAP/Áreas </a></li>
+                         
+                         
 <!--                         <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/IndicadorApoyo?opt=14&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reportes Consolidados</a></li>-->
                         </ul>
                         </li>                    

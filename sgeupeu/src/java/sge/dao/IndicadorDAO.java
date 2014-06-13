@@ -386,9 +386,37 @@ public class IndicadorDAO extends DBConn{
     return Lista;
     }
     
-    
-    
-          
+    public List<Ejeestrategico> listaEjeIndividualAreasAudit( int idusuario){
+    String sql=" SELECT e.idejeestrategico, CONCAT(e.codigo,' - ',e.nombre) AS nombre ,e.descripcion,e.estado,e.objetivoestrategico,e.mapaestrategico, te.idtemporadaejeestrategico,  te.nro FROM usuario_auditeje u INNER JOIN ejeestrategico e ON u.idejeestrategico=e.idejeestrategico INNER JOIN temporadaejeestrategico te ON e.idejeestrategico=te.idejeestrategico "
+            + " INNER JOIN temporada t ON t.idtemporada=te.idtemporada AND (u.idusuario='"+idusuario+"' AND u.estado=1) AND (t.estado='1' )  ORDER BY te.nro ";
+
+    List<Ejeestrategico> Lista = new ArrayList<Ejeestrategico>(); 
+      Ejeestrategico Toto = null;
+    int i=0;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+        while (rs.next()) 
+        {            
+           Toto  = new Ejeestrategico();
+           
+           Toto.setIdejeestrategico(rs.getInt("idejeestrategico"));
+           Toto.setNombre(rs.getString("nombre"));
+           Toto.setDescripcion(rs.getString("descripcion"));
+           Toto.setEstado(rs.getInt("estado"));
+           Toto.setMapaestrategico(rs.getString("mapaestrategico"));
+           Toto.setObjetivoestrategico(rs.getString("objetivoestrategico"));
+           Toto.setIdtemporadaejeestrategico(rs.getInt("idtemporadaejeestrategico"));
+           Toto.setCodigo(rs.getString("nro"));
+
+           Lista.add(Toto);
+        }
+        } catch (Exception e) {
+        }
+        finally{getCerrarConexion();}
+    return Lista;
+    }       
      public Ejeestrategico Eje(int id){
     String sql=" SELECT e.idejeestrategico,e.nombre,e.descripcion,e.estado,e.objetivoestrategico,e.mapaestrategico, te.idtemporadaejeestrategico, "+
         " e.codigo FROM ejeestrategico e INNER JOIN temporadaejeestrategico te ON e.idejeestrategico=te.idejeestrategico "+
@@ -1038,7 +1066,7 @@ public class IndicadorDAO extends DBConn{
     }   
         
     public Indicador estrategiaIndicador(Periodometa id,Eapfacultad ef, int estadometa,int estadoavance ,String valor, int idFilial){        
-    String sql= "   SELECT ei.*,i.*, m.idmeta,m.idperiodo,m.evidencia,m.idavancevalida,m.tipo,m.url,es.nombre AS estrategia,  "+ 
+    String sql= "   SELECT ei.*,i.*, CONCAT('(',i.codigo,') ',i.nombre) as nombreindicador, m.idmeta,m.idperiodo,m.evidencia,m.idavancevalida,m.tipo,m.url,es.nombre AS estrategia,  "+ 
                 "   (CASE WHEN m.evidencia IS NULL OR m.evidencia=''  THEN 0 ELSE 1 END) AS valorevidencia, "+
                 "   (CASE WHEN m.meta=0 OR m.meta IS NULL THEN '0' ELSE m.meta END) AS meta  "+
                 "   FROM estrategiaindicador ei   "+
@@ -1065,7 +1093,7 @@ public class IndicadorDAO extends DBConn{
         {
            Toto  = new sge.modelo.Indicador();       
            Toto.setIdindicador(rs.getInt("idindicador"));
-           Toto.setNombre(rs.getString("nombre"));
+           Toto.setNombre(rs.getString("nombreindicador"));
            Toto.setDescripcion(rs.getString("descripcion"));
            Toto.setEstado(rs.getInt("estado"));
            Toto.setInstrumento(rs.getString("instrumento"));
