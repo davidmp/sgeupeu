@@ -86,6 +86,25 @@ public class IndicadorDAO extends DBConn{
        finally{}
     return valor;
     }   
+   
+   public String nombreArchivoDenominacion(int idmeta){
+    String sql="SELECT idmeta, UPPER(CONCAT(nperiodo,'-',eapn,'-', codigoi,'-N',cantidad)) AS nombrefile FROM (SELECT m.*, (IFNULL(m.nrofile,0)+1) AS cantidad FROM (SELECT m.idmeta, ( SELECT nrofile FROM (SELECT idmeta, idavance, COUNT(*) nrofile FROM (SELECT a.idavance, a.idmeta, e.idevidencia FROM avance a INNER JOIN evidencia e USING (idavance)) a GROUP BY idmeta, idavance) a WHERE a.idmeta=m.idmeta) AS nrofile,m.ideapfacultad,(SELECT eapn FROM(SELECT ideapfacultad, CONCAT(codigof,'-', idtipoarea,'-',codigo) AS eapn FROM (SELECT * FROM (SELECT * FROM eapfacultad INNER JOIN eap USING(ideap)) a INNER JOIN (SELECT idfilial, codigo AS codigof, idfilialfacultad,idfacultad FROM filial INNER JOIN filialfacultad USING(idfilial) ) b USING (idfilialfacultad)) a ) b WHERE b.ideapfacultad=m.ideapfacultad) AS eapn, m.idestrategiaindicador, (SELECT codigoi FROM (SELECT a.idestrategiaindicador, CONCAT(b.descripcion,'-',a.codigoi) AS codigoi FROM (SELECT a.idestrategiaindicador,b.idindicador, b.codigo AS codigoi,b.idejeestrategico  FROM estrategiaindicador a INNER JOIN indicador b USING (idindicador)) a INNER JOIN (SELECT * FROM ejeestrategico) b USING(idejeestrategico)) a WHERE a.idestrategiaindicador=m.idestrategiaindicador) AS codigoi , m.idperiodo, (SELECT periodo FROM periodo p WHERE p.idperiodo=m.idperiodo) AS nperiodo "
+            + " FROM meta m WHERE m.idmeta=? ) m) p  ";
+        String valor="";
+         try {
+            getConexionDb1();
+            ps1=con1.prepareStatement(sql);
+            ps1.setInt(1, idmeta);
+            rs1=ps1.executeQuery();
+        while (rs1.next()) 
+        {            
+         valor=rs1.getString("nombrefile");
+        }
+        } catch (Exception e) {
+        }
+       finally{}
+    return valor;
+    }   
                
   public int semaforo(int idmeta){
     String sql="SELECT valor_indicador(?) AS valor; ";
@@ -1719,7 +1738,7 @@ public void actualizarActividad(Actividad to) {
 // ---- Lista de conlolidados --------------------- >        
         
     public List<Eap> listaEapConsolidado(Periodometa id,Filialfacultad ff){        
-    String sql= "SELECT ea.*,e.nombre FROM eapfacultad  ea INNER JOIN eap e  ON ea.ideap=e.ideap  WHERE ea.idfilialfacultad=?";           
+    String sql= "SELECT ea.*, (CASE WHEN e.ideap=7 AND ideapfacultad=36 THEN 'Administración - Mención Gestión Empresarial' ELSE e.nombre  END) as nombre FROM eapfacultad  ea INNER JOIN eap e  ON ea.ideap=e.ideap  WHERE ea.idfilialfacultad=?";           
       List<Eap> Lista = new ArrayList<Eap>(); 
       List<Integer> eap = new ArrayList<Integer>();     
       Eap Toto = null;

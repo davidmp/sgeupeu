@@ -123,7 +123,7 @@ function validarExtencion(){
         <form name="emailForm" class="emailForm" method="POST" onsubmit="return validarExtencion()"  action="<%=request.getContextPath()%>/IndicadoresEje?opt=5&idtemporadaejeestrategico=<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>&idperiodometa=<%=p.getIdperiodometa()%>&nro_indicador_4=<%=vr.getNro()%>&idmeta<%=vr.getNro()%>=<%=in.getIdmeta()%>&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>&idusuario=<%if(w!=null){%><%=w.getIdusuario()%><%}else{%>0<%}%>&idestrategiaindicador<%=vr.getNro()%>=<%=in.getIdestrategiaindicador()%>&idavancevalida<%=vr.getNro()%>=<%=in.getIdavancevalida() %>" enctype="multipart/form-data">
 
         <center>
-         20 MB (Maximo) &DoubleRightArrow;  Formatos: DOCX, DOC, PDF, ZIP, RAR
+         35 MB (Maximo) &DoubleRightArrow;  Formatos: DOCX, DOC, PDF, ZIP, RAR
         <div class="fileupload fileupload-new" data-provides="fileupload">        
         <div class="input-append">
         <div class="uneditable-input span4"><i class="icon-file fileupload-exists"></i> 
@@ -181,7 +181,7 @@ function validarExtencion(){
     <center> 
 
     <a href="<%= request.getContextPath()%>/public/evidencias/<%=me.getUrl()%>" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" title="<%=me.getEvidencia()%>"><i class="icon-download-alt icon-white"></i></a>      
-    <a href="ftp://192.168.13.38/<%=carpeta%><%=me.getUrl()%>" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" title="<%=me.getEvidencia()%>"><i class="icon-download-alt icon-white"></i></a>                                    
+    <a href="ftp://sger1:lectura@192.168.13.38/<%=carpeta%><%=me.getUrl()%>" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" title="<%=me.getEvidencia()%>"><i class="icon-download-alt icon-white"></i></a>                                    
     <button class="btn btn-danger" onmouseover="formindicador(<%=me.getIdevidencia()%>)" type="submit"><i class="icon-remove icon-white"></i></button>                       
     </center>
 

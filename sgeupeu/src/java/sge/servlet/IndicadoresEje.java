@@ -186,8 +186,11 @@ public class IndicadoresEje extends HttpServlet {
         if( item.getSize() > 0 ){
                  System.out.println(" Name ->" + item.getName());
    
+        String filenameI="X";
+        filenameI=is.nombreArchivoDenominacion(idmeta);
         String evidencia   =item.getName();                            
-        String url   = dia+"."+mes+"."+anio+"-"+hora24+"."+minutos+"."+segundos+"."+milisegundos+"-"+item.getName(); 
+        String url   = filenameI+"-"+dia+"."+mes+"."+anio+"-"+hora24+"."+minutos+"."+segundos+"."+milisegundos+ (item.getName().substring( item.getName().lastIndexOf( "." ) )); 
+        
         String type     = item.getContentType();
         long tamanio    = item.getSize();
         String tipo = url.substring( url.lastIndexOf( "." ) );                          
@@ -205,7 +208,7 @@ public class IndicadoresEje extends HttpServlet {
             ftp.disconnect();
             throw new Exception("Exception in connecting to FTP Server");
         }
-        ftp.login("tisge", "wmtisge:$0114");
+        ftp.login("sgew1", "escritura");
         ftp.setFileType(FTP.BINARY_FILE_TYPE);
         ftp.enterLocalPassiveMode();   
             FileDirectori fd=new FileDirectori();            
@@ -227,7 +230,7 @@ public class IndicadoresEje extends HttpServlet {
         
         
         // Fin FTP        
-        
+        is=new IndicadorService(); 
         if ( archivo.exists() ){    
         is.insertarEvidencia(evidencia, tipo, url, idavancevalida,Integer.parseInt(idUsuarioPri));
         System.out.println(" Guardado->" + archivo.getAbsolutePath());
@@ -451,25 +454,25 @@ public class IndicadoresEje extends HttpServlet {
                     principalValorSession(request);
                     //Fin Session  
                     
-        //Inicio Conexion        
-                try {
-                FTPClient ftp = null;                
-                ftp = new FTPClient();
-                ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
-                int reply;
-                ftp.connect("192.168.13.38");
-                reply = ftp.getReplyCode();
-                if (!FTPReply.isPositiveCompletion(reply)) {
-                    ftp.disconnect();
-                     throw new Exception("Exception in connecting to FTP Server");
-                }
-                ftp.login("tisge", "wmtisge:$0114");
-                ftp.setFileType(FTP.BINARY_FILE_TYPE);
-                ftp.enterLocalPassiveMode();                             
-                } catch (Exception e) {
-                }
-        
-        //End Conexion                    
+//        //Inicio Conexion        
+//                try {
+//                FTPClient ftp = null;                
+//                ftp = new FTPClient();
+//                ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+//                int reply;
+//                ftp.connect("192.168.13.38");
+//                reply = ftp.getReplyCode();
+//                if (!FTPReply.isPositiveCompletion(reply)) {
+//                    ftp.disconnect();
+//                     throw new Exception("Exception in connecting to FTP Server");
+//                }
+//                ftp.login("tisge", "wmtisge:$0114");
+//                ftp.setFileType(FTP.BINARY_FILE_TYPE);
+//                ftp.enterLocalPassiveMode();                             
+//                } catch (Exception e) {
+//                }
+//        
+//        //End Conexion                    
                     is=new IndicadorService(); 
                         
                     request.getSession().setAttribute("listaEvidencia", is.ListaEvidenciaMeta(request));

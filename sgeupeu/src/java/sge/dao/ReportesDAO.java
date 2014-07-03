@@ -19,7 +19,7 @@ public class ReportesDAO extends DBConn{
 
     public ArrayList cabeceraPOA(int ideapfacultad){
     String sql=" SELECT i.razonsocial, i.rector, fi.direccion,fi.celular, fi.idfilial, fi.categoria, fi.rector AS rectorfilial, "
-            + " f.nombre AS nombrefacultad, f.idfacultad,  ff.idfilialfacultad ,e.nombre AS nombreeap, e.idtipoarea, "
+            + " f.nombre AS nombrefacultad, f.idfacultad,  ff.idfilialfacultad ,(CASE WHEN e.ideap=7 AND ef.ideapfacultad=36 THEN 'Administración - Mención Gestión Empresarial' ELSE e.nombre  END) AS nombreeap, e.idtipoarea, "
             + " (CASE WHEN e.idtipoarea=1 THEN 'Pregrado' WHEN e.idtipoarea=2 THEN 'Posgrado' WHEN e.idtipoarea=3 THEN 'Areas de Apoyo' ELSE 'Otros' END) AS nombretipoarea, e.ideap, ef.ideapfacultad, ef.idcoordinadoreap, "
             + " (SELECT CONCAT(p.nombre,' ',p.apellipaterno,' ',p.apellimaterno) AS coordinador "
             + " FROM coordinadoreap ce, persona p "
@@ -76,9 +76,9 @@ public class ReportesDAO extends DBConn{
             qry="";
         }
         
-    String sql=" SELECT * FROM (SELECT  eje.idejeestrategico, eje.nombre AS nombreejeestrategico, eje.codigo AS  ejeestrategicocodigo, m.ideapfacultad, m.idperiodo FROM estrategia e,  perspectiva p,  ejeestrategia ej, estrategiaindicador ei, indicador i, ejeestrategico eje, meta m WHERE p.idperspectiva=e.idperspectiva  AND ej.idestrategia=e.idestrategia AND ei.idejeestrategia=ej.idejeestrategia AND ei.idindicador=i.idindicador AND eje.idejeestrategico=i.idejeestrategico AND m.idestrategiaIndicador=ei.idestrategiaIndicador ) AS r "
+    String sql=" SELECT * FROM (SELECT  eje.idejeestrategico, eje.nombre AS nombreejeestrategico, eje.objetivoestrategico AS objetivogeneral , eje.codigo AS  ejeestrategicocodigo, m.ideapfacultad, m.idperiodo FROM estrategia e,  perspectiva p,  ejeestrategia ej, estrategiaindicador ei, indicador i, ejeestrategico eje, meta m WHERE p.idperspectiva=e.idperspectiva  AND ej.idestrategia=e.idestrategia AND ei.idejeestrategia=ej.idejeestrategia AND ei.idindicador=i.idindicador AND eje.idejeestrategico=i.idejeestrategico AND m.idestrategiaIndicador=ei.idestrategiaIndicador ) AS r "
             + "  WHERE r.ideapfacultad='"+ideapfacultad+"' "+qry
-            + "  GROUP BY r.idperiodo, r.ideapfacultad, r.ejeestrategicocodigo,  r.nombreejeestrategico "
+            + "  GROUP BY r.idperiodo, r.ideapfacultad, r.ejeestrategicocodigo,  r.nombreejeestrategico,r.objetivogeneral, r.objetivogeneral "
             + "  ORDER BY r.ejeestrategicocodigo ASC ";
         ArrayList Lista = new ArrayList(); 
         Map userPriv;
@@ -90,6 +90,7 @@ public class ReportesDAO extends DBConn{
                 userPriv = new HashMap();
                 userPriv.put("idejeestrategico", rs.getInt("idejeestrategico"));
                 userPriv.put("nombreejeestrategico", rs.getString("nombreejeestrategico"));
+                userPriv.put("objetivogeneral", rs.getString("objetivogeneral"));
                 userPriv.put("ejeestrategicocodigo", rs.getString("ejeestrategicocodigo"));
                 userPriv.put("ideapfacultad", rs.getInt("ideapfacultad"));
                 userPriv.put("idperiodo", rs.getInt("idperiodo"));
@@ -265,7 +266,9 @@ public class ReportesDAO extends DBConn{
         finally{getCerrarConexion();}
         System.out.println(" Muetra las actividades!!! ..>"+Lista.toArray().length);
     return Lista;
-    }    
+    } 
+    
+    
     public ArrayList actividadesPOAVencidos(int idmeta, int mes1, int mes2){
         
     String sql=" SELECT * FROM (SELECT validar_vencidos(?,?,a.idactividad) AS validar,  a.nro, a.accion, a.cantidad, a.responsable, a.idmeta,  a.enero, a.febrero, a.marzo, a.abril, a.mayo, a.junio, a.julio, a.agosto, a.setiembre, a.octubre, a.noviembre, a.diciembre, (CASE WHEN a.presupuesto IS NULL THEN '0' ELSE a.presupuesto END) AS presupuesto "
@@ -301,6 +304,74 @@ public class ReportesDAO extends DBConn{
                 userPriv.put("diciembre", rs.getString("diciembre"));
                 
                 userPriv.put("presupuesto", rs.getDouble("presupuesto"));
+                
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra las actividades!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }   
+    
+    public ArrayList evaluacionPlanEstrategico(int ideapfacultad, int idperiodo, int idtipoarea, int idfilial, int ejearea){
+        String subqry="";
+        String subqry2="";
+        String subqry4="";
+        if(idtipoarea==3){ subqry="AND u.idtemporadaejeestrategico='"+ejearea+"' "; subqry2="AND c.idejeestrategico='"+ejearea+"' "; }else{subqry=""; subqry2="";}
+        if(ejearea!=0) {        
+        subqry4=" WHERE idtemporadaejeestrategico='"+ejearea+"' ";
+        }else{subqry4="";}
+        
+    String sql=" SELECT m.*,(CASE WHEN idmeta IS NULL THEN 4 WHEN idmeta IS NOT NULL AND avancereal =0 THEN 0 WHEN idmeta IS NOT NULL AND avancereal >0 AND avancereal<1 THEN 1 WHEN idmeta IS NOT NULL AND avancereal =1 THEN 2 WHEN idmeta IS NOT NULL AND avancereal >1 THEN 3 ELSE 0 END) AS tipoavance ,(SELECT cantidadeje FROM (SELECT idEjeEstrategico, COUNT(*) cantidadeje FROM (SELECT * FROM (SELECT * FROM estrategiaindicador INNER JOIN indicador USING(idindicador, instrumento)) b WHERE idfilial='"+idfilial+"' ) a GROUP BY idEjeEstrategico ) a WHERE a.idejeestrategico=m.idejeestrategico) AS cantidadeje , (SELECT cantidadperpectiva FROM (SELECT idEjeEstrategico, idperspectiva, COUNT(*) cantidadperpectiva FROM (SELECT * FROM (SELECT * FROM (SELECT * FROM estrategiaindicador INNER JOIN indicador USING(idindicador, instrumento) ) a INNER JOIN (SELECT idEjeEstrategia, idEstrategia, idperspectiva FROM ejeestrategia INNER JOIN estrategia USING(idEstrategia)) b USING(idEjeEstrategia) ) b WHERE idfilial='"+idfilial+"' ) a GROUP BY idEjeEstrategico, idperspectiva ) a WHERE a.idejeestrategico=m.idejeestrategico AND a.idperspectiva=m.idperspectiva) AS cantidadperpectiva ,(SELECT cantidadestrategia FROM (SELECT idEjeEstrategico, idperspectiva, idestrategia, COUNT(*) cantidadestrategia FROM (SELECT * FROM (SELECT * FROM (SELECT * FROM estrategiaindicador INNER JOIN indicador USING(idindicador, instrumento) ) a INNER JOIN (SELECT idEjeEstrategia, idEstrategia, idperspectiva FROM ejeestrategia INNER JOIN estrategia USING(idEstrategia)) b USING(idEjeEstrategia) ) b WHERE idfilial='"+idfilial+"' ) a GROUP BY idEjeEstrategico, idperspectiva, idestrategia ) a WHERE a.idejeestrategico=m.idejeestrategico AND a.idperspectiva=m.idperspectiva AND a.idestrategia=m.idestrategia ) AS cantidadestrategia "
+            + "  FROM ( SELECT d.*, (CASE WHEN d.idmeta IS NOT NULL AND d.idavance IS NOT NULL  THEN (SELECT COUNT(*) AS cantidad FROM evidencia e WHERE e.idavance=d.idavance) ELSE 0 END) AS archivo, (CASE WHEN d.idmeta IS NOT NULL AND d.idavance IS NOT NULL  THEN (ROUND((CAST(avance AS UNSIGNED))/(CAST(meta AS UNSIGNED)),2)) WHEN d.idmeta IS NOT NULL AND d.idavance IS NULL  THEN  (IFNULL(avance,0)/(CAST(meta AS UNSIGNED))) ELSE 0 END) AS avancereal "
+            + "  FROM ( SELECT * FROM ( SELECT * FROM ( SELECT m.*, (SELECT t.nombre  FROM tipoarea t WHERE t.idtipoarea=m.idtipoarea) AS nombrearea, (SELECT p.nombre FROM perspectiva p WHERE p.idperspectiva=m.idperspectiva) AS nombreperspectiva "
+            + "  FROM ( SELECT * FROM ( SELECT * FROM ( SELECT idestrategiaindicador, nro AS codigoin, idindicador, idejeestrategia  FROM estrategiaindicador ) AS a INNER JOIN (SELECT idejeestrategia, idestrategia, idtemporadaejeestrategico "
+            + "  FROM ejeestrategia) AS b USING(idejeestrategia) ) AS a INNER JOIN (SELECT * FROM estrategia) AS b USING(idestrategia) ) AS m  ORDER BY m.idfilial ASC, m.idtipoarea ASC, m.idejeestrategia ASC,  m.idestrategiaindicador ASC, m.idperspectiva DESC ) u "
+            + "  WHERE u.idfilial='"+idfilial+"' AND u.idtipoarea='"+idtipoarea+"'   "+subqry+"  ) a LEFT JOIN ( SELECT  idestrategiaindicador, idindicador, idtipoarea, nombre AS nombreindicador, estado, instrumento, metaideal, codigo AS codigoin, idtipometa, idejeestrategico,idmeta, meta, ideapfacultad, idusuario , idavance, avance, id_ciclo "
+            + "  FROM ( SELECT * FROM ( SELECT * FROM (SELECT * FROM indicador a  INNER JOIN (SELECT idestrategiaindicador, nro, idindicador, idejeestrategia FROM estrategiaindicador) b USING(idindicador) ) c "
+            + "  WHERE c.idfilial='"+idfilial+"' AND c.idtipoarea='"+idtipoarea+"'  "+subqry2+" ) a  LEFT JOIN (SELECT idmeta, meta, ideapfacultad, idusuario, idestrategiaindicador, idperiodo, idavancevalida  FROM meta "
+            + "  WHERE ideapfacultad='"+ideapfacultad+"' AND idperiodo='"+idperiodo+"' ) b  USING(idestrategiaindicador) ) m LEFT JOIN ( SELECT idavance, meta AS avance, idmeta, idusuario AS usuariosubio, id_ciclo FROM avance ) a USING(idmeta) ) b USING(idestrategiaindicador,idindicador,codigoin, idtipoarea) ) d ) m  "+subqry4+" ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);           
+            rs=ps.executeQuery();            
+            while (rs.next()){          
+                userPriv = new HashMap();
+                userPriv.put("idestrategiaindicador", rs.getInt("idestrategiaindicador"));
+                userPriv.put("codigoin", rs.getString("codigoin"));
+                userPriv.put("idindicador", rs.getInt("idindicador"));
+                userPriv.put("idtipoarea", rs.getInt("idtipoarea"));
+                userPriv.put("idestrategia", rs.getInt("idestrategia"));
+                userPriv.put("idejeestrategia", rs.getInt("idejeestrategia"));
+                userPriv.put("idtemporadaejeestrategico", rs.getString("idtemporadaejeestrategico"));
+                userPriv.put("nombre", rs.getString("nombre"));
+                userPriv.put("descripcion", rs.getString("descripcion"));
+                userPriv.put("codigo", rs.getString("codigo"));
+                userPriv.put("idperspectiva", rs.getInt("idperspectiva"));
+                userPriv.put("idfilial", rs.getInt("idfilial"));
+                userPriv.put("nombrearea", rs.getString("nombrearea"));
+                userPriv.put("nombreperspectiva", rs.getString("nombreperspectiva"));
+                userPriv.put("nombreindicador", rs.getString("nombreindicador"));
+                userPriv.put("estado", rs.getString("estado"));
+                userPriv.put("instrumento", rs.getString("instrumento"));
+                userPriv.put("metaideal", rs.getString("metaideal"));
+                userPriv.put("idtipometa", rs.getInt("idtipometa"));
+                userPriv.put("idejeestrategico", rs.getInt("idejeestrategico"));
+                userPriv.put("idmeta", rs.getInt("idmeta"));
+                userPriv.put("meta", rs.getInt("meta"));
+                userPriv.put("ideapfacultad", rs.getInt("ideapfacultad"));
+                userPriv.put("idusuario", rs.getInt("idusuario"));
+                userPriv.put("idavance", rs.getInt("idavance"));
+                userPriv.put("avance", rs.getDouble("avance"));
+                userPriv.put("id_ciclo", rs.getInt("id_ciclo"));
+                userPriv.put("archivo", rs.getInt("archivo"));
+                userPriv.put("avancereal", rs.getDouble("avancereal"));
+                userPriv.put("tipoavance", rs.getInt("tipoavance"));
+                userPriv.put("cantidadeje", rs.getInt("cantidadeje"));
+                userPriv.put("cantidadperspectiva", rs.getInt("cantidadperpectiva"));
+                userPriv.put("cantidadestrategia", rs.getInt("cantidadestrategia"));
                 
                 Lista.add(userPriv);
             } } catch (Exception e) {

@@ -49,5 +49,9 @@ public class ReporteService {
       dao=new ReportesDAO();
       return dao.actividadesPOAVencidos(idmeta, mes1, mes2);
   }
+  public ArrayList evaluacionPlanEstrategico(int ideapfacultad, int idperiodo, int idtipoarea, int idfilial, int ejearea){
+      dao=new ReportesDAO();
+      return dao.evaluacionPlanEstrategico(ideapfacultad, idperiodo, idtipoarea, idfilial,ejearea);
+  }
     
 }

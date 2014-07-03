@@ -16,7 +16,7 @@
 
     <context-param>
         <param-name>maxFileSize</param-name>
-        <param-value>200000000</param-value>
+        <param-value>400000000</param-value>
     </context-param>    
     
     <session-config>

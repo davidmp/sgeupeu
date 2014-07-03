@@ -143,6 +143,11 @@ public class IndicadorService {
          dao.insertarEvidenciaMeta(evidencia, tipo, url, idmeta);        
          }
          
+         public String nombreArchivoDenominacion(int idmeta){
+         dao = new IndicadorDAO();
+         return dao.nombreArchivoDenominacion(idmeta);
+         }
+         
          
          public void insertarEvidencia( String evidencia,String tipo,String url,int idAvance, int idUsuario){
          System.out.println("-------  EVIDENCIA __-  EVIDENCIA __-  EVIDENCIA __");    

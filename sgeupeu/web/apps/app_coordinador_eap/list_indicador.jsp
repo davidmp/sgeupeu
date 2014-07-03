@@ -407,7 +407,7 @@ function validarNumeroAvance(numero){
                     <th rowspan="2">C&oacute;digo</th>                    
                     <th rowspan="2">Indicador</th>
                     <th rowspan="2">Instrumento</th>
-                    <th rowspan="2">Meta</th>
+                    <th rowspan="2" style="width: 10%" >Meta</th>
                     <th colspan="2">Avances</th>
                     <th rowspan="2">POA</th>
                     <th rowspan="2">Evidencia</th>
