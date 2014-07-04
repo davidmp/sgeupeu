@@ -17,6 +17,9 @@ public class Estadoperiodofacultad {
     String estadoavance;
     String idFilialfacultad;
     String idFilialfacultad_nombre;
+    
+    String estadopoa;
+    String estadopm;
 
     public int getIdestadoperiodofacultad() {
         return idestadoperiodofacultad;
@@ -72,6 +75,22 @@ public class Estadoperiodofacultad {
 
     public void setIdFilialfacultad_nombre(String idFilialfacultad_nombre) {
         this.idFilialfacultad_nombre = idFilialfacultad_nombre;
+    }
+
+    public String getEstadopoa() {
+        return estadopoa;
+    }
+
+    public void setEstadopoa(String estadopoa) {
+        this.estadopoa = estadopoa;
+    }
+
+    public String getEstadopm() {
+        return estadopm;
+    }
+
+    public void setEstadopm(String estadopm) {
+        this.estadopm = estadopm;
     }
     
     

@@ -1145,6 +1145,9 @@ public class GestionEstrategicoDao extends DBConn{
                 to.setIdperiodometa(rs.getString("periodo"));
                 to.setEstadometa(rs.getString("estadometa"));
                 to.setEstadoavance(rs.getString("estadoavance"));
+                to.setEstadopoa(rs.getString("estadopoa"));
+                to.setEstadopm(rs.getString("estadopm"));
+                
                 to.setIdFilial(rs.getString("direccion"));
                 reporte.add(to);
                 System.out.println("Reportado..!");}
@@ -1484,7 +1487,7 @@ public class GestionEstrategicoDao extends DBConn{
             Estadoperiodofilial to;
         try {
             getConexionDb();
-            ps = con.prepareStatement(" SELECT epf.`idestadoperiodofilial`,epf.`idperiodo`,pm.`periodo`,epf.`estadometa`,epf.`estadoavance`,epf.`idFilial`,f.`direccion` "
+            ps = con.prepareStatement(" SELECT epf.`idestadoperiodofilial`,epf.`idperiodo`,pm.`periodo`,epf.`estadometa`,epf.`estadoavance`,epf.`estadopoa`,epf.`estadopm`,epf.`idFilial`,f.`direccion` "
                     + " FROM estadoperiodofilial epf INNER JOIN filial f ON epf.idFilial = f.idFilial "
                     + " INNER JOIN periodo pm ON epf.idperiodo = pm.idperiodo "
                     + " WHERE epf.`idperiodo`=? AND epf.`idFilial`=? ");
@@ -1498,6 +1501,8 @@ public class GestionEstrategicoDao extends DBConn{
                 to.setIdperiodometa_nombre(rs.getString("periodo"));
                 to.setEstadometa(rs.getString("estadometa"));
                 to.setEstadoavance(rs.getString("estadoavance"));
+                to.setEstadopoa(rs.getString("estadopoa"));
+                to.setEstadopm(rs.getString("estadopm"));
                 to.setIdFilial(rs.getString("idFilial"));
                 to.setIdFilial_nombre(rs.getString("direccion"));
                 reporte.add(to);
@@ -1607,6 +1612,68 @@ public class GestionEstrategicoDao extends DBConn{
         }
        }
         
+        /*inicio POA Filial*/
+        public void aperturarPOAestadoFilial(int idestadoperiodofilial) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodofilial set estadopoa='1' where idestadoperiodofilial=?");
+            ps.setInt(1, idestadoperiodofilial);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Activo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }
+        
+        public void cerrarPOAestadoFilial(int idestadoperiodofilial) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodofilial set estadopoa='0' where idestadoperiodofilial=?");
+            ps.setInt(1, idestadoperiodofilial);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Desactivo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }        
+        /*Fin POA Filial*/
+        
+        /*Inicio PM Filial*/
+        public void aperturarPMestadoFilial(int idestadoperiodofilial) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodofilial set estadopm='1' where idestadoperiodofilial=?");
+            ps.setInt(1, idestadoperiodofilial);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Activo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }
+        
+        public void cerrarPMestadoFilial(int idestadoperiodofilial) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodofilial set estadopm='0' where idestadoperiodofilial=?");
+            ps.setInt(1, idestadoperiodofilial);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Desactivo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }        
+        
+        /*Fin PM Filial*/
+        
+        
         
         // ESTADO PERIODO FACULTAD
         
@@ -1616,7 +1683,7 @@ public class GestionEstrategicoDao extends DBConn{
             Estadoperiodofacultad to;
         try {
             getConexionDb();
-            ps = con.prepareStatement(" SELECT epf.`idestadoperiodofacultad`,epf.`idperiodo`,pm.`periodo`,epf.`estadometa`,epf.`estadoavance`,epf.`idFilialfacultad`,fac.nombre "
+            ps = con.prepareStatement(" SELECT epf.`idestadoperiodofacultad`,epf.`idperiodo`,pm.`periodo`,epf.`estadometa`,epf.`estadoavance`,epf.`estadopoa`,epf.`estadopm`,epf.`idFilialfacultad`,fac.nombre "
                     + " FROM `estadoperiodofacultad`  epf INNER JOIN periodo pm ON epf.idperiodo = pm.idperiodo "
                     + " INNER JOIN `filialfacultad` ff ON epf.idFilialfacultad = ff.idFilialfacultad "
                     + " INNER JOIN `facultad` fac ON ff.idfacultad = fac.idfacultad "
@@ -1633,6 +1700,8 @@ public class GestionEstrategicoDao extends DBConn{
                 to.setEstadoavance(rs.getString("estadoavance"));
                 to.setIdFilialfacultad(rs.getString("idFilialfacultad"));
                 to.setIdFilialfacultad_nombre(rs.getString("nombre"));
+                to.setEstadopoa(rs.getString("estadopoa"));
+                to.setEstadopm(rs.getString("estadopm"));
                 reporte.add(to);
                 }
         } catch (Exception e) {
@@ -1738,8 +1807,65 @@ public class GestionEstrategicoDao extends DBConn{
             getCerrarConexion();
         }
        }
+     /*inicio POA Facultad*/   
+        public void aperturarPOAestadoFacultad(int idestadoperiodofacultad) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodofacultad set estadopoa='1' where idestadoperiodofacultad=?");
+            ps.setInt(1, idestadoperiodofacultad);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Activo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }
         
+        public void cerrarPOAestadoFacultad(int idestadoperiodofacultad) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodofacultad set estadopoa='0' where idestadoperiodofacultad=?");
+            ps.setInt(1, idestadoperiodofacultad);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Desactivo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }        
+     /*Fin POA Facultad*/ 
         
+    /*Inicio Plan Mejora Facultad*/
+        public void aperturarPMestadoFacultad(int idestadoperiodofacultad) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodofacultad set estadopm='1' where idestadoperiodofacultad=?");
+            ps.setInt(1, idestadoperiodofacultad);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Activo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }
+        
+        public void cerrarPMestadoFacultad(int idestadoperiodofacultad) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodofacultad set estadopm='0' where idestadoperiodofacultad=?");
+            ps.setInt(1, idestadoperiodofacultad);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Desactivo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }         
+    /*Fin Plan Mejora Facultad*/        
         
         public EstrategiaIndicador BuscarEstrategiaIndicadorId(String idestrategiaIndicador) {
         EstrategiaIndicador alumno = new EstrategiaIndicador();
@@ -1899,7 +2025,7 @@ public class GestionEstrategicoDao extends DBConn{
             Estadoperiodoeap to;
         try {
             getConexionDb();
-            ps = con.prepareStatement(" SELECT ep.idestadoperiodoeap,ep.idperiodo,pm.periodo ,ep.estadometa,ep.estadoavance,ep.idEapFacultad,e.nombre "
+            ps = con.prepareStatement(" SELECT ep.idestadoperiodoeap,ep.idperiodo,pm.periodo ,ep.estadometa,ep.estadoavance,ep.estadopoa,ep.estadopm,ep.idEapFacultad,e.nombre "
                     + " FROM estadoperiodoeap ep INNER JOIN periodo pm ON ep.idperiodo=pm.idperiodo "
                     + " INNER JOIN eapfacultad ef ON ep.idEapFacultad=ef.idEapFacultad INNER JOIN eap e ON ef.ideap=e.ideap "
                     + " WHERE ep.idperiodo=? AND ep.idEapFacultad=? ");
@@ -1915,6 +2041,8 @@ public class GestionEstrategicoDao extends DBConn{
                 to.setEstadoavance(rs.getString("estadoavance"));
                 to.setIdEapFacultad(rs.getInt("idEapFacultad"));
                 to.setIdEapFacultad_nombre(rs.getString("nombre"));
+                to.setEstadopoa(rs.getString("estadopoa"));
+                to.setEstadopm(rs.getString("estadopm"));
                 reporte.add(to);
                 }
         } catch (Exception e) {
@@ -1930,7 +2058,7 @@ public class GestionEstrategicoDao extends DBConn{
         int r = 0;
         try {
             getConexionDb();
-            ps = con.prepareStatement("insert into "
+            ps = con.prepareStatement(" insert into "
                     + "estadoperiodoeap(idperiodo, estadometa, estadoavance, idEapFacultad) "
                     + "values (?, ?, ?, ?)");
             ps.setInt(1, to.getIdperiodometa());
@@ -2020,5 +2148,68 @@ public class GestionEstrategicoDao extends DBConn{
        }
         
 
+/* Inicio Control POA*/    
+        
+        public void aperturarPOAestadoEAP(int idestadoperiodoeap) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodoeap set estadopoa='1' where idestadoperiodoeap=?");
+            ps.setInt(1, idestadoperiodoeap);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se activo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }
+        
+        public void cerrarPOAestadoEAP(int idestadoperiodoeap) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodoeap set estadopoa='0' where idestadoperiodoeap=?");
+            ps.setInt(1, idestadoperiodoeap);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Desactivo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }        
+     /* Fin Control POA*/     
+        
+     /* Inicio Control Plan Mejora*/     
+        
+        public void aperturarPMestadoEAP(int idestadoperiodoeap) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodoeap set estadopm='1' where idestadoperiodoeap=?");
+            ps.setInt(1, idestadoperiodoeap);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se activo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }
+        
+        public void cerrarPMestadoEAP(int idestadoperiodoeap) {
+        try {
+            getConexionDb();
+            ps = con.prepareStatement("update estadoperiodoeap set estadopm='0' where idestadoperiodoeap=?");
+            ps.setInt(1, idestadoperiodoeap);
+            if (ps.executeUpdate() == 1) {
+                System.out.println("Se Desactivo");
+            }
+        } catch (Exception e) {
+        } finally {
+            getCerrarConexion();
+        }
+       }        
+        
+      /* Fin Control Plan Mejora*/     
+        
     
 }

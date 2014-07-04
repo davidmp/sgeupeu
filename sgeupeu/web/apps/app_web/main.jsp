@@ -148,7 +148,9 @@ $(document).ready(function() {
                   <a href="#" data-toggle="dropdown" class="dropdown-toggle"><div class="icon-user icon-white"></div>&nbsp;<%=w.getIdcategoriausuario_nombre()%>&nbsp;<b class="caret"></b></a>
                   <ul  class="dropdown-menu">                   
                    <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
+                  <% if(fiU.getIdfilial()==1){ %> 
                    <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EvaluacionGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte de Evaluaci&oacute;n</a></li>
+                  <% }%>
                   </ul>
                 </li>
                    <% } else if(opt==4){ %>
@@ -194,7 +196,7 @@ $(document).ready(function() {
 <!--                         <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/IndicadorApoyo?opt=14&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reportes Consolidados</a></li>-->
                         </ul>
                         </li>                    
-                  
+                  <!--Menu Administracion General-->
                   <%}else  if(opt==7){ %>
                   
                 <li class="dropdown">

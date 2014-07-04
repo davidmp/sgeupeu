@@ -1738,7 +1738,7 @@ public void actualizarActividad(Actividad to) {
 // ---- Lista de conlolidados --------------------- >        
         
     public List<Eap> listaEapConsolidado(Periodometa id,Filialfacultad ff){        
-    String sql= "SELECT ea.*, (CASE WHEN e.ideap=7 AND ideapfacultad=36 THEN 'Administración - Mención Gestión Empresarial' ELSE e.nombre  END) as nombre FROM eapfacultad  ea INNER JOIN eap e  ON ea.ideap=e.ideap  WHERE ea.idfilialfacultad=?";           
+    String sql= "SELECT ea.*, (CASE WHEN e.ideap=7 AND ideapfacultad=36 THEN 'Administración' ELSE e.nombre  END) as nombre FROM eapfacultad  ea INNER JOIN eap e  ON ea.ideap=e.ideap  WHERE ea.idfilialfacultad=?";           
       List<Eap> Lista = new ArrayList<Eap>(); 
       List<Integer> eap = new ArrayList<Integer>();     
       Eap Toto = null;

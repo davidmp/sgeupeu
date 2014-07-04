@@ -616,5 +616,61 @@ public class GestionEstrategicoService {
         dao.EliminarEstadoPeriodoEapAper(idestadoperiodoeap);
         }
         
-      
+   
+        /*Inicio Servicio de estado de control de POA y PM*/
+        public void aperturarPOAestadoEAP(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.aperturarPOAestadoEAP(idestadoperiodofilial);
+        }
+        public void cerrarPOAestadoEAP(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.cerrarPOAestadoEAP(idestadoperiodofilial);
+        }        
+        public void aperturarPMestadoEAP(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.aperturarPMestadoEAP(idestadoperiodofilial);
+        }
+        public void cerrarPMestadoEAP(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.cerrarPMestadoEAP(idestadoperiodofilial);
+        }   
+        
+        
+        public void aperturarPOAestadoFacultad(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.aperturarPOAestadoFacultad(idestadoperiodofilial);
+        }
+        public void cerrarPOAestadoFacultad(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.cerrarPOAestadoFacultad(idestadoperiodofilial);
+        }        
+        public void aperturarPMestadoFacultad(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.aperturarPMestadoFacultad(idestadoperiodofilial);
+        }
+        public void cerrarPMestadoFacultad(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.cerrarPMestadoFacultad(idestadoperiodofilial);
+        }  
+        
+        
+        
+        public void aperturarPOAestadoFilial(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.aperturarPOAestadoFilial(idestadoperiodofilial);
+        }
+        public void cerrarPOAestadoFilial(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.cerrarPOAestadoFilial(idestadoperiodofilial);
+        }        
+        public void aperturarPMestadoFilial(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.aperturarPMestadoFilial(idestadoperiodofilial);
+        }
+        public void cerrarPMestadoFilial(int idestadoperiodofilial) {
+        dao = new GestionEstrategicoDao();
+        dao.cerrarPMestadoFilial(idestadoperiodofilial);
+        }         
+        /*Fin Servicio de estado de control de POA y PM*/
+        
 }

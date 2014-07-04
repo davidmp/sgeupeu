@@ -614,9 +614,9 @@ function validarNumeroAvance(numero){
                          <input type="hidden"  name="idestrategiaindicador<%=in.getNro()%>" value="<%=in.getIdestrategiaindicador()%>" >     
                          <input type="hidden"  name="idtemporadaejeestrategico" value="<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>">  
                          <input type="hidden"  name="idmeta<%=in.getNro()%>" value="<%=in.getIdmeta()%>" >   
-                          <center>   
-                         <button class="btn" onmouseover="formindicador_3(<%=in.getNro()%>);" type="submit"><i class="icon-book"></i></button>                       
-                          </center>
+                         <center>   
+                            <button class="btn" onmouseover="formindicador_3(<%=in.getNro()%>);" type="submit"><i class="icon-book"></i></button>                       
+                         </center>
                          </form>
                   <%}else{%>
                     <center>  
@@ -654,11 +654,11 @@ function validarNumeroAvance(numero){
                            <button class="btn"  type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Es necesario ingresar al menos un avance"><i class="icon-facetime-video"></i></button>                                                              
                              </center>   
                              <%}%>
-                          <% }else{%>
+                          <% }else{ %>
                             <center> 
                              <button class="btn"  type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Se encuentra inavilitado"><i class="icon-facetime-video"></i></button>                                                                     
                           </center>   
-                             <%}%>             
+                             <% } %>             
                             </td>
           
                 </tr>

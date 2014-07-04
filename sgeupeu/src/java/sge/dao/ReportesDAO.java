@@ -19,7 +19,7 @@ public class ReportesDAO extends DBConn{
 
     public ArrayList cabeceraPOA(int ideapfacultad){
     String sql=" SELECT i.razonsocial, i.rector, fi.direccion,fi.celular, fi.idfilial, fi.categoria, fi.rector AS rectorfilial, "
-            + " f.nombre AS nombrefacultad, f.idfacultad,  ff.idfilialfacultad ,(CASE WHEN e.ideap=7 AND ef.ideapfacultad=36 THEN 'Administración - Mención Gestión Empresarial' ELSE e.nombre  END) AS nombreeap, e.idtipoarea, "
+            + " f.nombre AS nombrefacultad, f.idfacultad,  ff.idfilialfacultad ,(CASE WHEN e.ideap=7 AND ef.ideapfacultad=36 THEN 'Administración ' ELSE e.nombre  END) AS nombreeap, e.idtipoarea, "
             + " (CASE WHEN e.idtipoarea=1 THEN 'Pregrado' WHEN e.idtipoarea=2 THEN 'Posgrado' WHEN e.idtipoarea=3 THEN 'Areas de Apoyo' ELSE 'Otros' END) AS nombretipoarea, e.ideap, ef.ideapfacultad, ef.idcoordinadoreap, "
             + " (SELECT CONCAT(p.nombre,' ',p.apellipaterno,' ',p.apellimaterno) AS coordinador "
             + " FROM coordinadoreap ce, persona p "
