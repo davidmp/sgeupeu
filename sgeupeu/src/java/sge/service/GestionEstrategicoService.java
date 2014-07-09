@@ -322,6 +322,8 @@ public class GestionEstrategicoService {
         to.setPeriodo(r.getParameter("periodo") == null ? "" : r.getParameter("periodo"));
         to.setIdtemporada(Integer.parseInt(r.getParameter("idtemporada")));
         to.setEstado(Integer.parseInt(r.getParameter("estado")));
+        to.setFechainicio(r.getParameter("fechainicio") == null ? "" : r.getParameter("fechainicio"));
+        to.setFechafin(r.getParameter("fechafin") == null ? "" : r.getParameter("fechafin"));        
         dao.Registrar_Periodo_Meta(to);
     }
     public void EliminarPeriodoMeta(int idperiodometa) {

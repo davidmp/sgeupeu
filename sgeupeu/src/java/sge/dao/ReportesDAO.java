@@ -379,5 +379,33 @@ public class ReportesDAO extends DBConn{
         finally{getCerrarConexion();}
         System.out.println(" Muetra las actividades!!! ..>"+Lista.toArray().length);
     return Lista;
-    }    
+    }  
+    
+    public ArrayList reporteArchivos(int idAvance){        
+    String sql=" SELECT e.idevidencia, e.evidencia, (CASE WHEN LOWER(e.tipo) ='.doc' OR LOWER(e.tipo)='.docx' THEN 'doc' WHEN LOWER(e.tipo) ='.rar' OR LOWER(e.tipo)='.zip' THEN 'zip' WHEN LOWER(e.tipo) ='.pdf' THEN 'pdf' ELSE 'otro' END)  AS tipo ,e.url, e.fecha_reg, e.idusuario,(SELECT usuario FROM (SELECT idusuario, idpersona, CONCAT(nombre, ' ', apellipaterno, ' ', apellimaterno) AS usuario FROM usuario INNER JOIN persona USING(idpersona)) a WHERE a.idusuario=e.idusuario ) AS usuario, e.idavance "
+            + " FROM evidencia e WHERE e.idavance=? ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            ps.setInt(1, idAvance);
+            rs=ps.executeQuery();            
+            while (rs.next()){           
+                userPriv = new HashMap();
+                userPriv.put("idevidencia", rs.getInt("idevidencia"));
+                userPriv.put("evidencia", rs.getString("evidencia"));
+                userPriv.put("tipo", rs.getString("tipo"));
+                userPriv.put("url", rs.getString("url"));
+                userPriv.put("fecha_reg", rs.getString("fecha_reg"));
+                userPriv.put("idusuario", rs.getInt("idusuario"));
+                userPriv.put("usuario", rs.getString("usuario"));
+                userPriv.put("idavance", rs.getInt("idavance"));
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra los Archivos!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }     
 }

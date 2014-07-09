@@ -14,6 +14,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" type="text/css" href="rs/pgwjs-rainbow-v202.css">
+        <link rel="stylesheet" type="text/css" href="rs/pgwmodal-v202.css">
+        <script type="text/javascript" src="rs/jquery-pgwjs-rainbow-v202.js"></script>
+        <script type="text/javascript" src="rs/pgwmodal-v202.js"></script>
+        
         <link type="text/css" rel="stylesheet" href="../../resources/css/style02.css"/>
         <link type="text/css" rel="stylesheet" href="../../resources/css/style03.css"/>         
         
@@ -44,7 +49,7 @@
                             %>
                             <table>
                                 <tr>                    
-                                    <td style="font-size: large" ><center><b><%=datos.get("razonsocial")%></b></center></td>
+                                    <td style="font-size: large" ><center><b><%=datos.get("razonsocial")%></b> </center></td>
                                 </tr>
                                 <tr>
                                 <td style="font-size: small">
@@ -180,7 +185,7 @@
                 <td colspan="9" style="width: 100%">
                     <table border="1" style="width: 100%;border-collapse:collapse">
                         <tr>
-                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES</b></td>
+                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES </b></td>
                         </tr>
                         <tr>
                             <td style="width: 50%"><b>Condici&oacute;n</b></td>
@@ -313,7 +318,9 @@
                                     </td>
                                         <td align="center">
                                             <% if(Integer.parseInt(datos.get("archivo").toString())>=1) {  %>
+                                            <a href="javascript:void(0)" onclick="openDialogDmp('<%=datos.get("idavance").toString()%>','<%=datos.get("idfilial").toString()%>')">
                                             <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
+                                            </a>
                                             <% }else{ %>
                                             <img src="../../resources/file/no.png" width="30" height="30" title="0"   alt="Archivo"/>
                                             <% } %>                                            
@@ -353,7 +360,9 @@
                                     </td>
                                         <td align="center">
                                             <% if(Integer.parseInt(datos.get("archivo").toString())>=1) {  %>
+                                            <a href="javascript:void(0)" onclick="openDialogDmp('<%=datos.get("idavance").toString()%>','<%=datos.get("idfilial").toString()%>')">
                                             <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
+                                            </a>
                                             <% }else{ %>
                                             <img src="../../resources/file/no.png" width="30" height="30"  title="0"   alt="Archivo"/>
                                             <% } %>                                            
@@ -390,7 +399,9 @@
                                     </td>
                                         <td align="center">
                                             <% if(Integer.parseInt(datos.get("archivo").toString())>=1) {  %>
+                                            <a href="javascript:void(0)" onclick="openDialogDmp('<%=datos.get("idavance").toString()%>','<%=datos.get("idfilial").toString()%>')">
                                             <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
+                                            </a>
                                             <% }else{ %>
                                             <img src="../../resources/file/no.png" width="30" height="30"  title="0"   alt="Archivo"/>
                                             <% } %>                                            
@@ -424,7 +435,9 @@
                                     </td>
                                         <td align="center">
                                             <% if(Integer.parseInt(datos.get("archivo").toString())>=1) {  %>
+                                            <a href="javascript:void(0)" onclick="openDialogDmp('<%=datos.get("idavance").toString()%>','<%=datos.get("idfilial").toString()%>')">
                                             <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
+                                            </a>
                                             <% }else{ %>
                                             <img src="../../resources/file/no.png" width="30" height="30" title="0"  alt="Archivo"/>
                                             <% } %>                                            
@@ -490,5 +503,18 @@
                 
                 
         </table>
+<script type="text/javascript">
+
+
+function openDialogDmp(id, idfilial){
+ 	$.pgwModal({
+        url: 'ver.jsp?idavance='+id+"&idfilial="+idfilial,
+		title : 'Cuadro para Descargar Archivos',
+		loading: '<span style="text-align:center">Loading in progress</span>',
+		close: true	});   
+}
+
+</script>                
+<div style="display: none;" id="pgwModalWrapper"></div>                
     </body>
 </html>

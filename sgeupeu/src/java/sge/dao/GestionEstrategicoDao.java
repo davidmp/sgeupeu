@@ -958,7 +958,7 @@ public class GestionEstrategicoDao extends DBConn{
         Periodometa to;
         try {
             getConexionDb();
-            ps = con.prepareStatement("SELECT * FROM periodo where idperiodo=? order by idperiodo desc");
+            ps = con.prepareStatement("SELECT * FROM periodo where idTemporada=? order by idTemporada desc");
             ps.setString(1, idtemporada);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -1051,14 +1051,16 @@ public class GestionEstrategicoDao extends DBConn{
         try {
             getConexionDb();
             ps = con.prepareStatement("insert into "
-                    + "periodo (periodo,estado, idtemporada) "
-                    + "values (?, ?, ?)");
-            ps.setString(1, to.getPeriodo());            
+                    + "periodo (periodo,estado,fechainicio,fechafin,idtemporada) "
+                    + "values (?, ?, ?, ?, ?)");
+            ps.setString(1, to.getPeriodo());
             ps.setInt(2, to.getEstado());
-            ps.setInt(3, to.getIdtemporada());
+            ps.setString(3, to.getFechainicio());
+            ps.setString(4, to.getFechafin());
+            ps.setInt(5, to.getIdtemporada());
             if (ps.executeUpdate() == 1) {
                 r = 1;
-                
+
                 System.out.println("Insertado!!!");
             }
         } catch (Exception e) {

@@ -53,5 +53,9 @@ public class ReporteService {
       dao=new ReportesDAO();
       return dao.evaluacionPlanEstrategico(ideapfacultad, idperiodo, idtipoarea, idfilial,ejearea);
   }
+  public ArrayList reporteArchivos(int idAvance){
+      dao=new ReportesDAO();
+      return dao.reporteArchivos(idAvance);
+  }
     
 }

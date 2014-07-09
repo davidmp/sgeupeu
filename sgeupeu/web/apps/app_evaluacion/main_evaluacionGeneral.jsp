@@ -217,6 +217,8 @@ List<Periodometa> periodoM=null;
         </select>
         <input type="hidden" id="opt" name="opt" value="6"/>
         <input type="submit" value="Reportar" class="btn btn-mini btn-success"/>
+        
+        
         </form>
                 
     </div>

@@ -494,7 +494,10 @@ function validarNumeroAvance(numero){
                         <input type="hidden"  name="ideapfacultad" value="<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>" >
                         <input type="hidden"  name="idfilial" value="<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>" >                            
                         <input type="hidden"  name="opt<%=in.getNro()%>" value="3" >
-                        <input type="hidden"  name="idperiodo" value="<%=pdo.getIdperiodo() %>" >
+                        
+                        <!--<input type="text"  name="idperiodo" value="<%=pdo.getIdperiodo()%>" > mODIFICADO PARA REGISTRAR EL IDPERIODO EN LA TABLA META-->
+                        <input type="hidden"  name="idperiodo" value="<%if (idperidoM != null) {%><%=idperidoM.getIdperiodometa()%><%} else {%>0<%}%>">
+                        
                         <input type="hidden"  name="idtemporadaejeestrategico" value="<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>">     
                         <input type="hidden"  name="valor" value="<%if(name!=null){%><%=name.getNombre()%><%}%>" >
 

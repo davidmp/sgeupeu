@@ -12,6 +12,8 @@ public class Periodometa {
    
 Integer idperiodometa;
 String periodo;
+String fechainicio;
+String fechafin;
 Integer idtemporada;
 Integer estado;
 
@@ -47,4 +49,23 @@ Integer estado;
         this.estado = estado;
     }
 
+    public String getFechainicio() {
+        return fechainicio;
+    }
+
+    public void setFechainicio(String fechainicio) {
+        this.fechainicio = fechainicio;
+    }
+
+    public String getFechafin() {
+        return fechafin;
+    }
+
+    public void setFechafin(String fechafin) {
+        this.fechafin = fechafin;
+    }
+
+    
+    
+    
 }
