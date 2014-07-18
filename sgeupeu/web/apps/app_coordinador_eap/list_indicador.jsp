@@ -262,7 +262,11 @@ function uploadDone(name) {
   }
 }
 
-
+$(function() {
+$('body').on('hidden', '.modal', function () {
+  $(this).removeData('modal');
+});
+});
 
     $(function () {
         $("[rel='tooltip']").tooltip();
@@ -406,11 +410,12 @@ function validarNumeroAvance(numero){
                     <th rowspan="2">Estratégia</th>
                     <th rowspan="2">C&oacute;digo</th>                    
                     <th rowspan="2">Indicador</th>
-                    <th rowspan="2">Instrumento</th>
+                    <th rowspan="2"><center>Tipo Indicador</center></th>
                     <th rowspan="2" style="width: 10%" >Meta</th>
                     <th colspan="2">Avances</th>
                     <th rowspan="2">POA</th>
                     <th rowspan="2">Evidencia</th>
+                    <th rowspan="2">Cond</th>
                 </tr>
           
                 <tr>
@@ -430,7 +435,11 @@ function validarNumeroAvance(numero){
                       <td>   
                       <br>  
                           <center>
+                        <% if(in.getInstrumento().equals("Creciente")){ %>      
                         <p <%if(in.getSemaforo()==0){%>class="rojo" <%}if(in.getSemaforo()==1){%>class="amarillo"<%}if(in.getSemaforo()==2){%>class="verde"<%}if(in.getSemaforo()==3){%>class="azul"<%}%>></p>
+                        <% }else{ %>
+                        <p <%if(in.getSemaforo()==0){%>class="azul" <%}if(in.getSemaforo()==1){%>class="azul"<%}if(in.getSemaforo()==2){%>class="verde"<%}if(in.getSemaforo()==3){%>class="rojo"<%}%>></p>
+                        <% } %>
                           </center>
                         </td>
                         <td>
@@ -440,8 +449,14 @@ function validarNumeroAvance(numero){
                         <%=(int)((((double)in.getProgreso())/((double)in.getMeta()))*100)+"%"%>
                      </center>                
                     <div class="progress progress-striped active">
+                        <% if(in.getInstrumento().equals("Creciente")){ %>
+                        
                         <div class="bar <%if(in.getSemaforo()==0){%> bar-danger <%}if(in.getSemaforo()==1){%> bar-warning <%}if(in.getSemaforo()==2){%> bar-success <%}if(in.getSemaforo()==3){%> bar-info <%}%>" 
                         style="width: <%=(int)((((double)in.getProgreso())/(double)in.getMeta())*100)+"%"%>;"></div>
+                         <% }else{%>
+                        <div class="bar <%if(in.getSemaforo()==0){%> bar-info <%}if(in.getSemaforo()==1){%> bar-info <%}if(in.getSemaforo()==2){%> bar-success <%}if(in.getSemaforo()==3){%> bar-danger <%}%>" 
+                        style="width: <%=(int)((((double)in.getProgreso())/(double)in.getMeta())*100)+"%"%>;"></div>                         
+                         <% }%>
                     </div>                    
                     </td>
                     
@@ -604,7 +619,9 @@ function validarNumeroAvance(numero){
                                             
                         
                         
-            <%-- FIN avance--%>                                     
+            <%-- FIN avance--%>    
+            
+            <%-- Inicio POA --%>                                     
             
                  <td>   
                 <p></p>
@@ -648,22 +665,48 @@ function validarNumeroAvance(numero){
                                  <input type="hidden"  name="idestrategiaindicador<%=in.getNro()%>" value="<%=in.getIdestrategiaindicador()%>" >    
                                  <input type="hidden"  name="idmeta<%=in.getNro()%>" value="<%=in.getIdmeta()%>" >   
                                  <input type="hidden"  name="idavancevalida<%=in.getNro()%>" value="<%=in.getIdavancevalida() %>" >   
+                                 <input type="hidden"  name="condicion<%=in.getNro()%>" value="<%=in.getCondicion() %>" >   
                                   <center>   
-                                 <button class="btn" onmouseover="formindicador_4(<%=in.getNro()%>)" type="submit"><i class="icon-facetime-video"></i></button>                       
+                                 
+                                      
+                                  <button class="btn" onmouseover="formindicador_4(<%=in.getNro()%>)" rel="tooltip" title="<%=in.getCantidad()%> Evidencia(s) Subida(s)" type="submit">
+                                   <% if(in.getCantidad()>=1){ %>   
+                                   <img src="../../resources/file/sif.png" width="23" height="23"   />
+                                  <% }else{ %>   
+                                   <img src="../../resources/file/nof.png" width="23" height="23"   />
+                                  <% } %>   
+                                  </button>                       
+                                 
+                                 
                                   </center>
                                  </form>                 
                            <%}else{%>
                             <center>           
-                           <button class="btn"  type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Es necesario ingresar al menos un avance"><i class="icon-facetime-video"></i></button>                                                              
+                           <button class="btn"  type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Es necesario ingresar al menos un avance">
+                           <img src="../../resources/file/nof.png" width="23" height="23"   />
+                           </button>                                                              
                              </center>   
                              <%}%>
                           <% }else{ %>
                             <center> 
-                             <button class="btn"  type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Se encuentra inavilitado"><i class="icon-facetime-video"></i></button>                                                                     
+                             <button class="btn"  type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Se encuentra inavilitado">
+                             <img src="../../resources/file/nof.png" width="23" height="23"   />
+                             </button>                                                                     
                           </center>   
                              <% } %>             
                             </td>
           
+                            <td>
+                            <p></p>
+                            <br>
+                            <center>
+                                <% if(in.getCondicion()==1){%>
+                                <img src="../../resources/32/<%=in.getCondicion()%>1.png" rel="tooltip" title="La evidencia de este indicador tiene observaciones!"  width="23" height="23"/>
+                                <%} else{ %>
+                                <img src="../../resources/32/<%=in.getCondicion()%>1.png"   width="23" height="23"/>
+                                <%} %>
+                            </center>                        
+                            </td>                            
                 </tr>
      <%}}%>
    

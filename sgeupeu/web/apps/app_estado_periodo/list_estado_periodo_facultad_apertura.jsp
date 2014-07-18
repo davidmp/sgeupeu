@@ -102,17 +102,23 @@ return false;
             <th data-class="expand" data-sort-initial="true" style="width: 2%;">
               
             </th> 
-          <th>
+          <th style="width: 23%;" >
            Nombre de Facultad
           </th>
-          <th data-hide="phone">
+          <th data-hide="phone" style="width: 20%;" >
            Periodo
           </th>
-          <th data-hide="phone,tablet" style="width: 20%;">
+          <th data-hide="phone,tablet" style="width: 15%;">
            Estado Meta
           </th>
-          <th data-hide="phone,tablet" style="width: 20%;">
+          <th data-hide="phone,tablet" style="width: 15%;">
            Estado Avance
+          </th>
+          <th data-hide="phone,tablet" style="width: 10%;">
+           Estado POA
+          </th>
+          <th data-hide="phone,tablet" style="width: 10%;">
+           Estado P.M
           </th>
           <th data-hide="phone,tablet" style="width: 5%;">
             
@@ -131,7 +137,7 @@ return false;
                     <td><div class="icon-arrow-right"></div></td>
                     <td><%=es.getIdFilialfacultad_nombre()%></td>
                     <td><%=es.getIdperiodometa_nombre() %></td>
-                    <td style="width: 20%;">
+                    <td >
                     <%int optmeta=Integer.parseInt(es.getEstadometa());
             if(optmeta==1){
                 %> <span class="label label-success span12"><div class="icon-eye-open icon-white"></div>&nbsp;Aperturado <a class="btn btn-small toltipx pull-right" title="Cerrar Apertura" href="<%=request.getContextPath()%>/GestionEstrategico?opt=81&idestadoperiodofacultad=<%=es.getIdestadoperiodofacultad() %>"><div class="icon-remove"></div></a></span> <%
@@ -140,7 +146,7 @@ return false;
             } %>
                     
                     </td>
-                    <td style="width: 20%;">
+                    <td >
                         <%int optavance=Integer.parseInt(es.getEstadoavance());
             if(optavance==1){
                 %> <span class="label label-success span12"><div class="icon-eye-open icon-white"></div>&nbsp;Aperturado <a class="btn btn-small toltipx pull-right" title="Cerrar Apertura" href="<%=request.getContextPath()%>/GestionEstrategico?opt=83&idestadoperiodofacultad=<%=es.getIdestadoperiodofacultad()%>"><div class="icon-remove"></div></a></span> <%
@@ -148,6 +154,24 @@ return false;
                 %> <span class="label label-inverse span12"><div class="icon-eye-close icon-white"></div>&nbsp;Cerrado <a class="btn btn-small toltipx pull-right" title="Aperturar" href="<%=request.getContextPath()%>/GestionEstrategico?opt=84&idestadoperiodofacultad=<%=es.getIdestadoperiodofacultad()%>"><div class="icon-ok"></div></a></span><%
             } %>
                         
+                    </td>
+                    <td >
+                        <%int optpoa=Integer.parseInt(es.getEstadopoa());
+                    if(optpoa==1){
+                    %> <span class="label label-success span12"><div class="icon-eye-open icon-white"></div>&nbsp;Aperturado <a class="btn btn-small toltipx pull-right" title="Cerrar Apertura" href="<%=request.getContextPath()%>/GestionEstrategico?opt=106&idestadoperiodofacultad=<%=es.getIdestadoperiodofacultad()%>"><div class="icon-remove"></div></a></span> <%
+                    }else if(optpoa==0){
+                    %> <span class="label label-inverse span12"><div class="icon-eye-close icon-white"></div>&nbsp;Cerrado <a class="btn btn-small toltipx pull-right" title="Aperturar" href="<%=request.getContextPath()%>/GestionEstrategico?opt=107&idestadoperiodofacultad=<%=es.getIdestadoperiodofacultad()%>"><div class="icon-ok"></div></a></span><%
+                    } %>
+
+                    </td>
+                    <td >
+                        <%int optpm=Integer.parseInt(es.getEstadopm());
+                    if(optpm==1){
+                    %> <span class="label label-success span12"><div class="icon-eye-open icon-white"></div>&nbsp;Aperturado <a class="btn btn-small toltipx pull-right" title="Cerrar Apertura" href="<%=request.getContextPath()%>/GestionEstrategico?opt=108&idestadoperiodofacultad=<%=es.getIdestadoperiodofacultad()%>"><div class="icon-remove"></div></a></span> <%
+                    }else if(optpm==0){
+                    %> <span class="label label-inverse span12"><div class="icon-eye-close icon-white"></div>&nbsp;Cerrado <a class="btn btn-small toltipx pull-right" title="Aperturar" href="<%=request.getContextPath()%>/GestionEstrategico?opt=109&idestadoperiodofacultad=<%=es.getIdestadoperiodofacultad()%>"><div class="icon-ok"></div></a></span><%
+                    } %>
+
                     </td>
                     <td>
                         <a class="btn btn-small toltipx" title="Eliminar Apertura" href="<%=request.getContextPath()%>/GestionEstrategico?opt=85&idestadoperiodofacultad=<%=es.getIdestadoperiodofacultad()%>"><div class="icon-remove-circle"></div></a>   

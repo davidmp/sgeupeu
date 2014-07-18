@@ -79,7 +79,7 @@ public class STRCrypto {
 		STRCrypto cryp=new STRCrypto();
 		try{
 			                 System.out.println("VER:"+cryp.encrypt("123456"));
-			                 System.out.println("VER:"+cryp.decrypt("WpUdWbmQ5oMQ5UcdmOHEuA=="));
+			                 System.out.println("VER:"+cryp.decrypt("maWSgunMdO3PVvOkRsgjaA=="));
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

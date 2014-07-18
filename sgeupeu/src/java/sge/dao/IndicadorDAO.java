@@ -147,8 +147,50 @@ public class IndicadorDAO extends DBConn{
          return valor; 
     } 
     
-        public int estadoAvance(int idpm,int idfi,int idfa, int idea){
+   public int estadoAvance(int idpm,int idfi,int idfa, int idea){
     String sql=" SELECT estado_avance(?,?,?,?) AS estado; ";
+    int valor=0;
+         try {
+            getConexionDb4();
+            ps4=con4.prepareStatement(sql);
+            ps4.setInt(1, idpm);
+            ps4.setInt(2, idfi);
+            ps4.setInt(3, idfa);
+            ps4.setInt(4, idea);
+            rs4=ps4.executeQuery();
+        while (rs4.next()) 
+        {            
+         valor=rs4.getInt("estado");       
+        }
+        } catch (Exception e) {
+        }
+       finally{}
+         System.out.println("----> valor ---> "+valor);
+         return valor; 
+    } 
+   public int estadoPoa(int idpm,int idfi,int idfa, int idea){
+    String sql=" SELECT estado_poa(?,?,?,?) AS estado; ";
+    int valor=0;
+         try {
+            getConexionDb4();
+            ps4=con4.prepareStatement(sql);
+            ps4.setInt(1, idpm);
+            ps4.setInt(2, idfi);
+            ps4.setInt(3, idfa);
+            ps4.setInt(4, idea);
+            rs4=ps4.executeQuery();
+        while (rs4.next()) 
+        {            
+         valor=rs4.getInt("estado");       
+        }
+        } catch (Exception e) {
+        }
+       finally{}
+         System.out.println("----> valor ---> "+valor);
+         return valor; 
+    } 
+   public int estadoPM(int idpm,int idfi,int idfa, int idea){
+    String sql=" SELECT estado_pm(?,?,?,?) AS estado; ";
     int valor=0;
          try {
             getConexionDb4();
@@ -192,7 +234,7 @@ public class IndicadorDAO extends DBConn{
                
     public List<Indicador> listaIndicador(Periodometa id,Eapfacultad ef, int estadometa,int estadoavance, int idFilial ){
         
-    String sql= "   SELECT ei.*,i.*, m.idmeta,m.idperiodo,m.evidencia,m.idavancevalida,m.tipo,m.url, concat(es.codigo,' ', es.nombre) AS estrategia, "+ 
+    String sql= "   SELECT ei.*,i.*, m.idmeta , (SELECT COUNT(*) cantidad FROM evidencia e WHERE e.idavance=( SELECT a.idavance FROM avance a WHERE a.idmeta=m.idmeta))  AS cantidad ,  m.idperiodo,m.evidencia,m.idavancevalida,m.tipo,m.url, concat(es.codigo,' ', es.nombre) AS estrategia, "+ 
    "   (CASE WHEN m.evidencia IS NULL OR m.evidencia=''  THEN 0 ELSE 1 END) AS valorevidencia, "+
    "   (CASE WHEN m.meta=0 OR m.meta IS NULL THEN '0' ELSE m.meta END) AS meta  "+
    "   FROM estrategiaindicador ei   "+
@@ -237,6 +279,7 @@ public class IndicadorDAO extends DBConn{
            Toto.setProgreso(progreso(rs.getInt("idmeta")));
            Toto.setTotalavance(totalavance(rs.getInt("idmeta")));
            Toto.setIdavancevalida(rs.getInt("idavancevalida"));
+           Toto.setCantidad(rs.getInt("cantidad"));
            Toto.setEstadometa(estadometa);
            Toto.setEstadoavance(estadoavance);         
            Lista.add(Toto);
@@ -248,7 +291,7 @@ public class IndicadorDAO extends DBConn{
     }
     
     
-              public void insertarMeta(Meta to) {
+ public void insertarMeta(Meta to) {
         int r = 0;
         try {
             getConexionDb();
@@ -602,7 +645,7 @@ public class IndicadorDAO extends DBConn{
        
     public List<Indicador> listaIndicadorBuscar(Periodometa id,Eapfacultad ef, int estadometa,int estadoavance ,String valor, int idFilial){
         
-    String sql= "   SELECT ei.*,i.*, m.idmeta,m.idperiodo,m.evidencia,m.tipo,m.url,concat(es.codigo,' ', es.nombre) AS estrategia, te.idtemporadaejeestrategico,  "+ 
+    String sql= "   SELECT ei.*,i.*, m.idmeta, ( SELECT a.idavance FROM avance a WHERE a.idmeta=m.idmeta) AS idevidencia,(SELECT (CASE WHEN COUNT(*)>0 THEN 1 ELSE 0 END) AS cantidad  FROM (SELECT a.idmeta,s.id_tipo_seguim, s.estado FROM seguimiento s INNER JOIN avance a  USING(idavance) ) a WHERE  a.idmeta=m.idmeta AND id_tipo_seguim = (SELECT id_tipo_seguim FROM tipo_seguimiento WHERE etiqueta ='SEV') AND estado IN (1,2)) AS condicion, m.idperiodo,m.evidencia,m.tipo,m.url,concat(es.codigo,' ', es.nombre) AS estrategia, te.idtemporadaejeestrategico,  "+ 
    "   (CASE WHEN m.evidencia IS NULL OR m.evidencia=''  THEN 0 ELSE 1 END) AS valorevidencia, "+
    "   (CASE WHEN m.meta=0 OR m.meta IS NULL THEN '0' ELSE m.meta END) AS meta  "+
    "   FROM estrategiaindicador ei   "+
@@ -654,7 +697,8 @@ public class IndicadorDAO extends DBConn{
            Toto.setEstadometa(estadometa);
            Toto.setEstadoavance(estadoavance);
            Toto.setIdtemporadaejeestrategico(rs.getInt("idtemporadaejeestrategico"));
-           
+           Toto.setCondicion(rs.getInt("condicion"));
+           Toto.setIdavance(rs.getInt("idevidencia"));
            Lista.add(Toto);
         }
         } catch (Exception e) {
@@ -665,7 +709,7 @@ public class IndicadorDAO extends DBConn{
     }
     public List<Indicador> listaIndicadorBuscarPrimero(Periodometa id,Eapfacultad ef, int estadometa,int estadoavance ,String valor, int idFilial, int idEjeEstrategico){
         
-    String sql= "   SELECT ei.*,i.*, m.idmeta,m.idperiodo,m.evidencia,m.tipo,m.url,concat(es.codigo,' ', es.nombre) AS estrategia, te.idtemporadaejeestrategico,  "+ 
+    String sql= "   SELECT ei.*,i.*, m.idmeta, ( SELECT a.idavance FROM avance a WHERE a.idmeta=m.idmeta) AS idevidencia,(SELECT (CASE WHEN COUNT(*)>0 THEN 1 ELSE 0 END) AS cantidad  FROM (SELECT a.idmeta,s.id_tipo_seguim, s.estado FROM seguimiento s INNER JOIN avance a  USING(idavance) ) a WHERE  a.idmeta=m.idmeta AND id_tipo_seguim = (SELECT id_tipo_seguim FROM tipo_seguimiento WHERE etiqueta ='SEV') AND estado IN (1,2)) AS condicion , m.idperiodo,m.evidencia,m.tipo,m.url,concat(es.codigo,' ', es.nombre) AS estrategia, te.idtemporadaejeestrategico,  "+ 
    "   (CASE WHEN m.evidencia IS NULL OR m.evidencia=''  THEN 0 ELSE 1 END) AS valorevidencia, "+
    "   (CASE WHEN m.meta=0 OR m.meta IS NULL THEN '0' ELSE m.meta END) AS meta  "+
    "   FROM estrategiaindicador ei   "+
@@ -722,7 +766,8 @@ public class IndicadorDAO extends DBConn{
            Toto.setEstadometa(estadometa);
            Toto.setEstadoavance(estadoavance);
            Toto.setIdtemporadaejeestrategico(rs.getInt("idtemporadaejeestrategico"));
-           
+            Toto.setCondicion(rs.getInt("condicion"));
+            Toto.setIdavance(rs.getInt("idevidencia"));
            Lista.add(Toto);
         }
         } catch (Exception e) {
@@ -743,7 +788,7 @@ public class IndicadorDAO extends DBConn{
     
     public List<Indicador> listaIndicadorEje(Periodometa id,Eapfacultad ef, int estadometa,int estadoavance ,int idtemeje,int idFilial){
         
-    String sql= " SELECT ei.*,i.*, m.idmeta,m.idperiodo,m.evidencia,m.idavancevalida,m.tipo,m.url, concat(es.codigo,' ', es.nombre) AS estrategia, "+  
+    String sql= " SELECT ei.*,i.*, m.idmeta, ( SELECT a.idavance FROM avance a WHERE a.idmeta=m.idmeta) AS idevidencia,(SELECT (CASE WHEN COUNT(*)>0 THEN 1 ELSE 0 END) AS cantidad  FROM (SELECT a.idmeta,s.id_tipo_seguim, s.estado FROM seguimiento s INNER JOIN avance a  USING(idavance) ) a WHERE  a.idmeta=m.idmeta AND id_tipo_seguim = (SELECT id_tipo_seguim FROM tipo_seguimiento WHERE etiqueta ='SEV') AND estado IN (1,2)) AS condicion ,(SELECT COUNT(*) cantidad FROM evidencia e WHERE e.idavance=( SELECT a.idavance FROM avance a WHERE a.idmeta=m.idmeta))  AS cantidad ,m.idperiodo,m.evidencia,m.idavancevalida,m.tipo,m.url, concat(es.codigo,' ', es.nombre) AS estrategia, "+  
       " (CASE WHEN m.evidencia IS NULL OR m.evidencia=''  THEN 0 ELSE 1 END) AS valorevidencia, "+ 
       " (CASE WHEN m.meta=0 OR m.meta IS NULL THEN '0' ELSE m.meta END) AS meta "+  
       " FROM estrategiaindicador ei "+   
@@ -799,9 +844,11 @@ public class IndicadorDAO extends DBConn{
            Toto.setSemaforo(semaforo(rs.getInt("idmeta")));
            Toto.setProgreso(progreso(rs.getInt("idmeta")));
            Toto.setTotalavance(totalavance(rs.getInt("idmeta")));
+           Toto.setCantidad(rs.getInt("cantidad"));
            Toto.setEstadometa(estadometa);
            Toto.setEstadoavance(estadoavance);
-           
+           Toto.setCondicion(rs.getInt("condicion"));
+           Toto.setIdavance(rs.getInt("idevidencia"));
            Lista.add(Toto);
         }
         } catch (Exception e) {
@@ -817,7 +864,7 @@ public class IndicadorDAO extends DBConn{
     
         public List<Indicador> listaIndicadorU(Periodometa id,Eapfacultad ef, int estadometa,int estadoavance ,String valor){
         
-    String sql= "   SELECT ei.*,i.*, m.idmeta,m.idperiodo,m.evidencia,m.tipo,m.url,es.nombre AS estrategia,  "+ 
+    String sql= "   SELECT ei.*,i.*, m.idmeta, ( SELECT a.idavance FROM avance a WHERE a.idmeta=m.idmeta) AS idevidencia, (SELECT (CASE WHEN COUNT(*)>0 THEN 1 ELSE 0 END) AS cantidad  FROM (SELECT a.idmeta,s.id_tipo_seguim, s.estado FROM seguimiento s INNER JOIN avance a  USING(idavance) ) a WHERE  a.idmeta=m.idmeta AND id_tipo_seguim = (SELECT id_tipo_seguim FROM tipo_seguimiento WHERE etiqueta ='SEV') AND estado IN (1,2)) AS condicion ,(SELECT COUNT(*) cantidad FROM evidencia e WHERE e.idavance=( SELECT a.idavance FROM avance a WHERE a.idmeta=m.idmeta))  AS cantidad,m.idperiodo,m.evidencia,m.tipo,m.url,es.nombre AS estrategia,  "+ 
    "   (CASE WHEN m.evidencia IS NULL OR m.evidencia=''  THEN 0 ELSE 1 END) AS valorevidencia, "+
    "   (CASE WHEN m.meta=0 OR m.meta IS NULL THEN '0' ELSE m.meta END) AS meta  "+
    "   FROM estrategiaindicador ei   "+
@@ -869,9 +916,13 @@ public class IndicadorDAO extends DBConn{
            Toto.setSemaforo(semaforo(rs.getInt("idmeta")));
            Toto.setProgreso(progreso(rs.getInt("idmeta")));
            Toto.setTotalavance(totalavance(rs.getInt("idmeta")));
+           Toto.setCantidad(rs.getInt("cantidad"));
            Toto.setEstadometa(estadometa);
            Toto.setEstadoavance(estadoavance);
-            
+           Toto.setCondicion(rs.getInt("condicion"));
+           Toto.setIdavance(rs.getInt("idevidencia"));
+           
+           
            Lista.add(Toto);
         }
         } catch (Exception e) {

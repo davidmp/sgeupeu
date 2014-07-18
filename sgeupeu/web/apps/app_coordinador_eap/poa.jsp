@@ -25,7 +25,7 @@
         
               
              <%
-    Indicador name=(Indicador)request.getSession().getAttribute("indicador");
+                Indicador name=(Indicador)request.getSession().getAttribute("indicador");
                 List<Actividad> listaActividad=null;
                 List<Actividad> listaActividadIndicador=null;
                 listaActividad=(List<Actividad>)request.getSession().getAttribute("listaActividad"); 
@@ -38,6 +38,7 @@
                 Variables vr=(Variables)request.getSession().getAttribute("variable");
                 Ejeestrategico eje=(Ejeestrategico)request.getSession().getAttribute("eje"); 
                 double suma =0;
+                int estadoPoa=Integer.parseInt(request.getSession().getAttribute("estadoPOA").toString());
 
      %> 
      
@@ -470,8 +471,14 @@ function validarNumeroDecimales(){
        </form> 
                   
                     
-          <center><h4>Lista de Actividades &nbsp;&nbsp;&nbsp;&nbsp;<a  href="#myModal" role="button"  class="btn" data-toggle="modal" ><i class="icon-plus"></i>
-           </a></h4></center>
+          <center><h4>Lista de Actividades &nbsp;&nbsp;&nbsp;&nbsp;
+                  <% if(estadoPoa==1){ %>
+                  <a  href="#myModal" role="button"  class="btn" data-toggle="modal" ><i class="icon-plus"></i>
+                  </a>
+                  <% }else{ %>
+                  <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
+                  <% } %>
+              </h4></center>
                
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -582,6 +589,7 @@ function validarNumeroDecimales(){
        
         <td  width="">
 
+        <% if(estadoPoa==1){ %>
         
         <a  href="#myModalX" role="button"  onclick="editarActividad(
 '<%=me.getAccion().toString().trim()%>'
@@ -610,11 +618,15 @@ function validarNumeroDecimales(){
 );"
                  class="btn" data-toggle="modal" ><i class="icon-edit"></i>
         </a>
+        <% } else{ %>
+        <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
+        <% } %>
         </td>   
 
 
 
        <td  width="">
+                  <% if(estadoPoa==1){ %>          
                 <form class="eliminar" name="eliminar" action="<%=request.getContextPath()%>/Indicador" method="POST">  
                 <input type="hidden"  name="nro_actividad" id="nro_indicador" />
                 <input type="hidden"  name="nro_indicador_3" value="<%=vr.getNro()%>" />
@@ -631,7 +643,9 @@ function validarNumeroDecimales(){
                 <button class="btn btn-mini btn-danger" onmouseover="formindicador(<%=me.getIdactividad()%>)" type="submit"><i class="icon-remove icon-white"></i></button>                       
                 </center>
                 </form>      
-           
+                <% }else{ %>
+                <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
+                <% } %>            
        </td>
    </tr>
    <%}}%>

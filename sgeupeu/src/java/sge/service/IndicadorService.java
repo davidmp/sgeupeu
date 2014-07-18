@@ -160,6 +160,16 @@ public class IndicadorService {
         dao = new IndicadorDAO();
         return dao.listaEje(idTipoarea);
         }
+        
+        public int estadoPoa(int idpm, int idfi, int idfa, int idea){
+        dao = new IndicadorDAO();
+        return dao.estadoPoa(idpm, idfi, idfa, idea);
+        }
+        public int estadoPM(int idpm, int idfi, int idfa, int idea){
+        dao = new IndicadorDAO();
+        return dao.estadoPM(idpm, idfi, idfa, idea);
+        }
+        
         public List<Ejeestrategico> listaEjeIndividual(int ideje){
         dao = new IndicadorDAO();
         return dao.listaEjeIndividual(ideje);

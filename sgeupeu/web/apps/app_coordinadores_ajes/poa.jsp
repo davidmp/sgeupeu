@@ -38,6 +38,7 @@
                 Variables vr=(Variables)request.getSession().getAttribute("variable");
                 Ejeestrategico eje=(Ejeestrategico)request.getSession().getAttribute("eje"); 
                 double suma =0;
+                int estadoPoa=Integer.parseInt(request.getSession().getAttribute("estadoPOA").toString());                
 
      %> 
      
@@ -458,8 +459,14 @@ function formindicador(numero)
        </form> 
                   
                     
-          <center><h4>Lista de Actividades &nbsp;&nbsp;&nbsp;&nbsp;<a  href="#myModal" role="button"  class="btn" data-toggle="modal" ><i class="icon-plus"></i>
-           </a></h4></center>
+          <center><h4>Lista de Actividades &nbsp;&nbsp;&nbsp;&nbsp;
+                  <% if(estadoPoa==1){ %>
+                  <a  href="#myModal" role="button"  class="btn" data-toggle="modal" ><i class="icon-plus"></i>
+                  </a>
+                  <% }else{ %>
+                  <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
+                  <% } %>              
+              </h4></center>
                
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -568,7 +575,7 @@ function formindicador(numero)
        <%suma=me.getPresupuesto()+suma;%>
        <td  width=""><%=me.getRubro()%></td>
 <td  width="">
-
+        <% if(estadoPoa==1){ %>
 <a  href="#myModalX" role="button" onclick="editarActividad('<%=me.getAccion().toString().trim()%>', '<%=me.getCantidad()%>',
                    '<%=me.getNro()%>','<%=me.getPresupuesto()%>', '<%=me.getRubro()%>','<%=me.getEnero()%>',
                    '<%=me.getFebrero()%>','<%=me.getMarzo()%>','<%=me.getAbril()%>','<%=me.getMayo()%>',
@@ -582,16 +589,14 @@ function formindicador(numero)
                     )"
                     class="btn" data-toggle="modal" ><i class="icon-edit"></i>
 </a>
-
+        <% } else{ %>
+        <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
+        <% } %>
 
        </td>       
        <td  width="">
-   <form class="eliminar" name="eliminar" action="<%=request.getContextPath()%>/IndicadoresEje" method="POST">  
-       
-
-       
-       
-
+  <% if(estadoPoa==1){ %>             
+<form class="eliminar" name="eliminar" action="<%=request.getContextPath()%>/IndicadoresEje" method="POST">  
 <input type="hidden"  name="nro_actividad" id="nro_indicador" />
 <input type="hidden"  name="nro_indicador_3" value="<%=vr.getNro()%>" />
 <input type="hidden"  name="idperiodometa" value="<%=p.getIdperiodometa()%>" />
@@ -603,11 +608,13 @@ function formindicador(numero)
 <input type="hidden"  name="idactividad<%=me.getIdactividad()%>" value="<%=me.getIdactividad()%>" /> 
 <input type="hidden"  name="idtemporadaejeestrategico" value="<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>"/> 
 <input type="hidden"  name="opt" value="28" > 
-                          <center>   
-                         <button class="btn btn-mini btn-danger" onmouseover="formindicador(<%=me.getIdactividad()%>)" type="submit"><i class="icon-remove icon-white"></i></button>                       
-                          </center>
-                         </form>      
-           
+<center>   
+<button class="btn btn-mini btn-danger" onmouseover="formindicador(<%=me.getIdactividad()%>)" type="submit"><i class="icon-remove icon-white"></i></button>                       
+</center>
+</form>      
+                <% }else{ %>
+                <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
+                <% } %>            
        </td>
    </tr>
    <%}}%>

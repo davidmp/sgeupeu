@@ -52,7 +52,8 @@ $(".alert").alert();
         </li>
         <% if(fiUe.getIdfilial()==2){ %>
         <li title="Modelo de Estructura de Informe" class="informacion">            
-            <a data-target="#dmp" data-toggle="tab"   href="<%= request.getContextPath()%>/public/juliaca/PLANTILLA GENERAL DE INFORMES MODELO 1.docx"  rel="tooltip" ><div class="icon-book"></div>Modelo de Informes</a>
+            <a data-target="#dmp" data-toggle="tab"   href="<%= request.getContextPath()%>/public/juliaca/PLANTILLA GENERAL DE INFORMES MODELO 2.docx"  rel="tooltip" ><div class="icon-book"></div>Modelo de Informes</a><br/>
+            
         </li>
         <% } %>
     
@@ -63,7 +64,8 @@ $(".alert").alert();
               <div class="tab-pane" id="eje">Loading...</div>
               <div class="tab-pane" id="dmp">                  
                 
-                <a href="<%= request.getContextPath()%>/public/juliaca/PLANTILLA GENERAL DE INFORMES MODELO 2.docx" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" ><i class="icon-download-alt icon-white"></i>Estructura de Modelo de Informe General</a>                  
+                <a href="<%= request.getContextPath()%>/public/juliaca/PLANTILLA GENERAL DE INFORMES MODELO 2.docx" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" ><i class="icon-download-alt icon-white"></i>Estructura de Modelo de Informe General</a> <br/>
+                <a href="<%= request.getContextPath()%>/public/juliaca/FichaTecnica.pdf" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" ><i class="icon-download-alt icon-white"></i>Ficha T&eacute;cnica</a>                  
               </div>
             
             </div>

@@ -18,7 +18,8 @@
         <link rel="stylesheet" type="text/css" href="rs/pgwjs-rainbow-v202.css">
         <link rel="stylesheet" type="text/css" href="rs/pgwmodal-v202.css">
         <script type="text/javascript" src="rs/jquery-pgwjs-rainbow-v202.js"></script>
-        <script type="text/javascript" src="rs/pgwmodal-v202.js"></script>        
+        <script type="text/javascript" src="rs/pgwmodal-v202.js"></script>
+        
         <link type="text/css" rel="stylesheet" href="../../resources/css/style02.css"/>
         <link type="text/css" rel="stylesheet" href="../../resources/css/style03.css"/>         
         
@@ -49,7 +50,7 @@
                             %>
                             <table>
                                 <tr>                    
-                                    <td style="font-size: large" ><center><b><%=datos.get("razonsocial")%> </b></center></td>
+                                    <td style="font-size: large" ><center><b><%=datos.get("razonsocial")%></b> </center></td>
                                 </tr>
                                 <tr>
                                 <td style="font-size: small">
@@ -63,17 +64,17 @@
                                 </tr>
                                 <tr>
                                 <td style="font-size: small"><br/>
-                                <center><b><%=" "+datos.get("nombreeap") %></b> </center>
+                                <center><b><%="E.A.P de "+datos.get("nombreeap") %></b> </center>
                                 </td>
                                 </tr>
                                 <tr>
                                 <td style="font-size: small">
-                                <center><% if(datos.get("categoria").equals("Filial")){ out.print("Director(a) de area: "+ datos.get("coordinador") ); }else{ out.print("Director de Escuela: "+ datos.get("coordinador") );} %></center>
+                                <center><% if(datos.get("categoria").equals("Filial")){ out.print("Coordinador(a) de Escuela: "+ datos.get("coordinador") ); }else{ out.print("Director de Escuela: "+ datos.get("coordinador") );} %></center>
                                 </td>
                                 </tr>
                                 <tr>
                                 <td style="font-size: x-large"><br/><br/><br/>
-                                <center><%="EVALUACI&Oacute;N DE PLAN ESTRAT&Eacute;GICO "+datos.get("periodo") %></center>
+                                    <center><%="EVALUACI&Oacute;N DE PLAN ESTRAT&Eacute;GICO "+datos.get("periodo") %> </center>
                                 </td>
                                 </tr>
                             </table>
@@ -90,6 +91,13 @@
             
             
 
+                        
+                        
+                        
+                        
+                        
+                        
+                        
             <%
                 ReporteService rs;
                 ArrayList lista3;
@@ -138,7 +146,8 @@
                 int idObjPerspectivaM=0;
                 int idObjEstrategicoM=0;
                 int cantidadDMP=0;
-                DecimalFormat formato= new DecimalFormat("###.##");                
+                DecimalFormat formato= new DecimalFormat("###.##");
+                
                 int objCondicionM=0;
                 int objCondicionI=0;
                 int objCondicionIA=0;
@@ -173,7 +182,7 @@
                 <td colspan="9" style="width: 100%">
                     <table border="1" style="width: 100%;border-collapse:collapse">
                         <tr>
-                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES</b></td>
+                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES </b></td>
                         </tr>
                         <tr>
                             <td style="width: 50%"><b>Condici&oacute;n</b></td>
@@ -183,8 +192,8 @@
                         </tr>
                         <tr>
                             <td>Indicador(es) no cumplido(s)</td>
-                            <td><%=resumenData[0][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
+                            <td><%=resumenData[0][0]%> </td>                            
+                            <td><% out.print( ((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/0.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
@@ -300,10 +309,11 @@
 
                                     <td  >
                                         <div>
-                                        <center>                                                                                    
+                                        <center>                                        
+                                            
                                             <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%=datos.get("codigoin").toString()%>)  <%=datos.get("nombreindicador").toString()%>')">
                                             <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                             
+                                            </a>                                            
                                         </center>
                                         </div>
                                     </td>
@@ -315,14 +325,14 @@
                                             <% }else{ %>
                                             <img src="../../resources/file/no.png" width="30" height="30" title="0"   alt="Archivo"/>
                                             <% } %>                                            
-                                        </td> 
+                                        </td>
                                         <td align="center">
                                            
                                             <a href="javascript:void(0)" onclick="openDialogLista('<%=datos.get("idavance").toString()%>','(<%=datos.get("codigoin").toString()%>)  <%=datos.get("nombreindicador").toString()%>')">
                                             <img src="../../resources/32/<%=datos.get("obs").toString()%>.png" width="30" height="30" title="<%=datos.get("obs").toString()%>"  alt="Observaciones"/>
                                             </a> 
                                            
-                                        </td>                                         
+                                        </td>                                            
                                 </tr>
                 <% idObjGeneralM1=Integer.parseInt(datos.get("idejeestrategico").toString()); %>                    
                 
@@ -352,11 +362,11 @@
                                    <% } %>
                                     </td>
                                     <td  >
-                                        <center>                                                                                
+                                        <center>                                        
+                                        
                                             <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%=datos.get("codigoin").toString()%>)  <%=datos.get("nombreindicador").toString()%>')">
                                             <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                          
-                                        
+                                            </a>                                         
                                         </center>
                                     </td>
                                         <td align="center">
@@ -365,14 +375,14 @@
                                             <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
                                             </a>
                                             <% }else{ %>
-                                            <img src="../../resources/file/no.png" width="30" height="30" title="0"   alt="Archivo"/>
-                                            <% } %>                                             
-                                        </td> 
+                                            <img src="../../resources/file/no.png" width="30" height="30"  title="0"   alt="Archivo"/>
+                                            <% } %>                                            
+                                        </td>  
                                         <td align="center">
                                             <a href="javascript:void(0)" onclick="openDialogLista('<%=datos.get("idavance").toString()%>','(<%=datos.get("codigoin").toString()%>)  <%=datos.get("nombreindicador").toString()%>')">
                                             <img src="../../resources/32/<%=datos.get("obs").toString()%>.png" width="30" height="30" title="<%=datos.get("obs").toString()%>"  alt="Observaciones"/>
                                             </a>                                           
-                                        </td>                                        
+                                        </td>                                         
                                 </tr>  
                 <%  idObjPerspectivaM = Integer.parseInt(datos.get("idperspectiva").toString()); %>                  
                <% } else if(idObjEstrategicoM!=Integer.parseInt(datos.get("idejeestrategia").toString())){  %>
@@ -399,10 +409,11 @@
                                    <% } %>
                                     </td>
                                     <td  >
-                                        <center>                                                                                
+                                        <center>                                        
+                                        
                                             <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%=datos.get("codigoin").toString()%>)  <%=datos.get("nombreindicador").toString()%>')">
                                             <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                        
+                                            </a>                                          
                                         </center>
                                     </td>
                                         <td align="center">
@@ -411,9 +422,9 @@
                                             <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
                                             </a>
                                             <% }else{ %>
-                                            <img src="../../resources/file/no.png" width="30" height="30" title="0"   alt="Archivo"/>
-                                            <% } %>                                             
-                                        </td>  
+                                            <img src="../../resources/file/no.png" width="30" height="30"  title="0"   alt="Archivo"/>
+                                            <% } %>                                            
+                                        </td>
                                         <td align="center">
                                             <a href="javascript:void(0)" onclick="openDialogLista('<%=datos.get("idavance").toString()%>','(<%=datos.get("codigoin").toString()%>)  <%=datos.get("nombreindicador").toString()%>')">
                                             <img src="../../resources/32/<%=datos.get("obs").toString()%>.png" width="30" height="30" title="<%=datos.get("obs").toString()%>"  alt="Observaciones"/>
@@ -446,7 +457,7 @@
                                             
                                             <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%=datos.get("codigoin").toString()%>)  <%=datos.get("nombreindicador").toString()%>')">
                                             <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                               
+                                            </a>                                             
                                         </center>
                                     </td>
                                         <td align="center">
@@ -455,8 +466,8 @@
                                             <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
                                             </a>
                                             <% }else{ %>
-                                            <img src="../../resources/file/no.png" width="30" height="30" title="0"   alt="Archivo"/>
-                                            <% } %>                                             
+                                            <img src="../../resources/file/no.png" width="30" height="30" title="0"  alt="Archivo"/>
+                                            <% } %>                                            
                                         </td>
                                         <td align="center">
                                             <a href="javascript:void(0)" onclick="openDialogLista('<%=datos.get("idavance").toString()%>','(<%=datos.get("codigoin").toString()%>)  <%=datos.get("nombreindicador").toString()%>')">
@@ -470,11 +481,11 @@
                 <% if(objCondicionIA==objCondicionI ){ %>
                 <%
                 switch(Integer.parseInt(datos.get("tipoavance").toString())){                    
-                    case 0:{  resumenData[0][0]=(resumenData[0][0])+1; cantidadDMP++; }break;
-                    case 1:{  resumenData[1][0]=(resumenData[1][0])+1; cantidadDMP++;}break;
-                    case 2:{  resumenData[2][0]=(resumenData[2][0])+1; cantidadDMP++;}break;
-                    case 3:{  resumenData[3][0]=(resumenData[3][0])+1; cantidadDMP++;}break;
-                    case 4:{  resumenData[4][0]=(resumenData[4][0])+1; cantidadDMP++;}break;
+                    case 0:{  resumenData[0][0]=(resumenData[0][0])+1;  cantidadDMP++;}break;
+                    case 1:{  resumenData[1][0]=(resumenData[1][0])+1;  cantidadDMP++;}break;
+                    case 2:{  resumenData[2][0]=(resumenData[2][0])+1;  cantidadDMP++;}break;
+                    case 3:{  resumenData[3][0]=(resumenData[3][0])+1;  cantidadDMP++;}break;
+                    case 4:{  resumenData[4][0]=(resumenData[4][0])+1;  cantidadDMP++;}break;
                 }                 
                 %>                
                 <tr>
@@ -491,14 +502,14 @@
                         </tr>
                         <tr>
                             <td>Indicador(es) no cumplido(s)</td>
-                            <td><%=resumenData[0][0]%> </td>
+                            <td><%=resumenData[0][0]%> </td>                            
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/0.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
                             <td>Indicador(es) en proceso</td>
                             <td><%=resumenData[1][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[1][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
+                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[1][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td> 
                             <td><img src="../../resources/48/1.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
@@ -535,10 +546,7 @@
                 }                
                 idObjGeneralM=Integer.parseInt(datos.get("idejeestrategico").toString());
                 }
-                %>  
-            
-                
-                
+                %>
                 
                 
                 
@@ -554,8 +562,8 @@ function openDialogDmp(id, idfilial){
 		close: true	});   
 }
 function openDialogSeguimiento(idavance, idciclo, indicador){
- 	var demo=indicador.replace("%","Porcentaje");
-        $.pgwModal({
+    var demo=indicador.replace("%","Porcentaje");
+ 	$.pgwModal({
         url: 'formObervacion.jsp?idavance='+idavance+"&idciclo="+idciclo+"&indicador="+demo,
 		title : 'Realizar Observaciones',
 		loading: '<span style="text-align:center">Loading in progress</span>',
@@ -571,6 +579,8 @@ function openDialogLista(idavance, indicador){
 		close: true, maxWidth: 900	});   
 }
 </script>                
-<div style="display: none;" id="pgwModalWrapper"></div>                 
-    </body>
+<div style="display: none;" id="pgwModalWrapper"></div>  
+
+
+</body>
 </html>

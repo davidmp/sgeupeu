@@ -30,6 +30,7 @@ import sge.directori.FileDirectori;
 import sge.service.GestionEstrategicoService;
 import sge.service.IndicadorService;
 import sge.service.OrganizacionService;
+import sge.service.SeguimientoService;
 
 /**
  *
@@ -246,12 +247,18 @@ public class Indicador extends HttpServlet {
         if ( archivo.exists() ){    
         is.insertarEvidencia(evidencia, tipo, url, idavancevalida, Integer.parseInt(idUsuarioPri));
         System.out.println(" Guardado->DMP" + archivo.getAbsolutePath());
+                   SeguimientoService ss;
+                   ss=new SeguimientoService();
+                   if(idavancevalida!=0){
+                   ss.actulizarUserRespEstado(Integer.parseInt(idUsuarioPri), idavancevalida);
+                   }        
         }else{   
         System.out.println( "FALLO AL GUARDAR. NO EXISTE " + archivo.getAbsolutePath() + "</p>");
         }}}}           
         }catch( FileUploadException e ){e.printStackTrace();            
         }catch (Exception e){e.printStackTrace();}}     
         
+                    System.out.println("LLegoooooooo!!! DMP" +is.idPeriodoMeta(request));
     request.getSession().setAttribute("idperiodometa", is.idPeriodoMeta(request));
     request.getSession().setAttribute("eje", is.Eje(request));
     request.getSession().setAttribute("listar_indicador", is.listaIndicadorEje(request,is.estadometa(request),is.estadoavance(request), Integer.parseInt(idFilialPri)));
@@ -356,7 +363,14 @@ public class Indicador extends HttpServlet {
                     case 12:{
                     //Inicio Session
                     principalValorSession(request);
-                    //Fin Session                         
+                    //Fin Session 
+                    int idpm =Integer.parseInt(request.getParameter("idperiodometa")==null?"0":request.getParameter("idperiodometa"));
+                    int idfi =Integer.parseInt(request.getParameter("idfilial")==null?"0":request.getParameter("idfilial"));
+                    int idfa =Integer.parseInt(request.getParameter("idfilialfacultad")==null?"0":request.getParameter("idfilialfacultad"));
+                    int idea =Integer.parseInt(request.getParameter("ideapfacultad")==null?"0":request.getParameter("ideapfacultad"));
+                    is=new IndicadorService(); 
+                    request.getSession().setAttribute("estadoPOA", is.estadoPoa(idpm, idfi, idfa, idea));
+                    
                     is=new IndicadorService(); 
                     request.getSession().setAttribute("listaActividadIndicador", is.ListaActividadIndicador(request));
                     request.getSession().setAttribute("listaActividad", is.ListaActividadMeta(request));
@@ -498,6 +512,11 @@ public class Indicador extends HttpServlet {
 //                }
 //        
 //        //End Conexion
+                    int nr=Integer.parseInt(request.getParameter("nro_indicador_4"));
+                    
+                    request.getSession().setAttribute("idavanceDmp",request.getParameter("idavancevalida"+nr+""));
+                    request.getSession().setAttribute("condicionDmp",request.getParameter("condicion"+nr+""));
+                    
                     request.getSession().setAttribute("listaEvidencia", is.ListaEvidenciaMeta(request));
                     request.getSession().setAttribute("variable", is.nroVariableEvidencia(request));
                     request.getSession().setAttribute("periodoMeta", is.periodoMeta(request));

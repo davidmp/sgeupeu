@@ -115,6 +115,20 @@ function validarExtencion(){
                     <td><i class="icon-flag"></i>&nbsp;&nbsp;<strong>Periodo : </strong>&nbsp;<%=p.getPeriodo()%> 
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-star"></i>&nbsp;&nbsp;<strong>Meta : </strong>&nbsp; <%=in.getMeta()%> <%if(in.getIdtipometa()==2){%>%<%}%>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-star-empty"></i>&nbsp;&nbsp;<strong>Avance : </strong>&nbsp; <%=in.getTotalavance()%> <%if(in.getIdtipometa()==2){%>%<%}%>
+                                <% 
+                                int idavance=0;
+                                int condicion=0;
+                                idavance=Integer.parseInt(request.getSession().getAttribute("idavanceDmp").toString());
+                                condicion=Integer.parseInt(request.getSession().getAttribute("condicionDmp").toString());
+                                
+                                if(condicion==1){
+                                %>
+                                
+                                <a data-toggle="modal" data-remote="<%=request.getContextPath()%>/Seguimiento?opt=2&idavance=<%=idavance%>" data-target="#modal" 
+                                class="btn "><img src="../../resources/32/<%=condicion%>1.png" rel="tooltip" title="La evidencia de este indicador tiene observaciones! "  width="23" height="23"/></a>
+                                <% }else{ %>
+                                <img src="../../resources/32/<%=condicion%>1.png"   width="23" height="23"/>
+                                <%}%>
                     </td>
                 </tr>
      
@@ -134,7 +148,7 @@ function validarExtencion(){
                     
                   <form name="emailForm" class="emailForm" method="POST" onsubmit="return validarExtencion()" action="<%=request.getContextPath()%>/Indicador?opt=5&idtemporadaejeestrategico=<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>&idperiodometa=<%=p.getIdperiodometa()%>&nro_indicador_4=<%=vr.getNro()%>&idmeta<%=vr.getNro()%>=<%=in.getIdmeta()%>&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>&idusuario=<%if(w!=null){%><%=w.getIdusuario()%><%}else{%>0<%}%>&idestrategiaindicador<%=vr.getNro()%>=<%=in.getIdestrategiaindicador()%>&idavancevalida<%=vr.getNro()%>=<%=in.getIdavancevalida() %>" enctype="multipart/form-data">
                     <center>
-                        35 MB (Maximo) &DoubleRightArrow;  Formatos: DOCX, DOC, PDF, ZIP, RAR
+                        35 MB (Maximo) &DoubleRightArrow;  Formatos: DOCX, DOC, PDF, ZIP, RAR  <%=p.getIdperiodometa()%>
                     <div class="fileupload fileupload-new" data-provides="fileupload">
                     <div class="input-append">
                     <div class="uneditable-input span4"><i class="icon-file fileupload-exists"></i> 
@@ -371,3 +385,23 @@ function uploadDone(name) {
             
 </html>
 
+                               
+                           
+
+<div  class="modal hide" id="modal">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+&times;</button>
+<h4 class="modal-title">Lista de Observaciones - Espere por favor</h4>
+</div>
+<div class="modal-body">
+Load Data...
+</div>
+<div class="modal-footer">
+<a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+</div>
+</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div>

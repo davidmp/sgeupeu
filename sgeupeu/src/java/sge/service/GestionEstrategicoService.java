@@ -620,39 +620,39 @@ public class GestionEstrategicoService {
         
    
         /*Inicio Servicio de estado de control de POA y PM*/
-        public void aperturarPOAestadoEAP(int idestadoperiodofilial) {
+        public void aperturarPOAestadoEAP(int idestadoperiodoeap) {
         dao = new GestionEstrategicoDao();
-        dao.aperturarPOAestadoEAP(idestadoperiodofilial);
+        dao.aperturarPOAestadoEAP(idestadoperiodoeap);
         }
-        public void cerrarPOAestadoEAP(int idestadoperiodofilial) {
+        public void cerrarPOAestadoEAP(int idestadoperiodoeap) {
         dao = new GestionEstrategicoDao();
-        dao.cerrarPOAestadoEAP(idestadoperiodofilial);
+        dao.cerrarPOAestadoEAP(idestadoperiodoeap);
         }        
-        public void aperturarPMestadoEAP(int idestadoperiodofilial) {
+        public void aperturarPMestadoEAP(int idestadoperiodoeap) {
         dao = new GestionEstrategicoDao();
-        dao.aperturarPMestadoEAP(idestadoperiodofilial);
+        dao.aperturarPMestadoEAP(idestadoperiodoeap);
         }
-        public void cerrarPMestadoEAP(int idestadoperiodofilial) {
+        public void cerrarPMestadoEAP(int idestadoperiodoeap) {
         dao = new GestionEstrategicoDao();
-        dao.cerrarPMestadoEAP(idestadoperiodofilial);
+        dao.cerrarPMestadoEAP(idestadoperiodoeap);
         }   
         
         
-        public void aperturarPOAestadoFacultad(int idestadoperiodofilial) {
+        public void aperturarPOAestadoFacultad(int idestadoperiodofacultad) {
         dao = new GestionEstrategicoDao();
-        dao.aperturarPOAestadoFacultad(idestadoperiodofilial);
+        dao.aperturarPOAestadoFacultad(idestadoperiodofacultad);
         }
-        public void cerrarPOAestadoFacultad(int idestadoperiodofilial) {
+        public void cerrarPOAestadoFacultad(int idestadoperiodofacultad) {
         dao = new GestionEstrategicoDao();
-        dao.cerrarPOAestadoFacultad(idestadoperiodofilial);
+        dao.cerrarPOAestadoFacultad(idestadoperiodofacultad);
         }        
-        public void aperturarPMestadoFacultad(int idestadoperiodofilial) {
+        public void aperturarPMestadoFacultad(int idestadoperiodofacultad) {
         dao = new GestionEstrategicoDao();
-        dao.aperturarPMestadoFacultad(idestadoperiodofilial);
+        dao.aperturarPMestadoFacultad(idestadoperiodofacultad);
         }
-        public void cerrarPMestadoFacultad(int idestadoperiodofilial) {
+        public void cerrarPMestadoFacultad(int idestadoperiodofacultad) {
         dao = new GestionEstrategicoDao();
-        dao.cerrarPMestadoFacultad(idestadoperiodofilial);
+        dao.cerrarPMestadoFacultad(idestadoperiodofacultad);
         }  
         
         

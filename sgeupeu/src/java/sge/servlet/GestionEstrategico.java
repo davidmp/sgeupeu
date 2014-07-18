@@ -1857,10 +1857,203 @@ public class GestionEstrategico extends HttpServlet {
                }
                break;       
                    
+               case 102: {
+                   
+                   // CERRAR APERTURA AVANCE EAP
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodoep = Integer.parseInt(request.getParameter("idestadoperiodoeap"));
+                    ges.cerrarPOAestadoEAP(idestadoperiodoep);
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idEapFacultad=(String)session.getAttribute("IDEapFacultadSession");
+                    String idperiodometa=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("lista_estado_periodo_eap", ges.Listar_Estado_Periodo_EAP(idperiodometa, idEapFacultad));
+                    response.sendRedirect(LISTESTADOPERIODOEAP);
+                  
+               }
+               break;                
+               case 103: {
+                   
+                   // APERTURAR APERTURA AVANCE EAP
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodoep = Integer.parseInt(request.getParameter("idestadoperiodoeap"));
+                    ges.aperturarPOAestadoEAP(idestadoperiodoep);
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idEapFacultad=(String)session.getAttribute("IDEapFacultadSession");
+                    String idperiodometa=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("lista_estado_periodo_eap", ges.Listar_Estado_Periodo_EAP(idperiodometa, idEapFacultad));
+                    response.sendRedirect(LISTESTADOPERIODOEAP);
+                  
+               }
+               break;                
+               case 104: {
+                   
+                   // APERTURAR APERTURA AVANCE EAP
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodoep = Integer.parseInt(request.getParameter("idestadoperiodoeap"));
+                    ges.cerrarPMestadoEAP(idestadoperiodoep);
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idEapFacultad=(String)session.getAttribute("IDEapFacultadSession");
+                    String idperiodometa=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("lista_estado_periodo_eap", ges.Listar_Estado_Periodo_EAP(idperiodometa, idEapFacultad));
+                    response.sendRedirect(LISTESTADOPERIODOEAP);
+                  
+               }
+               break;                
+               case 105: {
+                   
+                   // APERTURAR APERTURA AVANCE EAP
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodoep = Integer.parseInt(request.getParameter("idestadoperiodoeap"));
+                    ges.aperturarPMestadoEAP(idestadoperiodoep);
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idEapFacultad=(String)session.getAttribute("IDEapFacultadSession");
+                    String idperiodometa=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("lista_estado_periodo_eap", ges.Listar_Estado_Periodo_EAP(idperiodometa, idEapFacultad));
+                    response.sendRedirect(LISTESTADOPERIODOEAP);
+                  
+               }
+               break;                
+                   
+               case 106: {                   
+                   // CERRAR APERTURAR AVANCE FACULTAD                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodofacultad = Integer.parseInt(request.getParameter("idestadoperiodofacultad"));
+                    ges.cerrarPOAestadoFacultad(idestadoperiodofacultad);
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idFilialfacultad=(String)session.getAttribute("IDFilialFacultadsession");
+                    String idPeriodoMeta=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("listar_estado_periodo_facultad", ges.Listar_Estado_Periodo_Facultad(idPeriodoMeta, idFilialfacultad));
+                    
+                    response.sendRedirect(LISTESTADOPERIODOFACULTAD);
+                  
+               }
+               break;       
+               case 107: {
+                   
+                   // APERTURAR AVANCE FACULTAD
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodofacultad = Integer.parseInt(request.getParameter("idestadoperiodofacultad"));
+                    ges.aperturarPOAestadoFacultad(idestadoperiodofacultad);
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idFilialfacultad=(String)session.getAttribute("IDFilialFacultadsession");
+                    String idPeriodoMeta=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("listar_estado_periodo_facultad", ges.Listar_Estado_Periodo_Facultad(idPeriodoMeta, idFilialfacultad));
+                    
+                    response.sendRedirect(LISTESTADOPERIODOFACULTAD);                  
+               }
+               break;                    
+               case 108: {                   
+                   // CERRAR APERTURAR AVANCE FACULTAD                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodofacultad = Integer.parseInt(request.getParameter("idestadoperiodofacultad"));
+                    ges.cerrarPMestadoFacultad(idestadoperiodofacultad);
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idFilialfacultad=(String)session.getAttribute("IDFilialFacultadsession");
+                    String idPeriodoMeta=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("listar_estado_periodo_facultad", ges.Listar_Estado_Periodo_Facultad(idPeriodoMeta, idFilialfacultad));
+                    
+                    response.sendRedirect(LISTESTADOPERIODOFACULTAD);
+                  
+               }
+               break;       
+               case 109: {
+                   
+                   // APERTURAR AVANCE FACULTAD
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodofacultad = Integer.parseInt(request.getParameter("idestadoperiodofacultad"));
+                    ges.aperturarPMestadoFacultad(idestadoperiodofacultad);
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idFilialfacultad=(String)session.getAttribute("IDFilialFacultadsession");
+                    String idPeriodoMeta=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("listar_estado_periodo_facultad", ges.Listar_Estado_Periodo_Facultad(idPeriodoMeta, idFilialfacultad));
+                    
+                    response.sendRedirect(LISTESTADOPERIODOFACULTAD);                  
+               }
+               break;     
+                   
+               case 110: {
+                   
+                   // CERRAR APERTURA AVANCE FILIAL
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodofilial = Integer.parseInt(request.getParameter("idestadoperiodofilial"));
+                    ges.cerrarPOAestadoFilial(idestadoperiodofilial);
+
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idFilial=(String)session.getAttribute("IDFilialsession");
+                    String idPeriodoMeta=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("listar_estado_periodo_filial", ges.Listar_Estado_Periodo_Filial_Apertura(idPeriodoMeta, idFilial));
+                    response.sendRedirect(LISTESTADOPERIODOFILIAL);
+                  
+               }
+               break;       
+               case 111: {
+                   
+                   // CERRAR APERTURA AVANCE FILIAL
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodofilial = Integer.parseInt(request.getParameter("idestadoperiodofilial"));
+                    ges.aperturarPOAestadoFilial(idestadoperiodofilial);
+
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idFilial=(String)session.getAttribute("IDFilialsession");
+                    String idPeriodoMeta=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("listar_estado_periodo_filial", ges.Listar_Estado_Periodo_Filial_Apertura(idPeriodoMeta, idFilial));
+                    response.sendRedirect(LISTESTADOPERIODOFILIAL);
+                  
+               }
+               break;       
+               case 112: {
+                   
+                   // CERRAR APERTURA AVANCE FILIAL
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodofilial = Integer.parseInt(request.getParameter("idestadoperiodofilial"));
+                    ges.cerrarPMestadoFilial(idestadoperiodofilial);
+
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idFilial=(String)session.getAttribute("IDFilialsession");
+                    String idPeriodoMeta=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("listar_estado_periodo_filial", ges.Listar_Estado_Periodo_Filial_Apertura(idPeriodoMeta, idFilial));
+                    response.sendRedirect(LISTESTADOPERIODOFILIAL);
+                  
+               }
+               break;       
+               case 113: {
+                   
+                   // CERRAR APERTURA AVANCE FILIAL
+                   
+                    ges=new GestionEstrategicoService();
+                    int idestadoperiodofilial = Integer.parseInt(request.getParameter("idestadoperiodofilial"));
+                    ges.aperturarPMestadoFilial(idestadoperiodofilial);
+
+                    ges=new GestionEstrategicoService();
+                    HttpSession session = request.getSession(true); 
+                    String idFilial=(String)session.getAttribute("IDFilialsession");
+                    String idPeriodoMeta=(String)session.getAttribute("IDPeriodosession");
+                    request.getSession().setAttribute("listar_estado_periodo_filial", ges.Listar_Estado_Periodo_Filial_Apertura(idPeriodoMeta, idFilial));
+                    response.sendRedirect(LISTESTADOPERIODOFILIAL);
+                  
+               }
+               break;       
                 
-                   
-                   
-               
                default: 
                 {
                   out.println("Vuelva a iniciar session error de internet !!");

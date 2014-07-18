@@ -30,7 +30,8 @@ String idtipometa_nombre;
 
 int idejeestrategico;
 String codigo;
-
+int condicion;
+int idavance;
 //---------------- oscar ---
 
 Integer idmeta;
@@ -47,6 +48,7 @@ Integer totalavance;
 String estrategia;
 Integer estadoactualizar;
 Integer idtemporadaejeestrategico;
+int cantidad;
 
 
     public int getIdavancevalida() {
@@ -64,6 +66,14 @@ Integer idtemporadaejeestrategico;
 
     public void setIdtipoarea(int idtipoarea) {
         this.idtipoarea = idtipoarea;
+    }
+
+    public int getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(int condicion) {
+        this.condicion = condicion;
     }
 
 
@@ -158,6 +168,14 @@ Integer idtemporadaejeestrategico;
 
     public void setNro(int nro) {
         this.nro = nro;
+    }
+
+    public int getIdavance() {
+        return idavance;
+    }
+
+    public void setIdavance(int idavance) {
+        this.idavance = idavance;
     }
 
 
@@ -298,6 +316,14 @@ Integer idtemporadaejeestrategico;
 
     public void setIdtemporadaejeestrategico(Integer idtemporadaejeestrategico) {
         this.idtemporadaejeestrategico = idtemporadaejeestrategico;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     
