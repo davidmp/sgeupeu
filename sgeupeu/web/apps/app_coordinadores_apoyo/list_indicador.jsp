@@ -645,7 +645,7 @@ function validarNumeroAvance(numero){
                      <%}%>
                     <%}else{%>
                     <center>   
-                         <button class="btn" onmouseover="" type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Se encuentra inavilitado"><i class="icon-book"></i></button>                          
+                         <button class="btn" onmouseover="" type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Se encuentra inhabilitado"><i class="icon-book"></i></button>                          
                     </center>   
                      <%}%> 
                  </td>       
@@ -685,7 +685,7 @@ function validarNumeroAvance(numero){
                      <%}%>
                   <%}else{%>
                     <center> 
-                     <button class="btn"  type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Se encuentra inavilitado">
+                     <button class="btn"  type="submit" data-toggle="modal" target="_blank" rel="tooltip" title="Se encuentra inhabilitado">
                          <img src="../../resources/file/nof.png" width="23" height="23"   />
                      </button>                                                                     
                   </center>   

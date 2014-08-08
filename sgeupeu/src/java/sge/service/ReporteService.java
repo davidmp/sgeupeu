@@ -7,7 +7,10 @@
 package sge.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import sge.dao.ReportesDAO;
+import sge.modelo.Filial;
+import sge.modelo.Tipoarea;
 
 /**
  *
@@ -56,6 +59,14 @@ public class ReporteService {
   public ArrayList reporteArchivos(int idAvance){
       dao=new ReportesDAO();
       return dao.reporteArchivos(idAvance);
+  }
+  public List<Tipoarea> areaPrePosgrado(){
+      dao=new ReportesDAO();
+      return dao.areaPrePosgrado();
+  }
+  public Filial filialPerido(int idfilial, int idperiodo){
+      dao=new ReportesDAO();
+      return dao.filialPerido(idfilial,idperiodo);
   }
     
 }

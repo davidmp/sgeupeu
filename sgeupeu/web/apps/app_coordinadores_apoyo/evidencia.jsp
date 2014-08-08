@@ -191,7 +191,7 @@ function validarExtencion(){
 
     <center> 
 
-    <a href="<%= request.getContextPath()%>/public/evidencias/<%=me.getUrl()%>" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" title="<%=me.getEvidencia()%>"><i class="icon-download-alt icon-white"></i></a>      
+<!--    <a href="<%= request.getContextPath()%>/public/evidencias/<%=me.getUrl()%>" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" title="<%=me.getEvidencia()%>"><i class="icon-download-alt icon-white"></i></a>      -->
     <a href="ftp://sger1:lectura@192.168.13.38/<%=carpeta%><%=me.getUrl()%>" role="button" class="btn btn-success" data-toggle="modal" target="_blank" rel="tooltip" title="<%=me.getEvidencia()%>"><i class="icon-download-alt icon-white"></i></a>                                    
     <button class="btn btn-danger" onmouseover="formindicador(<%=me.getIdevidencia()%>)" type="submit"><i class="icon-remove icon-white"></i></button>                       
     </center>

@@ -63,7 +63,7 @@ public class InformesActividad extends HttpServlet {
                 case 1: {
                 response.sendRedirect(INDEXCOORDINADOREAPINFORME);
                 }break;
-                case 2: {                   
+                case 2: {                  
                 is=new IndicadorService();
                 request.getSession().setAttribute("listar_periodo_meta", is.listaPeriodoMeta(request));  
                 is=new IndicadorService();
@@ -109,10 +109,7 @@ public class InformesActividad extends HttpServlet {
                  
                 rs=new ReporteService();                
                 ArrayList lista2=rs.ejesSeleccionadosPOA(ideapfacultad, eje);
-                request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
-                
-
-                
+                request.getSession().setAttribute("ejeSeleccionadosPOA", lista2);                                 
                 response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2);
                 }break;
 

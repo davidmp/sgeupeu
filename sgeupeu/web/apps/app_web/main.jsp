@@ -138,6 +138,9 @@ $(document).ready(function() {
                    <li><a href="<%=request.getContextPath()%>/GestionEstrategicoApoyo?opt=14"><div class="icon-chevron-right"></div>&nbsp;Gestión Estratégica (Areas de Apoyo)</a></li>                   
                    <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
                    <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EvaluacionGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte de Evaluaci&oacute;n</a></li>
+                   <% if(fiU.getIdfilial()==2){ %> 
+                   <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EstadisticaGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Estadistico</a></li>
+                  <% }%>
                   </ul>
                 </li> 
                 

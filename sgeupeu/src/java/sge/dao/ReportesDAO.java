@@ -8,8 +8,11 @@ package sge.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import sge.connexion.DBConn;
+import sge.modelo.Filial;
+import sge.modelo.Tipoarea;
 
 /**
  *
@@ -317,7 +320,7 @@ public class ReportesDAO extends DBConn{
         String subqry="";
         String subqry2="";
         String subqry4="";
-        if(idtipoarea==3){ subqry="AND u.idtemporadaejeestrategico='"+ejearea+"' "; subqry2="AND c.idejeestrategico='"+ejearea+"' "; }else{subqry=""; subqry2="";}
+        if(idtipoarea==3){ subqry=" AND u.idtemporadaejeestrategico='"+ejearea+"' "; subqry2=" AND c.idejeestrategico='"+ejearea+"' "; }else{subqry=""; subqry2="";}
         if(ejearea!=0) {        
         subqry4=" WHERE idtemporadaejeestrategico='"+ejearea+"' ";
         }else{subqry4="";}
@@ -409,5 +412,50 @@ public class ReportesDAO extends DBConn{
         finally{getCerrarConexion();}
         System.out.println(" Muetra los Archivos!!! ..>"+Lista.toArray().length);
     return Lista;
+    }     
+    
+    public List<Tipoarea> areaPrePosgrado(){        
+    String sql=" SELECT * FROM tipoarea WHERE idtipoarea IN (1) ";
+        List<Tipoarea> Lista = new ArrayList<Tipoarea>(); 
+        Map userPriv;
+        Tipoarea toto = null;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();            
+            while (rs.next()){           
+                toto = new Tipoarea();
+                toto.setNombre(rs.getString("nombre"));
+                toto.setEtiqueta(rs.getString("etiqueta"));
+                toto.setIdtipoarea(rs.getInt("idtipoarea"));
+                Lista.add(toto);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra areas!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }     
+    public Filial filialPerido(int idfilial, int idperiodo){        
+    String sql=" SELECT a.*,(SELECT p.periodo FROM periodo p WHERE p.idperiodo=a.idperiodo) AS periodo  FROM ( SELECT a.*, b.idperiodo FROM filial a INNER JOIN estadoperiodofilial b USING(idfilial)) AS a WHERE a.idfilial=? and a.idperiodo=? ";
+
+        Filial toto = null;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            ps.setInt(1, idfilial);
+            ps.setInt(2, idperiodo);
+            rs=ps.executeQuery();            
+            while (rs.next()){           
+                toto = new Filial();
+                toto.setDescripcion(rs.getString("descripcion"));
+                toto.setCategoria(rs.getString("categoria"));
+                toto.setRector(rs.getString("rector"));
+                toto.setEstado(rs.getString("periodo"));
+               
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra areas!!! ..>"+toto);
+    return toto;
     }     
 }
