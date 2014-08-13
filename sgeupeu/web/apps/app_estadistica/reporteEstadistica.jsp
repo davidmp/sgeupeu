@@ -161,7 +161,7 @@
                                 <td align="center"><br/>    
                                  <b> <%=++dmpN%>:  <%= matrizMadre[0][y][0]%> </b><br/><br/>
                                   <%
-	      	strXML = "<chart caption='Cumplimiento del Indicador - "+lista.getEstado()+"' subCaption='Por Escuela Académico Profesional' lineThickness='1' showValues='0' formatNumberScale='0' anchorRadius='2'   divLineAlpha='40' divLineColor='CC3300' divLineIsDashed='1' showAlternateHGridColor='1' alternateHGridColor='CC3300' shadowAlpha='40' numvdivlines='5' bgColor='FFFFFF,CC3300' bgAngle='270' bgAlpha='10,10' labelDisplay='Rotate' slantLabels='1' chartLeftMargin='40' chartTopMargin='10' chartRightMargin='20' chartBottomMargin='5' captionPadding='10' xAxisNamePadding='5' >";
+	      	strXML = "<chart caption='Cumplimiento del Indicador - "+lista.getEstado()+"' subCaption='Por Escuela Académico Profesional' lineThickness='1' showValues='1' formatNumberScale='0' anchorRadius='2'   divLineAlpha='40' divLineColor='CC3300' divLineIsDashed='1' showAlternateHGridColor='1' alternateHGridColor='CC3300' shadowAlpha='40' numvdivlines='5' bgColor='FFFFFF,CC3300' bgAngle='270' bgAlpha='10,10' labelDisplay='Rotate' slantLabels='1' chartLeftMargin='40' chartTopMargin='10' chartRightMargin='20' chartBottomMargin='5' captionPadding='10' xAxisNamePadding='5' >";
 	    	strCategories ="<categories>";	   
 	    	strDataCurr = "<dataset seriesName='Avance' color='F6BD0F'>";
    	        strDataPrev = "<dataset seriesName='Meta' color='"+color+"'>";                                  
