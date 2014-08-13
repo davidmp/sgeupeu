@@ -23,7 +23,7 @@
         <link type="text/css" rel="stylesheet" href="../../resources/css/style02.css"/>
         <link type="text/css" rel="stylesheet" href="../../resources/css/style03.css"/>         
         
-        <%
+        <%          
                 ArrayList lista=null;
                 lista = (ArrayList)request.getSession().getAttribute("cabeceraInformePOA");
                         

@@ -10,6 +10,7 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Iterator"%>
+<%@ include file="PictureCharts.jsp"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -20,14 +21,56 @@
         <link rel="stylesheet" type="text/css" href="rs/pgwmodal-v202.css">
         <script type="text/javascript" src="rs/jquery-pgwjs-rainbow-v202.js"></script>
         <script type="text/javascript" src="rs/pgwmodal-v202.js"></script>
-        
+
         <link type="text/css" rel="stylesheet" href="../../resources/css/style02.css"/>
-        <link type="text/css" rel="stylesheet" href="../../resources/css/style03.css"/>         
+        <link type="text/css" rel="stylesheet" href="../../resources/css/style03.css"/> 
+        <script type="text/javascript" src="../../resources/PictureCharts/PictureCharts.js"></script>        
         
         <%
+                int ideje=Integer.parseInt(request.getParameter("eje")==null?"0":request.getParameter("eje") );                
+                String nombreeje=request.getParameter("nombreeje")==null?"X":request.getParameter("nombreeje").toString();                
+                int idperiodo=Integer.parseInt(request.getParameter("idperiodo")==null?"0":request.getParameter("idperiodo") );                
+                int idtipoarea=Integer.parseInt(request.getParameter("idtipoarea")==null?"0":request.getParameter("idtipoarea"));               
+                int idFilialPri=Integer.parseInt(request.getParameter("idFilialPri")==null?"0":request.getParameter("idFilialPri"));               
+                ReporteService rs;
                 Filial lista=null;
-                lista = (Filial)request.getSession().getAttribute("cabeceraInformePOA");
+                lista = (Filial)request.getSession().getAttribute("cabeceraInformePOA");                
+                String partirNombre[]=(lista.getDescripcion()).split("-");
+                
+                Object  matrizMadre[][][];
 
+                int xcode=0;
+                Object matrizPersonal[][];
+                ArrayList listaCarrera=null;
+                
+                listaCarrera = (ArrayList)request.getSession().getAttribute("carrerasPregradoRE");                        
+                Iterator<Object> inter=listaCarrera.iterator();  
+                int cantidadCarrera = listaCarrera.size();
+                String[] nombrecarreras=new String[cantidadCarrera];
+                matrizMadre=new String[cantidadCarrera][0][0];
+                int i=0;
+                ArrayList listaIndica;
+                while(inter.hasNext()){                
+                Map datos=  (Map)inter.next();
+                rs=new ReporteService();
+                listaIndica=null;
+                
+                listaIndica=rs.evaluacionPlanEstrategico(Integer.parseInt(datos.get("ideapfacultad").toString()), idperiodo, idtipoarea, idFilialPri,ideje);                
+                matrizPersonal=new String[listaIndica.size()][4];
+                Iterator<Object> interXX=listaIndica.iterator();  
+                i=0;
+                while(interXX.hasNext()){
+                Map datosXX=  (Map)interXX.next();
+                matrizPersonal[i][0]=datosXX.get("nombreindicador").toString();
+                matrizPersonal[i][1]=datosXX.get("meta").toString();
+                matrizPersonal[i][2]=String.valueOf(Math.round(Double.parseDouble(datosXX.get("avance").toString())));
+                matrizPersonal[i][3]=datosXX.get("idtipometa").toString();
+                i++;
+                }
+                matrizMadre[xcode]=matrizPersonal;
+                nombrecarreras[xcode]=datos.get("nombre").toString();
+                xcode++;
+                }
         %>
         
     </head>
@@ -46,17 +89,22 @@
 
                             <table>
                                 <tr>                    
-                                    <td style="font-size: large" ><center><b><%=lista.getDescripcion() %></b> </center></td>
+                                    <td style="font-size: large" ><center><b><%=partirNombre[0] %></b> </center></td>
                                 </tr>
-                         
+                                <tr>                    
+                                    <td style="font-size: large" ><center><b><%=partirNombre[1] %></b>                                         
+                                        </center></td>
+                                </tr>
+                                
                                 <tr>
                                 <td style="font-size: small">
+                                    <br/>
                                 <center><% if(lista.getCategoria().equals("Filial")){ out.print("Vicerrector(a): "+ lista.getRector() ); }else{ out.print("Rector(a): "+ lista.getRector() );} %></center>
                                 </td>
                                 </tr>
                                 <tr>
                                 <td style="font-size: x-large"><br/><br/><br/>
-                                    <center><%="EVALUACI&Oacute;N DE PLAN ESTRAT&Eacute;GICO "+lista.getEstado() %> </center>
+                                    <center><%="ESTADISTICAS DE PLAN ESTRAT&Eacute;GICO "+lista.getEstado() %> </center>
                                 </td>
                                 </tr>
                             </table>
@@ -69,470 +117,104 @@
             <center><hr/></center>                                    
             </td>
             </tr>
-            
-            
-
+            <tr>
+                <td colspan="2" style="font-size: large" align="center" >
+                <center>
+                   
+                        <%
+                        String color="#";
+                        String nombre="";
+                        if(ideje==1 || ideje==5){ nombre="Enseñanza y Aprendizaje"; color="19cb4f"; }
+                        if(ideje==2 || ideje==6){ nombre="Investigación"; color="23d1f6"; }
+                        if(ideje==3){ nombre="Proyección Social y Extensión Universitaria"; color="5bf019"; }
+                        if(ideje==4){ nombre="Desarrollo Espiritual"; color="4ca5d3"; }
                         
-                        
-                        
-                        
-                        
-                        
-                        
-            <%
-                ReporteService rs;
-                ArrayList lista3;
-                Iterator<Object> inter3;
-                Map datos3;
-                
-                ArrayList lista4;
-                Iterator<Object> inter4;
-                Map datos4;
-                int x;
-                int y=0;
-                int m=0;
-                int contadorX=0;
-                int contadorY=0;
-                int contadorM=0;
-                double sumadorX=0;
-                double sumadorY=0;
-                double sumadorM=0;
-                int idtipoarea=0;
-                idtipoarea=Integer.parseInt(request.getParameter("idtipoarea")==null?"0":request.getParameter("idtipoarea") );
-                ArrayList listaEjes=null;
-                listaEjes = (ArrayList)request.getSession().getAttribute("ejeSeleccionadosPOA");            
-                Iterator<Object> inter2=listaEjes.iterator();
-                contadorY=listaEjes.size();
-                
-                Object[][] objeGeneral;
-                objeGeneral=new Object[listaEjes.size()][3];
-                int objGX=0;
-                int objGY= -1;
-                while(inter2.hasNext()){
-                    Map datos=  (Map)inter2.next(); 
-                    objeGeneral[objGX][++objGY]=datos.get("idejeestrategico");
-                    objeGeneral[objGX][++objGY]=datos.get("nombreejeestrategico");
-                    objeGeneral[objGX][++objGY]=datos.get("objetivogeneral");
-                    objGX=objGX+1;
-                    objGY=-1;                    
-                }
-        
-                
-                int objGeneralM=0;
-                int objGeneralM1=0;
-                int objPerspectivaM=0;
-                int objEstrategicoM=0;
-                
-                int idObjGeneralM=0;
-                int idObjGeneralM1=0;
-                int idObjPerspectivaM=0;
-                int idObjEstrategicoM=0;
-                int cantidadDMP=0;
-                DecimalFormat formato= new DecimalFormat("###.##");
-                
-                int objCondicionM=0;
-                int objCondicionI=0;
-                int objCondicionIA=0;
-               
-                ArrayList listaAvance=null;
-                listaAvance = (ArrayList)request.getSession().getAttribute("avanceTodoSemaforo");            
-                Iterator<Object> interA=listaAvance.iterator();                
-                objCondicionI=listaAvance.size();
-                
-                int [][] resumenData;                
-                resumenData=new int[5][1];                  
-                while(interA.hasNext()){
-                objPerspectivaM=0;
-                Map datos=  (Map)interA.next();  
-                objCondicionIA=objCondicionIA+1;                     
-                
-                
-                if(idObjGeneralM!=Integer.parseInt(datos.get("idejeestrategico").toString())) {   
-                objCondicionM=objCondicionM+1;
-                %>
-                
-
-              
-                <%
-                if(idObjGeneralM!=0){
-                %>
+                        %>
+                        Eje: <%=nombre%>                   
+                     
+                </center> 
+                        <br/>
+            </td>
+            </tr>
+            <tr>
+            <td colspan="2">
+                <center>
+                    <div>
+                        <table  border="0" style="width: 100%;border-collapse:collapse" >
                             
-                <% if(objGeneralM!=Integer.parseInt(objeGeneral[objGeneralM][0].toString()) ){ %>
-                <tr>
-                <td colspan="10" style="width: 100%">
-                    <table border="1" style="width: 100%;border-collapse:collapse">
-                        <tr>
-                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES </b></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 50%"><b>Condici&oacute;n</b></td>
-                            <td style="width: 10%"><b>Cantidad</b></td>
-                            <td style="width: 20%"><b>Porcentaje</b></td>
-                            <td style="width: 20%"><b>Color</b></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) no cumplido(s)</td>
-                            <td><%=resumenData[0][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/0.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) en proceso</td>
-                            <td><%=resumenData[1][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[1][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/1.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) cumplido(s)</td>
-                            <td><%=resumenData[2][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[2][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/2.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) superado(s)</td>
-                            <td><%=resumenData[3][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[3][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/3.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) no programado(s)</td>
-                            <td><%=resumenData[4][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[4][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/4.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                    </table>
-                    </td>
-                </tr>                
+                          <%
+                          String strXML="";
+                          String strCategories="";
+                          String strDataCurr ="";
+                          String strDataPrev="";
+                          String chartCode="";
+                          String Junt="";
+                          int dmpN=0;
+                          for(int y=0; y<matrizMadre[0].length;y++){
+                         
+                          
 
-              <% resumenData=new int[5][1]; cantidadDMP=0;} %> 
-
-              
-              
-                            </table> 
-                         </td>
-                        </tr>
-                       
-                    </table>                     
-                  </td>                    
-                </tr> 
-               
-                <%
-                }
-                %>
-                 
-                <%
-                if(objGeneralM < objeGeneral.length){
-                %>
-                <tr>
-                    <td  colspan="2" style="width: 100%">
-                        <table style="width: 100%;" >
+   	                                    
+                          %>  
+                            
                             <tr>
-                                <td style="font-size: medium">
-                                    <center><b><%=++y%>. -<%=(objeGeneral[objGeneralM][1].toString()) %> </b></center>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td style="font-size: medium"><br/>
-                                    <center><b>MATRIZ DE DESPLIEGUE DE <%= ((objeGeneral[objGeneralM][1])).toString().toUpperCase() %> </b> </center> 
+                                <td align="center"><br/>    
+                                 <b> <%=++dmpN%>:  <%= matrizMadre[0][y][0]%> </b><br/><br/>
+                                  <%
+	      	strXML = "<chart caption='Cumplimiento del Indicador - "+lista.getEstado()+"' subCaption='Por Escuela Académico Profesional' lineThickness='1' showValues='0' formatNumberScale='0' anchorRadius='2'   divLineAlpha='40' divLineColor='CC3300' divLineIsDashed='1' showAlternateHGridColor='1' alternateHGridColor='CC3300' shadowAlpha='40' numvdivlines='5' bgColor='FFFFFF,CC3300' bgAngle='270' bgAlpha='10,10' labelDisplay='Rotate' slantLabels='1' chartLeftMargin='40' chartTopMargin='10' chartRightMargin='20' chartBottomMargin='5' captionPadding='10' xAxisNamePadding='5' >";
+	    	strCategories ="<categories>";	   
+	    	strDataCurr = "<dataset seriesName='Avance' color='F6BD0F'>";
+   	        strDataPrev = "<dataset seriesName='Meta' color='"+color+"'>";                                  
+                                  %>                                 
+                                  <% for (int n=0; n<nombrecarreras.length;n++){%>                                   
+                                  <%
+                                      int metaX=Integer.parseInt((matrizMadre[n][y][1]).toString());
+                                      int avanceX=Integer.parseInt((matrizMadre[n][y][2]).toString());
+                            %>
+                            <%                                      
+			strCategories = strCategories + "<category name='"+nombrecarreras[n]+"' />";
+                        strDataCurr = strDataCurr+"<set value='"+avanceX+"'  />";
+                        strDataPrev = strDataPrev + "<set value='"+metaX+"'  />";
+                                                          
+                                  
+                                  %>
+                                  <% } 
+                                  
+                strDataCurr = strDataCurr + "</dataset>";	    	
+	    	strDataPrev = strDataPrev + "</dataset>";
+	    	
+	        
+	    	Junt= strDataPrev+strDataCurr;
+	    	strCategories = strCategories + "</categories>";
+    		strXML = strXML + strCategories +Junt+"</chart>";
+		//chartCode= createChart("../../resources/PictureCharts/Multiserie/MSColumn3D.swf", "", strXML, "productSales", 600, 300, false, false);                                  
+		chartCode= createChartHTML("../../resources/PictureCharts/Multiserie/MSColumn3D.swf", "", strXML, "productSales", 800, 300, false);                                  
+                                  
+                                  %>
+                                  <%=chartCode%>                                  
+                                  
                                 </td>
                             </tr>
+                          <%
+                          strXML="";
+                          strCategories="";
+                          strDataCurr ="";
+                          strDataPrev="";                          
+                          Junt="";
+                          chartCode="";
+                          }
                           
-                          <tr>
-                            <td style="width: 100%; ">
-                            <br/>
-                            <table  border="1" style="width: 100%;border-collapse:collapse" >
-                                <tr>
-                                    <td style="width: 10%" ><b> OBJETIVO</b> </td>
-                                    <td style="width: 10%" ><b> PERSPECTIVA</b> </td>
-                                    <td style="width: 20%" ><b> ESTRATEGIA</b> </td>
-                                    <td style="width: 4%" ><b> ID</b> </td>
-                                    <td style="width: 34%" ><b> INDICADORES CLAVES DE DESEMPE&Ntilde;O</b> </td>
-                                    <td style="width: 5%" ><b> META</b> </td>
-                                    <td style="width: 5%" ><b> AVANCE</b> </td>
-                                    <td style="width: 4%" align="center" ><b> COND.</b> </td>
-                                    <td style="width: 4%" align="center" ><b> DOC.</b> </td>
-                                    <td style="width: 4%" align="center" ><b> OBS.</b> </td>
-                                </tr>   
-                                
-                <%       }
-                
-                 objGeneralM=objGeneralM+1;
-                 }
-                %>
-                
-                <% if(idObjGeneralM1!=Integer.parseInt(datos.get("idejeestrategico").toString())) {  %>
-                
-                                <tr>
-                                    <td rowspan="<%=Integer.parseInt(datos.get("cantidadeje").toString()) %>"> <b><%=datos.get("idejeestrategico").toString()%></b>:  <%=(objeGeneral[objGeneralM-1][2]).toString()%> </td>                                    
-                                    <td rowspan="<%=Integer.parseInt(datos.get("cantidadperspectiva").toString()) %>"><b><%=datos.get("nombreperspectiva").toString()%></b> </td>
-                                    <% idObjPerspectivaM = Integer.parseInt(datos.get("idperspectiva").toString()); %>                                    
-                                    <td rowspan="<%=Integer.parseInt(datos.get("cantidadestrategia").toString()) %>"> <b><%=datos.get("codigo").toString()%></b>:  <%=datos.get("nombre").toString()%> </td>
-                                    <%  idObjEstrategicoM = Integer.parseInt(datos.get("idejeestrategia").toString()); %>
-                                    <td><b><%=datos.get("codigoin").toString()%></b></td>
-                                    <td><%=datos.get("nombreindicador").toString()%></td>
-                                    <td align="center" >
-                                    <% if(Integer.parseInt(datos.get("idtipometa").toString())==1) { %>
-                                        #<b><%=datos.get("meta")%></b>
-                                    <% }else{ 
-                                     %>
-                                     <b><%=datos.get("meta")%></b>%
-                                   <% } %>
-                                    </td>
-                                    <td align="center" >
-                                    <% if(Integer.parseInt(datos.get("idtipometa").toString())==1) { %>
-                                    #<b><%= Math.round(Double.parseDouble(datos.get("avance").toString())) %></b>
-                                    <% }else{ 
-                                     %>
-                                     <b><%=Math.round(Double.parseDouble(datos.get("avance").toString()))%></b>%
-                                   <% } %>
-                                    </td>
-
-                                    <td  >
-                                        <div>
-                                        <center>                                        
-                                            
-                                            <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%out.print(datos.get("codigoin").toString());%>)  <% out.print(datos.get("nombreindicador").toString());%>')">
-                                            <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                            
-                                        </center>
-                                        </div>
-                                    </td>
-                                        <td align="center">
-                                            <% if(Integer.parseInt(datos.get("archivo").toString())>=1) {  %>
-                                            <a href="javascript:void(0)" onclick="openDialogDmp('<%=datos.get("idavance").toString()%>','<%=datos.get("idfilial").toString()%>')">
-                                            <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
-                                            </a>
-                                            <% }else{ %>
-                                            <img src="../../resources/file/no.png" width="30" height="30" title="0"   alt="Archivo"/>
-                                            <% } %>                                            
-                                        </td>    
-                                        <td align="center">
-                                           
-                                            <a href="javascript:void(0)" onclick="openDialogLista('<%=datos.get("idavance").toString()%>','(<%out.print(datos.get("codigoin").toString());%>)  <% out.print(datos.get("nombreindicador").toString()); %>')">
-                                            <img src="../../resources/32/<%=datos.get("obs").toString()%>.png" width="30" height="30" title="<%=datos.get("obs").toString()%>"  alt="Observaciones"/>
-                                            </a> 
-                                           
-                                        </td>    
-                                </tr>
-                <% idObjGeneralM1=Integer.parseInt(datos.get("idejeestrategico").toString()); %>                    
-                
-                
-                <% } else if(idObjPerspectivaM!=Integer.parseInt(datos.get("idperspectiva").toString())) {  %>  
-                                <tr>
-                                    
-                                    <td rowspan="<%=Integer.parseInt(datos.get("cantidadperspectiva").toString()) %>"> <b><%=datos.get("nombreperspectiva").toString()%></b> </td>
-                                    <td rowspan="<%=Integer.parseInt(datos.get("cantidadestrategia").toString()) %>"> <b><%=datos.get("codigo").toString()%></b>:  <%=datos.get("nombre").toString()%> </td>
-                                    <%  idObjEstrategicoM = Integer.parseInt(datos.get("idejeestrategia").toString()); %>
-                                    <td><b><%=datos.get("codigoin").toString()%></b></td>
-                                    <td><%=datos.get("nombreindicador").toString()%></td>
-                                    <td align="center" >
-                                    <% if(Integer.parseInt(datos.get("idtipometa").toString())==1) { %>
-                                        #<b><%=datos.get("meta")%></b>
-                                    <% }else{ 
-                                     %>
-                                     <b><%=datos.get("meta")%></b>%
-                                   <% } %>
-                                    </td>
-                                    <td align="center" >
-                                    <% if(Integer.parseInt(datos.get("idtipometa").toString())==1) { %>
-                                    #<b><%= Math.round(Double.parseDouble(datos.get("avance").toString())) %></b>
-                                    <% }else{ 
-                                     %>
-                                     <b><%=Math.round(Double.parseDouble(datos.get("avance").toString()))%></b>%
-                                   <% } %>
-                                    </td>
-                                    <td  >
-                                        <center>                                        
-                                        
-                                            <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%=datos.get("codigoin").toString()%>)  <% out.print(datos.get("nombreindicador").toString());%>')">
-                                            <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                         
-                                        </center>
-                                    </td>
-                                        <td align="center">
-                                            <% if(Integer.parseInt(datos.get("archivo").toString())>=1) {  %>
-                                            <a href="javascript:void(0)" onclick="openDialogDmp('<%=datos.get("idavance").toString()%>','<%=datos.get("idfilial").toString()%>')">
-                                            <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
-                                            </a>
-                                            <% }else{ %>
-                                            <img src="../../resources/file/no.png" width="30" height="30"  title="0"   alt="Archivo"/>
-                                            <% } %>                                            
-                                        </td>      
-                                        <td align="center">
-                                            <a href="javascript:void(0)" onclick="openDialogLista('<%=datos.get("idavance").toString()%>','(<%=datos.get("codigoin").toString()%>)  <% out.print(datos.get("nombreindicador").toString());%>')">
-                                            <img src="../../resources/32/<%=datos.get("obs").toString()%>.png" width="30" height="30" title="<%=datos.get("obs").toString()%>"  alt="Observaciones"/>
-                                            </a>                                           
-                                        </td>      
-                                </tr>  
-                <%  idObjPerspectivaM = Integer.parseInt(datos.get("idperspectiva").toString()); %>                  
-               <% } else if(idObjEstrategicoM!=Integer.parseInt(datos.get("idejeestrategia").toString())){  %>
-                
-                                <tr>
-
-                                    <td rowspan="<%=Integer.parseInt(datos.get("cantidadestrategia").toString()) %>"> <b><%=datos.get("codigo").toString()%></b>:  <%=datos.get("nombre").toString()%> </td>
-                                    <td><b><%=datos.get("codigoin").toString()%></b></td>
-                                    <td><%=datos.get("nombreindicador").toString()%></td>
-                                    <td align="center" >
-                                    <% if(Integer.parseInt(datos.get("idtipometa").toString())==1) { %>
-                                        #<b><%=datos.get("meta")%></b>
-                                    <% }else{ 
-                                     %>
-                                     <b><%=datos.get("meta")%></b>%
-                                   <% } %>
-                                    </td>
-                                    <td align="center" >
-                                    <% if(Integer.parseInt(datos.get("idtipometa").toString())==1) { %>
-                                    #<b><%= Math.round(Double.parseDouble(datos.get("avance").toString())) %></b>
-                                    <% }else{ 
-                                     %>
-                                     <b><%=Math.round(Double.parseDouble(datos.get("avance").toString()))%></b>%
-                                   <% } %>
-                                    </td>
-                                    <td  >
-                                        <center>                                        
-                                        
-                                            <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%out.print(datos.get("codigoin").toString());%>)<% out.print(datos.get("nombreindicador").toString());%>')">
-                                            <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                         
-                                        </center>
-                                    </td>
-                                        <td align="center">
-                                            <% if(Integer.parseInt(datos.get("archivo").toString())>=1) {  %>
-                                            <a href="javascript:void(0)" onclick="openDialogDmp('<%=datos.get("idavance").toString()%>','<%=datos.get("idfilial").toString()%>')">
-                                            <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
-                                            </a>
-                                            <% }else{ %>
-                                            <img src="../../resources/file/no.png" width="30" height="30"  title="0"   alt="Archivo"/>
-                                            <% } %>                                            
-                                        </td>     
-                                        <td align="center">
-                                            <a href="javascript:void(0)" onclick="openDialogLista('<%=datos.get("idavance").toString()%>','(<%out.print(datos.get("codigoin").toString());%>)  <% out.print(datos.get("nombreindicador").toString());%>')">
-                                            <img src="../../resources/32/<%=datos.get("obs").toString()%>.png" width="30" height="30" title="<%=datos.get("obs").toString()%>"  alt="Observaciones"/>
-                                            </a>                                           
-                                        </td>     
-                                </tr>                
-                <%  idObjEstrategicoM = Integer.parseInt(datos.get("idejeestrategia").toString()); %> 
-                <% } else {%>
-                                <tr>                                    
-                                    <td><b><%=datos.get("codigoin").toString()%></b></td>
-                                    <td><%=datos.get("nombreindicador").toString()%></td>
-                                    <td align="center" >
-                                    <% if(Integer.parseInt(datos.get("idtipometa").toString())==1) { %>
-                                        #<b><%=datos.get("meta")%></b>
-                                    <% }else{ 
-                                     %>
-                                     <b><%=datos.get("meta")%></b>%
-                                   <% } %>
-                                    </td>
-                                    <td align="center" >
-                                    <% if(Integer.parseInt(datos.get("idtipometa").toString())==1) { %>
-                                    #<b><%= Math.round(Double.parseDouble(datos.get("avance").toString())) %></b>
-                                    <% }else{ 
-                                     %>
-                                     <b><%=Math.round(Double.parseDouble(datos.get("avance").toString()))%></b>%
-                                   <% } %>
-                                    </td>
-                                    <td  >
-                                        <center>      
-                                            <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<% out.print(datos.get("codigoin").toString());%>) :: <% out.print(datos.get("nombreindicador").toString()); %>')">
-                                            <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                             
-                                            
-                                        </center>
-                                    </td>
-                                        <td align="center">
-                                            <% if(Integer.parseInt(datos.get("archivo").toString())>=1) {  %>
-                                            <a href="javascript:void(0)" onclick="openDialogDmp('<%=datos.get("idavance").toString()%>','<%=datos.get("idfilial").toString()%>')">
-                                            <img src="../../resources/file/si.png" width="30" height="30" title="<%=datos.get("archivo").toString()%>"  alt="Archivo"/>
-                                            </a>
-                                            <% }else{ %>
-                                            <img src="../../resources/file/no.png" width="30" height="30" title="0"  alt="Archivo"/>
-                                            <% } %>                                            
-                                        </td>      
-                                        <td align="center">
-                                            <a href="javascript:void(0)" onclick="openDialogLista('<%=datos.get("idavance").toString()%>','(<% out.print(datos.get("codigoin").toString()); %>)  <% out.print(datos.get("nombreindicador").toString()); %>')">
-                                            <img src="../../resources/32/<%=datos.get("obs").toString()%>.png" width="30" height="30" title="<%=datos.get("obs").toString()%>"  alt="Observaciones"/>
-                                            </a>                                          
-                                        </td>      
-                                </tr>                                                          
+                          
+                          %>                        
+                            
+                        </table>                         
+                    </div>  
+                </center>
                         
-                <% } %>
-                
-                <% if(objCondicionIA==objCondicionI ){ %>
-                <%
-                switch(Integer.parseInt(datos.get("tipoavance").toString())){                    
-                    case 0:{  resumenData[0][0]=(resumenData[0][0])+1; cantidadDMP++; }break;
-                    case 1:{  resumenData[1][0]=(resumenData[1][0])+1; cantidadDMP++;}break;
-                    case 2:{  resumenData[2][0]=(resumenData[2][0])+1; cantidadDMP++;}break;
-                    case 3:{  resumenData[3][0]=(resumenData[3][0])+1; cantidadDMP++;}break;
-                    case 4:{  resumenData[4][0]=(resumenData[4][0])+1; cantidadDMP++;}break;
-                }                 
-                %>
-                
-                <tr>
-                <td colspan="10" style="width: 100%;">
-                        <table border="1" style="width: 100%;border-collapse:collapse">
-                        <tr>
-                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES </b></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 50%"><b>Condici&oacute;n</b></td>
-                            <td style="width: 10%"><b>Cantidad</b></td>
-                            <td style="width: 20%"><b>Porcentaje</b></td>
-                            <td style="width: 20%"><b>Color</b></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) no cumplido(s)</td>
-                            <td><%=resumenData[0][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/0.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) en proceso</td>
-                            <td><%=resumenData[1][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[1][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/1.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) cumplido(s)</td>
-                            <td><%=resumenData[2][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[2][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/2.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) superado(s)</td>
-                            <td><%=resumenData[3][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[3][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/3.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                        <tr>
-                            <td>Indicador(es) no programado(s)</td>
-                            <td><%=resumenData[4][0]%> </td>
-                            <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[4][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
-                            <td><img src="../../resources/48/4.png" width="30" height="30"   alt="semaforo"/></td>
-                        </tr>
-                    </table>
-                    </td>
-                </tr>                
-
-              <% resumenData=new int[5][1]; cantidadDMP=0;} %> 
-
-                <%
-                
-                switch(Integer.parseInt(datos.get("tipoavance").toString())){                    
-                    case 0:{  resumenData[0][0]=(resumenData[0][0])+1; cantidadDMP++; }break;
-                    case 1:{  resumenData[1][0]=(resumenData[1][0])+1; cantidadDMP++;}break;
-                    case 2:{  resumenData[2][0]=(resumenData[2][0])+1; cantidadDMP++;}break;
-                    case 3:{  resumenData[3][0]=(resumenData[3][0])+1; cantidadDMP++;}break;
-                    case 4:{  resumenData[4][0]=(resumenData[4][0])+1; cantidadDMP++;}break;
-                }                
-                idObjGeneralM=Integer.parseInt(datos.get("idejeestrategico").toString());
-                }
-                %>
-                
-     
-                
-        </table>
+            </td>
+            </tr>
+               
+           </table>
 <script type="text/javascript">
 
 

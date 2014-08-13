@@ -68,5 +68,8 @@ public class ReporteService {
       dao=new ReportesDAO();
       return dao.filialPerido(idfilial,idperiodo);
   }
-    
+  public ArrayList reporteCarrerasPregrado(int idfilial){
+      dao=new ReportesDAO();
+      return dao.reporteCarrerasPregrado(idfilial);
+  }    
 }

@@ -1,4 +1,5 @@
 
+
 <%@page import="sge.modelo.Tipoarea"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.Iterator"%>
@@ -136,8 +137,7 @@ List<Tipoarea> tipoArea=null;
             <% } } %>
         </select>
         Eje        
-        <select style="width: 180px" id="ideje1" name="ideje1">
-            <option value="0">Todos</option>
+        <select style="width: 180px" id="ideje1" name="ideje1">            
             <%
 
             ejeEs=(List<Ejeestrategico>)request.getSession().getAttribute("listar_eje");              
@@ -145,7 +145,7 @@ List<Tipoarea> tipoArea=null;
                 for(Ejeestrategico ejeE:ejeEs){
                             
             %>
-            <option value="<%=ejeE.getIdejeestrategico() %>"> <%=ejeE.getNombre() %> </option>
+            <option value="<%=ejeE.getIdejeestrategico() %>*<%=ejeE.getNombre() %>"> <%=ejeE.getNombre() %> </option>
             <% } } %>
         </select>
         

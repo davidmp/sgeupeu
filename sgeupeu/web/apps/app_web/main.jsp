@@ -120,7 +120,9 @@ $(document).ready(function() {
                       <li><a href="<%=request.getContextPath()%>/GestionEstrategicoApoyo?opt=14"><div class="icon-chevron-right"></div>&nbsp;Admin - Gestión Estratégica (Direcciones de Apoyo)</a></li>
                       <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
                       <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EvaluacionGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte de Evaluaci&oacute;n</a></li>
-                      
+                        <% // if(fiU.getIdfilial()==2){ %> 
+                        <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EstadisticaGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Estadistico</a></li>
+                        <% // }%>                      
                   </ul>
                 </li>
                 
@@ -138,9 +140,9 @@ $(document).ready(function() {
                    <li><a href="<%=request.getContextPath()%>/GestionEstrategicoApoyo?opt=14"><div class="icon-chevron-right"></div>&nbsp;Gestión Estratégica (Areas de Apoyo)</a></li>                   
                    <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
                    <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EvaluacionGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte de Evaluaci&oacute;n</a></li>
-                   <% if(fiU.getIdfilial()==2){ %> 
+                   <% // if(fiU.getIdfilial()==2){ %> 
                    <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EstadisticaGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Estadistico</a></li>
-                  <% }%>
+                  <% // }%>
                   </ul>
                 </li> 
                 
@@ -195,7 +197,9 @@ $(document).ready(function() {
                          <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformesActividadApoyo?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades </a></li>
                          <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadAuditEapAreas?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades de EAP/Áreas </a></li>
                          <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EvaluacionAuditEapAreas?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Monitoreo de EAP/Áreas </a></li>
-                         
+                         <% // if(fiU.getIdfilial()==2){ %> 
+                         <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EstadisticaGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Estadistico</a></li>
+                         <% // }%>                          
                          
 <!--                         <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/IndicadorApoyo?opt=14&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reportes Consolidados</a></li>-->
                         </ul>
@@ -206,9 +210,11 @@ $(document).ready(function() {
                 <li class="dropdown">
                   <a href="#" data-toggle="dropdown" class="dropdown-toggle"><div class="icon-user icon-white"></div>&nbsp;<%=w.getIdcategoriausuario_nombre()%>&nbsp;<b class="caret"></b></a>
                   <ul  class="dropdown-menu">                      
-                      <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
-                      <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EvaluacionGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte de Evaluaci&oacute;n</a></li>
-                      
+                        <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/InformeActividadGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Actividades</a></li>
+                        <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EvaluacionGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte de Evaluaci&oacute;n</a></li>
+                        <% // if(fiU.getIdfilial()==2){ %> 
+                        <li><a data-target=".marketing" data-toggle="tab" href="<%=request.getContextPath()%>/EstadisticaGeneral?opt=1&idfilial=<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>&ideapfacultad=<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>&idfilialfacultad=<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>"><div class="icon icon-minus"></div>&nbsp;Reporte Estadistico</a></li>
+                        <% // }%>                      
                   </ul>
                 </li>                  
                   <% } else

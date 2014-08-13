@@ -457,5 +457,31 @@ public class ReportesDAO extends DBConn{
         finally{getCerrarConexion();}
         System.out.println(" Muetra areas!!! ..>"+toto);
     return toto;
+    }   
+    
+    public ArrayList reporteCarrerasPregrado(int idfilial){        
+    String sql=" SELECT * FROM (SELECT  b.ideapfacultad, b.nombre, b.ideap,a.idfilialfacultad, a.idfilial, a.direccion FROM (SELECT * FROM filial INNER JOIN filialfacultad USING(idfilial)) a INNER JOIN ( SELECT * FROM eapfacultad INNER JOIN (SELECT * FROM eap WHERE idtipoarea NOT IN (3,2) AND ideap NOT IN (48,49,17,16,14,13,9,8)) a USING (ideap)) b USING(idfilialfacultad) ) c "
+            + " WHERE c.idfilial=? ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            ps.setInt(1, idfilial);
+            rs=ps.executeQuery();            
+            while (rs.next()){           
+                userPriv = new HashMap();
+                userPriv.put("ideapfacultad", rs.getInt("ideapfacultad"));
+                userPriv.put("nombre", rs.getString("nombre"));
+                userPriv.put("ideap", rs.getInt("ideap"));
+                userPriv.put("idfilialfacultad", rs.getInt("idfilialfacultad"));
+                userPriv.put("idfilial", rs.getInt("idfilial"));                
+                userPriv.put("direccion", rs.getString("direccion"));                
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra las carreras!!! ..>"+Lista.toArray().length);
+    return Lista;
     }     
 }

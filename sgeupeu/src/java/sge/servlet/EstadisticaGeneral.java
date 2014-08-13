@@ -101,9 +101,11 @@ public class EstadisticaGeneral extends HttpServlet {
                     
                 case 3: {
                 int periodo=0;
-                int eje=0;
+                String eje="";
                 int tipoarea;
-                eje=Integer.parseInt(request.getParameter("ideje1")==null?"0":request.getParameter("ideje1") );                
+                eje=request.getParameter("ideje1")==null?"0":request.getParameter("ideje1");    
+                String[] vectorDatos=(eje.replace('*','/')).split("/");
+                
                 periodo=Integer.parseInt(request.getParameter("perido1")==null?"0":request.getParameter("perido1") );                
                 tipoarea=Integer.parseInt(request.getParameter("tipoarea1")==null?"0":request.getParameter("tipoarea1"));
 
@@ -113,15 +115,14 @@ public class EstadisticaGeneral extends HttpServlet {
                 lista=rs.filialPerido(Integer.parseInt(idFilialPri), periodo);
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
                 
-               /* rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
-                request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
-                
-                rs=new ReporteService();
+                rs=new ReporteService();                
+                ArrayList lista2=rs.reporteCarrerasPregrado(Integer.parseInt(idFilialPri));
+                request.getSession().setAttribute("carrerasPregradoRE", lista2); 
+                /*rs=new ReporteService();
                 ArrayList lista3=rs.evaluacionPlanEstrategico(Integer.parseInt(vectorDatos[0]), periodo, Integer.parseInt(vectorDatos[1]), Integer.parseInt(idFilialPri),eje);
                 request.getSession().setAttribute("avanceTodoSemaforo", lista3); */
                 
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?idtipoarea="+tipoarea+"&idperiodo="+periodo+"&eje="+eje);                             
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?idtipoarea="+tipoarea+"&idperiodo="+periodo+"&eje="+vectorDatos[0]+"&idFilialPri="+idFilialPri+"&nombreeje="+vectorDatos[1]);                             
                 }break;
     
                 default:{
