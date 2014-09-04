@@ -89,18 +89,18 @@ public class InformeActividadAuditEapAreas extends HttpServlet {
                 mes1=Integer.parseInt(request.getParameter("mesinicio1")==null?"0":request.getParameter("mesinicio1") );
                 mes2=Integer.parseInt(request.getParameter("mesfin1")==null?"0":request.getParameter("mesfin1") );                
                 datosGeneral=(request.getParameter("eap1")==null?"0":request.getParameter("eap1")).toString();
-                
+                periodo=(request.getParameter("perido1")==null?"0":request.getParameter("perido1")).toString();
                 String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
                 
                 rs=new ReporteService();
-                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]), Integer.parseInt(periodo));
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
                 System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
                 rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje,Integer.parseInt(periodo));
                 request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
                 
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?mes1="+mes1+"&mes2="+mes2);  
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);  
                 
                 }break;
                 case 5: {
@@ -114,18 +114,18 @@ public class InformeActividadAuditEapAreas extends HttpServlet {
                 mes1=Integer.parseInt(request.getParameter("mesinicio2")==null?"0":request.getParameter("mesinicio2") );
                 mes2=Integer.parseInt(request.getParameter("mesfin2")==null?"0":request.getParameter("mesfin2") );                
                 datosGeneral=(request.getParameter("eap2")==null?"0":request.getParameter("eap2")).toString();
-                
+                periodo=(request.getParameter("perido2")==null?"0":request.getParameter("perido2")).toString();
                 String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
                 
                 rs=new ReporteService();
-                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]), Integer.parseInt(periodo));
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
                 System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
                 rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje, Integer.parseInt(periodo));
                 request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
                 
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2);  
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);  
                 
                 }break;
                 case 4: {

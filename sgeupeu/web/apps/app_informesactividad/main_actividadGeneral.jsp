@@ -118,7 +118,7 @@ List<Periodometa> periodoM=null;
         </select>
         
         Periodo
-        <select style="width: 80px" id="perido1" name="perido1">
+        <select style="width: 80px" id="periodo1" name="periodo1">
             <%
    
     periodoM=(List<Periodometa>)request.getSession().getAttribute("listar_periodo_meta");            
@@ -183,7 +183,7 @@ List<Periodometa> periodoM=null;
         </select>
         
         Periodo
-        <select style="width: 80px" id="perido2" name="perido2">
+        <select style="width: 80px" id="periodo2" name="periodo2">
             <%
    
     periodoM=(List<Periodometa>)request.getSession().getAttribute("listar_periodo_meta");            
@@ -250,7 +250,7 @@ List<Periodometa> periodoM=null;
         </select>
         
         Periodo
-        <select style="width: 80px" id="perido3" name="perido3">
+        <select style="width: 80px" id="periodo3" name="periodo3">
             <%
    
     periodoM=(List<Periodometa>)request.getSession().getAttribute("listar_periodo_meta");            

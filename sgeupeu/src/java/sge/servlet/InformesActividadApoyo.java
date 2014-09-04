@@ -79,18 +79,19 @@ public class InformesActividadApoyo extends HttpServlet {
                 mes1=Integer.parseInt(request.getParameter("mesinicio1")==null?"0":request.getParameter("mesinicio1") );
                 mes2=Integer.parseInt(request.getParameter("mesfin1")==null?"0":request.getParameter("mesfin1") );
                 Eap eU=(Eap)request.getSession().getAttribute("eapUsuario");
+                periodo=(request.getParameter("perido1")==null?"0":request.getParameter("perido1")).toString();
                 int ideapfacultad=eU.getIdeapfacultad();               
                 rs=new ReporteService();
-                ArrayList lista=rs.cabeceraPOA(ideapfacultad);
+                ArrayList lista=rs.cabeceraPOA(ideapfacultad, Integer.parseInt(periodo));
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
                  
                 rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(ideapfacultad, eje);
+                ArrayList lista2=rs.ejesSeleccionadosPOA(ideapfacultad, eje, Integer.parseInt(periodo));
                 request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
                 
 
                 
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?mes1="+mes1+"&mes2="+mes2);
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);
                 }break;
 
                 default:{

@@ -94,8 +94,8 @@ List<Periodometa> periodoM=null;
         Rep.
         <select style="width:130px" id="selecTipoReporte" name="selecTipoReporte" onchange="cambiarPagina()" >
             <option value="1">R. Evaluaci&oacute;n</option>       
-            <option value="2">Reporte Resumido de Actividades</option>       
-            <option value="3">Actividades Vencidas</option>       
+<!--            <option value="2">Reporte Resumido de Actividades</option>       
+            <option value="3">Actividades Vencidas</option>       -->
         </select>
     </div>
  <% 

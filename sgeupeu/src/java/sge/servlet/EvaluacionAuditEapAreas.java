@@ -109,11 +109,11 @@ public class EvaluacionAuditEapAreas extends HttpServlet {
                 String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
                 
                 rs=new ReporteService();
-                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]), periodo);
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
                 System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
                 rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje, periodo);
                 request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
                                 
                 System.out.println("eap:"+ (vectorDatos[0]));

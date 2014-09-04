@@ -19,9 +19,9 @@ import sge.modelo.Tipoarea;
 public class ReporteService {
   public ReportesDAO dao;
     
-  public ArrayList cabeceraPOA(int ideapfacultad){
+  public ArrayList cabeceraPOA(int ideapfacultad,int idperiodo){
       dao=new ReportesDAO();
-      return dao.cabeceraPOA(ideapfacultad);
+      return dao.cabeceraPOA(ideapfacultad, idperiodo);
   }
   public ArrayList reporEapFacultadFilial(int idfilial){
       dao=new ReportesDAO();
@@ -36,13 +36,13 @@ public class ReporteService {
       dao=new ReportesDAO();
       return dao.reporEapFacultadFilialEap(idfilial,idfilialfacultad);
   }
-  public ArrayList ejesSeleccionadosPOA(int ideapfacultad, int  ideje){
+  public ArrayList ejesSeleccionadosPOA(int ideapfacultad, int  ideje, int periodo){
       dao=new ReportesDAO();
-      return dao.ejesSeleccionadosPOA(ideapfacultad, ideje);
+      return dao.ejesSeleccionadosPOA(ideapfacultad, ideje, periodo);
   }
-  public ArrayList objetivosEstrategicosPOA(int ideapfacultad, int  ideje){
+  public ArrayList objetivosEstrategicosPOA(int ideapfacultad, int  ideje, int periodo){
       dao=new ReportesDAO();
-      return dao.objetivosEstrategicosPOA(ideapfacultad, ideje);
+      return dao.objetivosEstrategicosPOA(ideapfacultad, ideje, periodo);
   }
   public ArrayList actividadesPOA(int idmeta, int mes1, int mes2){
       dao=new ReportesDAO();

@@ -106,8 +106,10 @@
                 
                 int mes1=0;
                 int mes2=0;
+                int periodo=0;
                 mes1=Integer.parseInt(request.getParameter("mes1")==null?"0":request.getParameter("mes1") );
                 mes2=Integer.parseInt(request.getParameter("mes2")==null?"0":request.getParameter("mes2") );
+                periodo=Integer.parseInt(request.getParameter("periodo")==null?"0":request.getParameter("periodo") );
                 
                 ArrayList listaEjes=null;
                 listaEjes = (ArrayList)request.getSession().getAttribute("ejeSeleccionadosPOA");            
@@ -140,7 +142,7 @@
                <%  
 
                 rs=new ReporteService();                
-                lista3=rs.objetivosEstrategicosPOA(Integer.parseInt(datos.get("ideapfacultad").toString()), Integer.parseInt(datos.get("idejeestrategico").toString()) );
+                lista3=rs.objetivosEstrategicosPOA(Integer.parseInt(datos.get("ideapfacultad").toString()), Integer.parseInt(datos.get("idejeestrategico").toString()), periodo );
                 inter3=lista3.iterator();
                 contadorM=lista3.size();
                 while(inter3.hasNext()){

@@ -173,7 +173,7 @@
                 <td colspan="9" style="width: 100%">
                     <table border="1" style="width: 100%;border-collapse:collapse">
                         <tr>
-                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES</b></td>
+                            <td colspan="4" align="center"><b>RESUMEN DE CUMPLIMIENTO DE INDICADORES </b></td>
                         </tr>
                         <tr>
                             <td style="width: 50%"><b>Condici&oacute;n</b></td>
@@ -182,31 +182,31 @@
                             <td style="width: 20%"><b>Color</b></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) no cumplido(s)</td>
+                            <td>No cumplido</td>
                             <td><%=resumenData[0][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/0.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) en proceso</td>
+                            <td>Parcial o en proceso</td>
                             <td><%=resumenData[1][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[1][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/1.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) cumplido(s)</td>
+                            <td>Cumplido</td>
                             <td><%=resumenData[2][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[2][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/2.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) superado(s)</td>
+                            <td>Superado</td>
                             <td><%=resumenData[3][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[3][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/3.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) no programado(s)</td>
+                            <td>No programado</td>
                             <td><%=resumenData[4][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[4][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/4.png" width="30" height="30"   alt="semaforo"/></td>
@@ -481,7 +481,7 @@
                 <td colspan="9" style="width: 100%;">
                         <table border="1" style="width: 100%;border-collapse:collapse">
                         <tr>
-                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES</b></td>
+                            <td colspan="4" align="center"><b>RESUMEN DE CUMPLIMIENTO DE INDICADORES</b></td>
                         </tr>
                         <tr>
                             <td style="width: 50%"><b>Condici&oacute;n</b></td>
@@ -490,31 +490,31 @@
                             <td style="width: 20%"><b>Color</b></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) no cumplido(s)</td>
+                            <td>No cumplido</td>
                             <td><%=resumenData[0][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/0.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) en proceso</td>
+                            <td>Parcial o en proceso</td>
                             <td><%=resumenData[1][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[1][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/1.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) cumplido(s)</td>
+                            <td>Cumplido</td>
                             <td><%=resumenData[2][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[2][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/2.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) superado(s)</td>
+                            <td>Superado</td>
                             <td><%=resumenData[3][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[3][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/3.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Indicador(es) no programado(s)</td>
+                            <td>No programado</td>
                             <td><%=resumenData[4][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[4][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/4.png" width="30" height="30"   alt="semaforo"/></td>

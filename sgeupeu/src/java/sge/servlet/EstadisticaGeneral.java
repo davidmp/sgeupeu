@@ -34,6 +34,10 @@ public class EstadisticaGeneral extends HttpServlet {
    private static String INDEXCOORDINADOREAPMAIN= "apps/app_estadistica/main_EstadisticaGeneral.jsp";   
    private static String INDEXCOORDINADOREAPREPOR1= "apps/app_estadistica/reporteEstadistica.jsp";
    
+   private static String INDEXCOORDINADOREAPINFORMEJ= "apps/app_estadistica/indexGeneralJ.jsp";
+   private static String INDEXCOORDINADOREAPMAINJ= "apps/app_estadistica/main_EstadisticaGeneralJ.jsp";   
+   private static String INDEXCOORDINADOREAPREPOR1J= "apps/app_estadistica/reporteEstadisticaJ.jsp";
+   
 
    
    
@@ -123,6 +127,67 @@ public class EstadisticaGeneral extends HttpServlet {
                 request.getSession().setAttribute("avanceTodoSemaforo", lista3); */
                 
                 response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?idtipoarea="+tipoarea+"&idperiodo="+periodo+"&eje="+vectorDatos[0]+"&idFilialPri="+idFilialPri+"&nombreeje="+vectorDatos[1]);                             
+                }break;
+                case 11: {
+                is=new IndicadorService();
+                request.getSession().setAttribute("listar_eje", is.listaEje(1));                      
+                os=new OrganizacionService();
+                request.getSession().setAttribute("listar_sed", os.Listar_Filial());                      
+                rs=new ReporteService();
+                request.getSession().setAttribute("listar_tipoarea", rs.areaPrePosgrado());                      
+                response.sendRedirect(INDEXCOORDINADOREAPINFORMEJ);
+                }break;
+                case 21: {
+                principalValorSession(request);    
+                rs=new ReporteService();
+                us=new UsuarioService();
+                Facultad fa= null;
+                int idfacultadPoa = Integer.parseInt(request.getParameter("idfilialfacultad")==null ? "0": request.getParameter("idfilialfacultad"));
+                fa= us.facultadUsuarioRealSelect(Integer.parseInt(idUsuarioPri));
+                System.out.println("Probarr>>>"+Integer.parseInt(idUsuarioPri));                
+                if(fa!=null && Integer.parseInt(idCategoriaUsuarioPri)!=7){
+                if(idfacultadPoa!=0){   
+                System.out.println("Probarr>>>"+fa.getIdfilialfacultad());
+                request.getSession().setAttribute("listarEapTempReporte", rs.reporEapFacultadFilialEap(Integer.parseInt(idFilialPri), idfacultadPoa));
+                }else{
+                request.getSession().setAttribute("listarEapTempReporte", rs.reporEapFacultadFilialEap(Integer.parseInt(idFilialPri), fa.getIdfilialfacultad().intValue()));
+                }
+                }else{
+                request.getSession().setAttribute("listarEapTempReporte", rs.reporEapFacultadFilial(Integer.parseInt(idFilialPri)));
+                }                
+                is=new IndicadorService();
+                request.getSession().setAttribute("listar_periodo_meta", is.listaPeriodoMeta(request));                    
+                    
+                response.sendRedirect(INDEXCOORDINADOREAPMAINJ);
+                } break;
+                    
+                    
+                case 31: {
+                int periodo=0;
+                String eje="";
+                int tipoarea;
+                int filial;
+                eje=request.getParameter("ideje1")==null?"0":request.getParameter("ideje1");    
+                String[] vectorDatos=(eje.replace('*','/')).split("/");
+                
+                periodo=Integer.parseInt(request.getParameter("perido1")==null?"0":request.getParameter("perido1") );                
+                tipoarea=Integer.parseInt(request.getParameter("tipoarea1")==null?"0":request.getParameter("tipoarea1"));
+                filial=Integer.parseInt(request.getParameter("subf")==null?"0":request.getParameter("subf"));
+
+                
+                rs=new ReporteService();
+                Filial lista=null;              
+                lista=rs.filialPerido(filial, periodo);
+                request.getSession().setAttribute("cabeceraInformePOA", lista);
+                
+                rs=new ReporteService();                
+                ArrayList lista2=rs.reporteCarrerasPregrado(filial);
+                request.getSession().setAttribute("carrerasPregradoRE", lista2); 
+                /*rs=new ReporteService();
+                ArrayList lista3=rs.evaluacionPlanEstrategico(Integer.parseInt(vectorDatos[0]), periodo, Integer.parseInt(vectorDatos[1]), Integer.parseInt(idFilialPri),eje);
+                request.getSession().setAttribute("avanceTodoSemaforo", lista3); */
+                
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR1J+"?idtipoarea="+tipoarea+"&idperiodo="+periodo+"&eje="+vectorDatos[0]+"&idFilialPri="+filial+"&nombreeje="+vectorDatos[1]);                             
                 }break;
     
                 default:{

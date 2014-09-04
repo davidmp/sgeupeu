@@ -181,7 +181,7 @@
                 <td colspan="10" style="width: 100%">
                     <table border="1" style="width: 100%;border-collapse:collapse">
                         <tr>
-                            <td colspan="4" align="center"><b>RESUMEN DE CUMPLIMIENTO DE INDICADORES </b></td>
+                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES </b></td>
                         </tr>
                         <tr>
                             <td style="width: 50%"><b>Condici&oacute;n</b></td>
@@ -190,31 +190,31 @@
                             <td style="width: 20%"><b>Color</b></td>
                         </tr>
                         <tr>
-                            <td>No cumplido</td>
+                            <td>Indicador(es) no cumplido(s)</td>
                             <td><%=resumenData[0][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/0.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Parcial o en proceso</td>
+                            <td>Indicador(es) en proceso</td>
                             <td><%=resumenData[1][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[1][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/1.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Cumplido</td>
+                            <td>Indicador(es) cumplido(s)</td>
                             <td><%=resumenData[2][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[2][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/2.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Superado</td>
+                            <td>Indicador(es) superado(s)</td>
                             <td><%=resumenData[3][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[3][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/3.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>No programado</td>
+                            <td>Indicador(es) no programado(s)</td>
                             <td><%=resumenData[4][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[4][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/4.png" width="30" height="30"   alt="semaforo"/></td>
@@ -310,9 +310,9 @@
                                         <div>
                                         <center>                                        
                                             
-                                            <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%out.print(datos.get("codigoin").toString());%>)  <% out.print(datos.get("nombreindicador").toString());%>')">
+                                            
                                             <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                            
+                                                                                       
                                         </center>
                                         </div>
                                     </td>
@@ -363,9 +363,9 @@
                                     <td  >
                                         <center>                                        
                                         
-                                            <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%=datos.get("codigoin").toString()%>)  <% out.print(datos.get("nombreindicador").toString());%>')">
+                                            
                                             <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                         
+                                                                                     
                                         </center>
                                     </td>
                                         <td align="center">
@@ -410,9 +410,9 @@
                                     <td  >
                                         <center>                                        
                                         
-                                            <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<%out.print(datos.get("codigoin").toString());%>)<% out.print(datos.get("nombreindicador").toString());%>')">
+                                            
                                             <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                         
+                                                                                
                                         </center>
                                     </td>
                                         <td align="center">
@@ -453,9 +453,9 @@
                                     </td>
                                     <td  >
                                         <center>      
-                                            <a href="javascript:void(0)" onclick="openDialogSeguimiento('<%=datos.get("idavance").toString()%>','<%=datos.get("id_ciclo").toString()%>','(<% out.print(datos.get("codigoin").toString());%>) :: <% out.print(datos.get("nombreindicador").toString()); %>')">
+                                            
                                             <img src="../../resources/48/<%=datos.get("tipoavance").toString()%>.png" width="30" height="30" title="<%=datos.get("avancereal").toString()%>"  alt="semaforo"/>
-                                            </a>                                             
+                                                                                         
                                             
                                         </center>
                                     </td>
@@ -492,7 +492,7 @@
                 <td colspan="10" style="width: 100%;">
                         <table border="1" style="width: 100%;border-collapse:collapse">
                         <tr>
-                            <td colspan="4" align="center"><b>RESUMEN DE CUMPLIMIENTO DE INDICADORES </b></td>
+                            <td colspan="4" align="center"><b>RESUMEN DE INDICADORES </b></td>
                         </tr>
                         <tr>
                             <td style="width: 50%"><b>Condici&oacute;n</b></td>
@@ -501,31 +501,31 @@
                             <td style="width: 20%"><b>Color</b></td>
                         </tr>
                         <tr>
-                            <td>No cumplido</td>
+                            <td>Indicador(es) no cumplido(s)</td>
                             <td><%=resumenData[0][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[0][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/0.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Parcial o en proceso</td>
+                            <td>Indicador(es) en proceso</td>
                             <td><%=resumenData[1][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[1][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/1.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Cumplido</td>
+                            <td>Indicador(es) cumplido(s)</td>
                             <td><%=resumenData[2][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[2][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/2.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>Superado</td>
+                            <td>Indicador(es) superado(s)</td>
                             <td><%=resumenData[3][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[3][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/3.png" width="30" height="30"   alt="semaforo"/></td>
                         </tr>
                         <tr>
-                            <td>No programado</td>
+                            <td>Indicador(es) no programado(s)</td>
                             <td><%=resumenData[4][0]%> </td>
                             <td><% out.print( formato.format((Math.rint((Double.parseDouble(String.valueOf(resumenData[4][0]))/cantidadDMP)*100)/100)*100)+"%" ); %></td>
                             <td><img src="../../resources/48/4.png" width="30" height="30"   alt="semaforo"/></td>

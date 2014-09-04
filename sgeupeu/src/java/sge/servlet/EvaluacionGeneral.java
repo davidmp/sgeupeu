@@ -9,7 +9,9 @@ package sge.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import sge.modelo.Ejeestrategico;
 import sge.modelo.Facultad;
 import sge.service.IndicadorService;
+import sge.service.OrganizacionService;
 import sge.service.ReporteService;
 import sge.service.UsuarioService;
 
@@ -36,6 +39,9 @@ public class EvaluacionGeneral extends HttpServlet {
    private static String INDEXCOORDINADOREAPREPOR3= "apps/app_informesactividad/reportResumen.jsp";   
    private static String INDEXCOORDINADOREAPREPOR4= "apps/app_informesactividad/reportVencidos.jsp";   
    
+   private static String INDEXCOORDINADOREAPINFORMEJ= "apps/app_evaluacion/indexGeneralJ.jsp";
+   private static String INDEXCOORDINADOREAPMAINJ= "apps/app_evaluacion/main_evaluacionGeneralJ.jsp";   
+   private static String INDEXCOORDINADOREAPREPOR1J= "apps/app_evaluacion/reporteEvaluacionJ.jsp";   
    
     public int idTipoAreaPri=0;
     public String idCategoriaUsuarioPri="0";
@@ -62,6 +68,7 @@ public class EvaluacionGeneral extends HttpServlet {
         IndicadorService is;
         ReporteService rs;
         UsuarioService us;
+        OrganizacionService os;
         int opt = Integer.parseInt(request.getParameter("opt")==null ? "0": request.getParameter("opt"));
         
         try {
@@ -113,11 +120,11 @@ public class EvaluacionGeneral extends HttpServlet {
                 String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
                 
                 rs=new ReporteService();
-                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]),periodo);
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
                 System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
                 rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje, periodo);
                 request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
                                 
                 System.out.println("eap:"+ (vectorDatos[0]));
@@ -164,6 +171,108 @@ public class EvaluacionGeneral extends HttpServlet {
                   }
                  }
                 }break;
+
+            case 11: {
+                os=new OrganizacionService();
+                request.getSession().setAttribute("listar_sed", os.Listar_Filial());     
+                response.sendRedirect(INDEXCOORDINADOREAPINFORMEJ);
+                }break;
+                case 21: {
+                principalValorSession(request);    
+                rs=new ReporteService();           
+                request.getSession().setAttribute("listarEapTempReporte", rs.reporEapFacultadFilialAudit(Integer.parseInt(idFilialPri)));               
+                is=new IndicadorService();
+                request.getSession().setAttribute("listar_periodo_meta", is.listaPeriodoMeta(request));                    
+                    
+                response.sendRedirect(INDEXCOORDINADOREAPMAINJ);
+                } break;
+                    
+                    
+                case 31: {
+                int periodo=0;
+                int mes1=0;
+                int mes2=0;
+                int eje=0;
+                int ideapfacultad;
+                int subf=0;
+                String datosGeneral="";
+                eje=Integer.parseInt(request.getParameter("ideje1")==null?"0":request.getParameter("ideje1") );
+                subf=Integer.parseInt(request.getParameter("subf")==null?"0":request.getParameter("subf") );
+                
+                periodo=Integer.parseInt(request.getParameter("perido1")==null?"0":request.getParameter("perido1") );
+                
+                mes1=Integer.parseInt(request.getParameter("mesinicio1")==null?"0":request.getParameter("mesinicio1") );
+                mes2=Integer.parseInt(request.getParameter("mesfin1")==null?"0":request.getParameter("mesfin1") ); 
+                
+                datosGeneral=(request.getParameter("eap1")==null?"0":request.getParameter("eap1")).toString();
+                
+                String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
+                
+                rs=new ReporteService();
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]), periodo);
+                request.getSession().setAttribute("cabeceraInformePOA", lista);
+                System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
+                rs=new ReporteService();                
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje, periodo);
+                request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
+                                
+                System.out.println("eap:"+ (vectorDatos[0]));
+                System.out.println("periodo:"+ periodo);
+                System.out.println("tipoarea:"+ Integer.parseInt(vectorDatos[1]));
+                System.out.println("filial:"+ subf);
+                System.out.println("eje:"+ eje);
+                                        
+                rs=new ReporteService();
+                ArrayList lista3=rs.evaluacionPlanEstrategico(Integer.parseInt(vectorDatos[0]), periodo, Integer.parseInt(vectorDatos[1]), subf,eje);
+                request.getSession().setAttribute("avanceTodoSemaforo", lista3); 
+                  
+                
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR1J+"?idtipoarea="+Integer.parseInt(vectorDatos[1]));                              
+                }break;
+    
+
+                case 41: {
+                principalValorSession(request);
+                is=new IndicadorService();
+                int idtipoarea=Integer.parseInt(request.getParameter("idtipoarea")==null?"0":request.getParameter("idtipoarea") );
+                int codigoComparar=Integer.parseInt(request.getParameter("codigo")==null?"0":request.getParameter("codigo") );
+                
+                List<Ejeestrategico> ejeEs=null;          
+                
+                if(Integer.parseInt(idCategoriaUsuarioPri)==1){
+                ejeEs=is.listaEje(idtipoarea);
+                }else{                
+                ejeEs=is.listaEjeIndividualAreasAudit(Integer.parseInt(idUsuarioPri));
+                }
+                 if(ejeEs!=null){ 
+                  for(Ejeestrategico ejeE:ejeEs){
+                    
+                    out.print("<option value='"+ejeE.getIdejeestrategico()+"'> "+ejeE.getNombre()+" </option>");                    
+                  }
+                 }
+                }
+                break;       
+                case 51: {
+                principalValorSession(request);
+                is=new IndicadorService();
+                int idfilial=Integer.parseInt(request.getParameter("idfilial")==null?"0":request.getParameter("idfilial") );
+                rs=new ReporteService();           
+               
+                
+                ArrayList  lista = rs.reporEapFacultadFilialAudit(idfilial);                        
+                Iterator inter=lista.iterator();
+                out.print("<option value='0'>Seleccione...</option> ");
+                while(inter.hasNext()){
+                Map datos=  (Map)inter.next();  
+                String demodmp=datos.get("ideapfacultad").toString()+"*"+datos.get("idtipoarea").toString()+"*"+datos.get("codigo").toString();
+
+                 out.print("<option value='"+demodmp+"'> "+datos.get("nombreeap")+" </option>"); 
+                }
+
+                }
+                break;
+                    
+                    
                 default:{
                     System.out.println("Error...El valor es: "+opt);
                 }

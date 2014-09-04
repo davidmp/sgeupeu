@@ -107,17 +107,17 @@ public class InformeActividadGeneral extends HttpServlet {
                 String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
                 
                 rs=new ReporteService();
-                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]), Integer.parseInt(periodo));
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
-                System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
+                System.out.println("verr>  "+periodo);
                 rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje, Integer.parseInt(periodo));
                 request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
                 
                 if(Integer.parseInt(vectorDatos[1])==3){
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2);    
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);    
                 }else{
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?mes1="+mes1+"&mes2="+mes2);
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR1+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);
                 }                               
                 }break;
                 case 4: {
@@ -154,21 +154,22 @@ public class InformeActividadGeneral extends HttpServlet {
                 mes1=Integer.parseInt(request.getParameter("mesinicio2")==null?"0":request.getParameter("mesinicio2") );
                 mes2=Integer.parseInt(request.getParameter("mesfin2")==null?"0":request.getParameter("mesfin2") );                
                 datosGeneral=(request.getParameter("eap2")==null?"0":request.getParameter("eap2")).toString();
+                periodo=(request.getParameter("periodo2")==null?"0":request.getParameter("periodo2")).toString();
                 
                 String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
                 
                 rs=new ReporteService();
-                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]), Integer.parseInt(periodo) );
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
                 System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
                 rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje, Integer.parseInt(periodo));
                 request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
                 
                 if(Integer.parseInt(vectorDatos[1])==3){
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2);    
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);    
                 }else{
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR3+"?mes1="+mes1+"&mes2="+mes2);                
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR3+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);                
                 }
                 } break;
                 case 6: {
@@ -182,21 +183,22 @@ public class InformeActividadGeneral extends HttpServlet {
                 mes1=Integer.parseInt(request.getParameter("mesinicio3")==null?"0":request.getParameter("mesinicio3") );
                 mes2=Integer.parseInt(request.getParameter("mesfin3")==null?"0":request.getParameter("mesfin3") );                
                 datosGeneral=(request.getParameter("eap3")==null?"0":request.getParameter("eap3")).toString();
+                periodo=(request.getParameter("periodo3")==null?"0":request.getParameter("periodo3")).toString();
                 
                 String[] vectorDatos=(datosGeneral.replace('*','/')).split("/");
                 
                 rs=new ReporteService();
-                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]));
+                ArrayList lista=rs.cabeceraPOA(Integer.parseInt(vectorDatos[0]), Integer.parseInt(periodo));
                 request.getSession().setAttribute("cabeceraInformePOA", lista);
                 System.out.println("verr>  "+Integer.parseInt(vectorDatos[0]));
                 rs=new ReporteService();                
-                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje);
+                ArrayList lista2=rs.ejesSeleccionadosPOA(Integer.parseInt(vectorDatos[0]), eje, Integer.parseInt(periodo));
                 request.getSession().setAttribute("ejeSeleccionadosPOA", lista2); 
                 
                 if(Integer.parseInt(vectorDatos[1])==3){
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2);    
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR2+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);    
                 }else{
-                response.sendRedirect(INDEXCOORDINADOREAPREPOR4+"?mes1="+mes1+"&mes2="+mes2);                
+                response.sendRedirect(INDEXCOORDINADOREAPREPOR4+"?mes1="+mes1+"&mes2="+mes2+"&periodo="+periodo);                
                 }
                 } break;
                 default:{

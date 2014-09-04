@@ -20,13 +20,13 @@ import sge.modelo.Tipoarea;
  */
 public class ReportesDAO extends DBConn{
 
-    public ArrayList cabeceraPOA(int ideapfacultad){
+    public ArrayList cabeceraPOA(int ideapfacultad, int idperiodo){
     String sql=" SELECT i.razonsocial, i.rector, fi.direccion,fi.celular, fi.idfilial, fi.categoria, fi.rector AS rectorfilial, "
             + " f.nombre AS nombrefacultad, f.idfacultad,  ff.idfilialfacultad ,(CASE WHEN e.ideap=7 AND ef.ideapfacultad=36 THEN 'Administración ' ELSE e.nombre  END) AS nombreeap, e.idtipoarea, "
             + " (CASE WHEN e.idtipoarea=1 THEN 'Pregrado' WHEN e.idtipoarea=2 THEN 'Posgrado' WHEN e.idtipoarea=3 THEN 'Areas de Apoyo' ELSE 'Otros' END) AS nombretipoarea, e.ideap, ef.ideapfacultad, ef.idcoordinadoreap, "
             + " (SELECT CONCAT(p.nombre,' ',p.apellipaterno,' ',p.apellimaterno) AS coordinador "
             + " FROM coordinadoreap ce, persona p "
-            + " WHERE p.idpersona=ce.idpersona AND  ce.idcoordinadoreap=ef.idcoordinadoreap) AS coordinador, (SELECT  pp.periodo FROM periodo pp WHERE pp.idperiodo=(SELECT cea.idperiodo FROM  coordinadoreap  cea WHERE ef.idcoordinadoreap=cea.idcoordinadoreap )) AS periodo "
+            + " WHERE p.idpersona=ce.idpersona AND  ce.idcoordinadoreap=ef.idcoordinadoreap) AS coordinador, (SELECT  pp.periodo FROM periodo pp WHERE pp.idperiodo=? ) AS periodo "
             + " FROM eapfacultad ef, eap e, filialfacultad ff, facultad f, filial fi, institucion i "
             + " WHERE ef.ideap=e.ideap  AND ff.idfilialfacultad=ef.idfilialfacultad  AND f.idfacultad=ff.idfacultad  "
             + " AND fi.idfilial=ff.idfilial AND fi.idinstitucion=i.idinstitucion "
@@ -36,7 +36,8 @@ public class ReportesDAO extends DBConn{
         try {
             getConexionDb();
             ps=con.prepareStatement(sql);
-            ps.setInt(1, ideapfacultad);
+            ps.setInt(1, idperiodo);
+            ps.setInt(2, ideapfacultad);
             rs=ps.executeQuery();            
             while (rs.next()){            
                 userPriv = new HashMap();
@@ -69,7 +70,7 @@ public class ReportesDAO extends DBConn{
     
     
     
-    public ArrayList ejesSeleccionadosPOA(int ideapfacultad, int ideje){
+    public ArrayList ejesSeleccionadosPOA(int ideapfacultad, int ideje, int periodo){
         System.out.println("verrr>"+ideje);
         String qry="";
        
@@ -80,7 +81,7 @@ public class ReportesDAO extends DBConn{
         }
         
     String sql=" SELECT * FROM (SELECT  eje.idejeestrategico, eje.nombre AS nombreejeestrategico, eje.objetivoestrategico AS objetivogeneral , eje.codigo AS  ejeestrategicocodigo, m.ideapfacultad, m.idperiodo FROM estrategia e,  perspectiva p,  ejeestrategia ej, estrategiaindicador ei, indicador i, ejeestrategico eje, meta m WHERE p.idperspectiva=e.idperspectiva  AND ej.idestrategia=e.idestrategia AND ei.idejeestrategia=ej.idejeestrategia AND ei.idindicador=i.idindicador AND eje.idejeestrategico=i.idejeestrategico AND m.idestrategiaIndicador=ei.idestrategiaIndicador ) AS r "
-            + "  WHERE r.ideapfacultad='"+ideapfacultad+"' "+qry
+            + "  WHERE r.ideapfacultad='"+ideapfacultad+"' AND r.idperiodo='"+periodo+"'  "+qry
             + "  GROUP BY r.idperiodo, r.ideapfacultad, r.ejeestrategicocodigo,  r.nombreejeestrategico,r.objetivogeneral, r.objetivogeneral "
             + "  ORDER BY r.ejeestrategicocodigo ASC ";
         ArrayList Lista = new ArrayList(); 
@@ -182,17 +183,18 @@ public class ReportesDAO extends DBConn{
     
     
     
-    public ArrayList objetivosEstrategicosPOA(int ideapfacultad, int ideje){
+    public ArrayList objetivosEstrategicosPOA(int ideapfacultad, int ideje, int periodo){
         
-    String sql=" SELECT * FROM (SELECT p.nombre AS perspectiva,eje.idejeestrategico, eje.nombre AS nombreejeestrategico, eje.codigo AS  ejeestrategicocodigo, e.codigo AS estrategiacodigo, e.nombre AS estrategia, e.idestrategia, ej.idejeestrategia, i.codigo AS indicadorcodigo, i.nombre AS indicador, i.metaideal, i.idtipometa, (CASE WHEN i.idtipometa=1 THEN '#' ELSE '%' END) AS tipometanombre, i.idfilial, i.idtipoarea, m.idmeta, m.meta, (SELECT p.periodo FROM periodo p WHERE p.idperiodo=m.idperiodo) AS periodo,(CASE WHEN i.idtipometa=1 THEN CONCAT('# ',m.meta) ELSE CONCAT(m.meta,' %') END) AS metatexto, m.ideapfacultad, m.idperiodo, ei.idestrategiaindicador FROM estrategia e,  perspectiva p, ejeestrategia ej, estrategiaindicador ei, indicador i, ejeestrategico eje, meta m WHERE p.idperspectiva=e.idperspectiva  AND ej.idestrategia=e.idestrategia AND ei.idejeestrategia=ej.idejeestrategia AND ei.idindicador=i.idindicador AND eje.idejeestrategico=i.idejeestrategico AND m.idestrategiaIndicador=ei.idestrategiaIndicador) AS r "
+    String sql=" SELECT * FROM (SELECT p.nombre AS perspectiva,eje.idejeestrategico, eje.nombre AS nombreejeestrategico, eje.codigo AS  ejeestrategicocodigo, e.codigo AS estrategiacodigo, e.nombre AS estrategia, e.idestrategia, ej.idejeestrategia, i.codigo AS indicadorcodigo, i.nombre AS indicador, i.metaideal, i.idtipometa, (CASE WHEN i.idtipometa=1 THEN '#' ELSE '%' END) AS tipometanombre, i.idfilial, i.idtipoarea, m.idmeta, m.meta, (SELECT p.periodo FROM periodo p WHERE p.idperiodo=m.idperiodo) AS periodo,(CASE WHEN i.idtipometa=1 THEN CONCAT('# ',m.meta) ELSE CONCAT(m.meta,' %') END) AS metatexto, m.ideapfacultad, m.idperiodo, ei.idestrategiaindicador FROM estrategia e,  perspectiva p, ejeestrategia ej, estrategiaindicador ei, indicador i, ejeestrategico eje, meta m WHERE p.idperspectiva=e.idperspectiva  AND ej.idestrategia=e.idestrategia AND ei.idejeestrategia=ej.idejeestrategia AND ei.idindicador=i.idindicador AND eje.idejeestrategico=i.idejeestrategico AND m.idestrategiaIndicador=ei.idestrategiaIndicador and m.idperiodo=? ) AS r "
             + "  WHERE r.ideapfacultad=? AND CAST(meta AS SIGNED)<>0 AND r.ejeestrategicocodigo=? ORDER BY idestrategiaindicador ASC  ";
         ArrayList Lista = new ArrayList(); 
         Map userPriv;
         try {
             getConexionDb();
             ps=con.prepareStatement(sql); 
-            ps.setInt(1, ideapfacultad);
-            ps.setInt(2, ideje);
+            ps.setInt(1, periodo);
+            ps.setInt(2, ideapfacultad);
+            ps.setInt(3, ideje);
             rs=ps.executeQuery();            
             while (rs.next()){            
                 userPriv = new HashMap();
