@@ -239,7 +239,7 @@ public class EvaluacionGeneral extends HttpServlet {
                 
                 List<Ejeestrategico> ejeEs=null;          
                 
-                if(Integer.parseInt(idCategoriaUsuarioPri)==1){
+                if(Integer.parseInt(idCategoriaUsuarioPri)==1 || Integer.parseInt(idCategoriaUsuarioPri)==7){
                 ejeEs=is.listaEje(idtipoarea);
                 }else{                
                 ejeEs=is.listaEjeIndividualAreasAudit(Integer.parseInt(idUsuarioPri));

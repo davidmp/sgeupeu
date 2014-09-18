@@ -49,6 +49,7 @@ String estrategia;
 Integer estadoactualizar;
 Integer idtemporadaejeestrategico;
 int cantidad;
+int metaideal;
 
 
     public int getIdavancevalida() {
@@ -324,6 +325,14 @@ int cantidad;
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public int getMetaideal() {
+        return metaideal;
+    }
+
+    public void setMetaideal(int metaideal) {
+        this.metaideal = metaideal;
     }
 
     

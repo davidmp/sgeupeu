@@ -262,6 +262,7 @@ public class IndicadorDAO extends DBConn{
            Toto.setDescripcion(rs.getString("descripcion"));
            Toto.setEstado(rs.getInt("estado"));
            Toto.setInstrumento(rs.getString("instrumento"));
+           Toto.setMetaideal(rs.getInt("metaideal"));
            Toto.setIdestrategiaindicador(rs.getInt("idestrategiaindicador"));
            Toto.setNro(rs.getInt("idestrategiaindicador"));//numero
            Toto.setMeta(rs.getInt("meta"));
@@ -672,6 +673,7 @@ public class IndicadorDAO extends DBConn{
            Toto.setDescripcion(rs.getString("descripcion"));
            Toto.setEstado(rs.getInt("estado"));
            Toto.setInstrumento(rs.getString("instrumento"));
+           Toto.setMetaideal(rs.getInt("metaideal"));
            Toto.setIdestrategiaindicador(rs.getInt("idestrategiaindicador"));
            Toto.setNro(rs.getInt("idestrategiaindicador"));
            Toto.setCodigo(rs.getString("codigo"));
@@ -741,6 +743,7 @@ public class IndicadorDAO extends DBConn{
            Toto.setDescripcion(rs.getString("descripcion"));
            Toto.setEstado(rs.getInt("estado"));
            Toto.setInstrumento(rs.getString("instrumento"));
+           Toto.setMetaideal(rs.getInt("metaideal"));
            Toto.setIdestrategiaindicador(rs.getInt("idestrategiaindicador"));
            Toto.setNro(rs.getInt("idestrategiaindicador"));//numero
            Toto.setCodigo(rs.getString("codigo"));
@@ -821,6 +824,7 @@ public class IndicadorDAO extends DBConn{
            Toto.setDescripcion(rs.getString("descripcion"));
            Toto.setEstado(rs.getInt("estado"));
            Toto.setInstrumento(rs.getString("instrumento"));
+           Toto.setMetaideal(rs.getInt("metaideal"));
            Toto.setIdestrategiaindicador(rs.getInt("idestrategiaindicador"));
            Toto.setNro(rs.getInt("idestrategiaindicador"));//numero
            Toto.setCodigo(rs.getString("codigo"));

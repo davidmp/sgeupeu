@@ -376,7 +376,7 @@ public class GestionEstrategicoDao extends DBConn{
     }  
  
     public List<Indicador> listaIndicador(Periodometa id){        
-    String sql= "  SELECT i.idindicador,i.nombre,i.descripcion,i.estado,li.nro ,li.instrumento,li.idestrategiaindicador, "+
+    String sql= "  SELECT i.idindicador,i.nombre,i.descripcion,i.estado,li.nro, i.metaideal ,li.instrumento,li.idestrategiaindicador, "+
                 "  (CASE WHEN m.meta IS NULL THEN 0 ELSE m.meta END) AS meta FROM indicador i   "+
                 "  INNER JOIN estrategiaindicador li ON li.idindicador=i.idindicador  "+
                 "  INNER JOIN ejeestrategia ee ON ee.idejeestrategia=li.idejeestrategia   "+
@@ -406,6 +406,7 @@ public class GestionEstrategicoDao extends DBConn{
            Toto.setDescripcion(rs.getString("descripcion"));
            Toto.setEstado(rs.getInt("estado"));
            Toto.setInstrumento(rs.getString("instrumento"));
+           Toto.setMetaideal(rs.getInt("metaideal"));
            Toto.setIdestrategiaindicador(rs.getInt("idestrategiaindicador"));
            Toto.setNro(rs.getInt("idestrategiaindicador"));//numero
            Toto.setMeta(rs.getInt("meta"));
@@ -425,7 +426,7 @@ public class GestionEstrategicoDao extends DBConn{
         Indicador to;
         try {
             getConexionDb();
-            ps = con.prepareStatement("SELECT i.idindicador,i.nombre,i.descripcion,i.estado,li.nro ,li.instrumento,li.idestrategiaindicador," +
+            ps = con.prepareStatement("SELECT i.idindicador,i.nombre,i.descripcion,i.estado,li.nro, i.metaideal ,li.instrumento,li.idestrategiaindicador," +
 " (CASE WHEN m.meta IS NULL THEN 0 ELSE m.meta END) AS meta FROM indicador i " +
 " INNER JOIN estrategiaindicador li ON li.idindicador=i.idindicador " +
 " INNER JOIN ejeestrategia ee ON ee.idejeestrategia=li.idejeestrategia " +
@@ -442,6 +443,7 @@ public class GestionEstrategicoDao extends DBConn{
                 to.setDescripcion(rs.getString("descripcion"));
                 to.setEstado(rs.getInt("estado"));
                 to.setInstrumento(rs.getString("instrumento"));
+                to.setMetaideal(rs.getInt("metaideal"));
                 to.setIdestrategiaindicador(rs.getInt("idestrategiaindicador"));
                 to.setNro(rs.getInt("nro"));
                 to.setMeta(rs.getInt("meta"));
@@ -713,6 +715,7 @@ public class GestionEstrategicoDao extends DBConn{
                 in.setIdtipometa(rs.getInt("idTipoMeta"));
                 in.setIdtipometa_nombre(rs.getString("tipo"));
                 in.setInstrumento(rs.getString("instrumento"));
+                in.setMetaideal(rs.getInt("metaideal"));
             }
         } catch (Exception e) {
         }
@@ -1389,7 +1392,7 @@ public class GestionEstrategicoDao extends DBConn{
             EstrategiaIndicador to;
         try {
             getConexionDb();
-            sql="SELECT ei.`idestrategiaIndicador`,ei.`instrumento`,ei.`nro`,ei.`idIndicador`,(ind.`nombre`)AS indicador ,ind.`idTipoMeta`,tmi.`tipo`,ei.`idEjeEstrategia`,estra.`nombre` FROM `estrategiaindicador` ei\n" +
+            sql="SELECT ei.`idestrategiaIndicador`,ei.`instrumento`,ei.`nro`,ei.`idIndicador`, i.metaideal, (ind.`nombre`)AS indicador ,ind.`idTipoMeta`,tmi.`tipo`,ei.`idEjeEstrategia`,estra.`nombre` FROM `estrategiaindicador` ei\n" +
 "INNER JOIN `indicador` ind ON ei.idIndicador = ind.idIndicador\n" +
 "INNER JOIN `tipometaindicador` tmi ON ind.idTipoMeta = tmi.idTipoMeta\n" +
 "INNER JOIN `ejeestrategia` ees ON ei.idEjeEstrategia = ees.idEjeEstrategia\n" +
@@ -1403,6 +1406,7 @@ public class GestionEstrategicoDao extends DBConn{
                 to = new EstrategiaIndicador();
                 to.setIdestrategiaIndicador(rs.getInt("IdestrategiaIndicador"));
                 to.setInstrumento(rs.getString("instrumento"));
+                
                 to.setNro(rs.getString("nro"));
                 to.setIdIndicador(rs.getInt("idIndicador"));
                 to.setIdIndicador_nombre(rs.getString("indicador"));
