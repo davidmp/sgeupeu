@@ -410,7 +410,7 @@ function validarNumeroAvance(numero){
                     <th rowspan="2">Estratégia</th>
                     <th rowspan="2">C&oacute;digo</th>                    
                     <th rowspan="2">Indicador</th>
-                    <th rowspan="2"><center>Meta m&iacute;nima</center></th>
+                    <th rowspan="2"><center>Punto Control</center></th>
                     <th rowspan="2" style="width: 10%" >Meta</th>
                     <th colspan="2">Avances</th>
                     <th rowspan="2">POA</th>
@@ -472,7 +472,7 @@ function validarNumeroAvance(numero){
                      <p></p>
                      <br>
                         <center>
-                            <button class="btn"  rel="tooltip" title="<%=in.getMetaideal()%>"><i class="icon-comment"></i></button>
+                            <button class='<% if(in.getMetaideal()==0){out.print("btn-mini"); }else{out.print("btn-mini btn-success");} %>'  rel="tooltip" title="<% if(in.getMetaideal()==0){out.print("EP"); }else{out.print(in.getMetaideal());} %>"><i class="icon-comment"></i></button>
                         </center>
                     </td>
                     

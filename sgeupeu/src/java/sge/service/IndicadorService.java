@@ -276,8 +276,9 @@ public class IndicadorService {
         ac.setIdmeta(idMetaTemp);
         ac.setAccion(rq.getParameter("accion"));
         ac.setPresupuesto(Double.parseDouble(rq.getParameter("presupuesto")));
-             System.out.println("verrrrr> "+Double.parseDouble(rq.getParameter("presupuesto")));
-        ac.setRubro(rq.getParameter("rubro"));       
+        System.out.println("verrrrr> "+Double.parseDouble(rq.getParameter("presupuesto")));
+        ac.setRubro(rq.getParameter("rubronombre"));       
+        ac.setIdCuenta(Integer.parseInt(rq.getParameter("subrubro")));       
         
 
         dao = new IndicadorDAO();    
@@ -366,11 +367,11 @@ public class IndicadorService {
         ac.setResponsable(String.valueOf(rq.getParameter("responsablexx")));     
         ac.setCantidad(Integer.parseInt(rq.getParameter("cantidadxx")));        
         ac.setAccion(rq.getParameter("accionxx"));
-        ac.setPresupuesto(Double.parseDouble(rq.getParameter("presupuestoxx")));
-        ac.setRubro(rq.getParameter("rubroxx"));       
+        ac.setPresupuesto(Double.parseDouble(rq.getParameter("presupuestoxx")));              
         ac.setIdactividad(Integer.parseInt(rq.getParameter("idactividadxx")));       
         
-
+        ac.setRubro(rq.getParameter("rubronombrexx"));       
+        ac.setIdCuenta(Integer.parseInt(rq.getParameter("subrubroxx")));
         dao = new IndicadorDAO();    
         dao.actualizarActividad(ac);
     }
@@ -559,6 +560,7 @@ public class IndicadorService {
         int nr=Integer.parseInt(rq.getParameter("nro_indicador_3")); 
         Meta da = new Meta();
         da.setIdmeta(Integer.parseInt(rq.getParameter("idmeta"+nr+"")));
+          System.out.println("VERRRR:"+ rq.getParameter("idmeta"+nr+""));
         return dao.ListaActividadMeta(da);
      }
       public List<Actividad> ListaActividadMetaAx(HttpServletRequest rq){
@@ -907,5 +909,24 @@ public class IndicadorService {
          }
        return dao.listaFilialConsolidado(pm);
  }     
-   
+   public List<Subcuenta> listarSubCuenta(){
+        dao = new IndicadorDAO();        
+       return dao.listarSubCuenta();
+ }     
+   public List<Tareas> listarTareas(int idactividad){
+        dao = new IndicadorDAO();        
+       return dao.listarTareas(idactividad);
+ }     
+    public int insertarTarea(Tareas to){
+        dao = new IndicadorDAO();    
+        return  dao.insertarTarea(to);
+     }   
+    public int eliminarTarea(int idtarea){
+        dao = new IndicadorDAO();    
+        return  dao.eliminarTarea(idtarea);
+     }   
+    public int actualizarMontoActividad(int actividad, double monto){
+        dao = new IndicadorDAO();    
+        return  dao.actualizarMontoActividad(actividad,monto);
+     }   
 }

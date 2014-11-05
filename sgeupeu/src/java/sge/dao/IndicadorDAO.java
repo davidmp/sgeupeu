@@ -975,6 +975,7 @@ public class IndicadorDAO extends DBConn{
            Toto.setNoviembre(rs.getInt("noviembre"));
            Toto.setDiciembre(rs.getInt("diciembre"));
            Toto.setResponsable(rs.getString("responsable"));
+           Toto.setIdCuenta(rs.getInt("idcuenta"));
            Lista.add(Toto);
         }
         } catch (Exception e) {
@@ -1019,7 +1020,7 @@ public class IndicadorDAO extends DBConn{
        
         
         public List<Actividad> ListaActividadIndicador(int id){
-    String sql=" SELECT * FROM actividad_indicador WHERE idestrategiaindicador=? ORDER BY nro";
+    String sql=" SELECT * FROM actividad_indicador WHERE idestrategiaindicador=? ORDER BY nro ";
 
     List<Actividad> Lista = new ArrayList<Actividad>(); 
       Actividad Toto = null;
@@ -1210,8 +1211,8 @@ public class IndicadorDAO extends DBConn{
         try {
             System.out.println("ver llego>"+to.getPresupuesto());
             getConexionDb();
-            ps = con.prepareStatement("insert into actividad(nro,accion,cantidad,presupuesto,rubro,idmeta,enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre, responsable)\n" +
-           " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            ps = con.prepareStatement("insert into actividad(nro,accion,cantidad,presupuesto,rubro,idmeta,enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre, responsable,idcuenta)\n" +
+           " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setInt(1, to.getNro());
             ps.setString(2, to.getAccion());
             ps.setInt(3, to.getCantidad());
@@ -1231,6 +1232,7 @@ public class IndicadorDAO extends DBConn{
             ps.setInt(17, to.getNoviembre());
             ps.setInt(18, to.getDiciembre());
             ps.setString(19, to.getResponsable());
+            ps.setInt(20, to.getIdCuenta());
  
             if (ps.executeUpdate() == 1) {
                 r = 1;
@@ -1389,7 +1391,7 @@ public void actualizarActividad(Actividad to) {
             ps = con.prepareStatement(" UPDATE actividad SET accion =?, cantidad =?, presupuesto = ?, rubro =? , "
                     + " febrero =?, marzo =? , abril =?, mayo =?, junio =?, julio =?, "
                     + " agosto =?, setiembre =?, octubre =? , noviembre =? , diciembre =?, "
-                    + " enero =?, responsable =? WHERE idactividad =? ");
+                    + " enero =?, responsable =?, idcuenta=? WHERE idactividad =? ");
             
             ps.setString(++r, to.getAccion());
             ps.setInt(++r, to.getCantidad());
@@ -1409,6 +1411,7 @@ public void actualizarActividad(Actividad to) {
             ps.setInt(++r, to.getDiciembre());
             ps.setInt(++r, to.getEnero());            
             ps.setString(++r, to.getResponsable());
+            ps.setInt(++r, to.getIdCuenta());
             ps.setInt(++r, to.getIdactividad());
             if (ps.executeUpdate() == 1) {
               
@@ -1872,7 +1875,123 @@ public void actualizarActividad(Actividad to) {
         }
         finally{getCerrarConexion4();}
     return Lista;
+    }   
+        public List<Subcuenta> listarSubCuenta(){        
+        String sql= "SELECT * FROM subcuenta WHERE estado=1";           
+        List<Subcuenta> Lista = new ArrayList<Subcuenta>(); 
+        Subcuenta Toto = null;
+        try {  
+            getConexionDb4();
+            ps4=con4.prepareStatement(sql);
+            rs4=ps4.executeQuery();
+        while (rs4.next()){  
+            Toto = new Subcuenta();            
+            Toto.setIdSubcuenta(rs4.getInt("idsubcuenta"));
+            Toto.setNombre(rs4.getString("nombre"));
+            Toto.setCodigo(rs4.getString("codigo"));
+            Toto.setEstado(rs4.getInt("estado"));
+            Lista.add(Toto);           
+        }            
+        } catch (Exception e) {
+        }
+        finally{getCerrarConexion4();}
+    return Lista;
+    }   
+        public List<Tareas> listarTareas(int idactividad){        
+        String sql= "SELECT t.*, (CASE WHEN fecha='0000-00-00' THEN ' ' ELSE fecha END) AS fecha1, (CASE WHEN fechafin='0000-00-00' THEN ' ' ELSE fecha END) AS fecha2  FROM tareas t WHERE t.idactividad="+idactividad+" ";   
+        
+        List<Tareas> Lista = new ArrayList<Tareas>(); 
+        Tareas Toto = null;
+        try {  
+            getConexionDb4();
+            ps4=con4.prepareStatement(sql);
+            rs4=ps4.executeQuery();
+        while (rs4.next()){  
+            Toto = new Tareas();
+            
+            Toto.setIdActividad(rs4.getInt("idactividad"));            
+            Toto.setIdtarea(rs4.getInt("idtarea"));            
+            Toto.setNombre(rs4.getString("nombre"));
+            //System.out.print("Entro Aqui::::");
+            //System.out.print("ver::"+rs4.getDate("fecha"));
+            Toto.setFecha(rs4.getString("fecha1"));
+            Toto.setFecha2(rs4.getString("fecha2"));
+            Toto.setRh(rs4.getDouble("rh"));
+            Toto.setMateriales(rs4.getDouble("meteriales"));
+            Toto.setEquipos(rs4.getDouble("equipos"));
+            Toto.setAp(rs4.getDouble("ap"));
+            Toto.setMovilidad(rs4.getDouble("movilidad"));
+            Toto.setOtros(rs4.getDouble("otros"));            
+            Toto.setMonto(rs4.getDouble("monto"));
+            Lista.add(Toto);           
+        }            
+        } catch (Exception e) {
+        }
+        
+        finally{getCerrarConexion4();}
+        System.out.println(" Muestra la lista de tareas!!! ..>"+Lista.size());
+    return Lista;
+    }   
+        
+        
+   public int insertarTarea(Tareas to) {
+        int r = 0;
+        try {
+            getConexionDb();
+             System.out.println("insetar Tareas");
+            ps = con.prepareStatement(" INSERT INTO tareas (nombre, fecha, fechafin, monto, rh, meteriales, equipos, ap, movilidad, otros, idActividad) "
+                    + " VALUES ( ?, STR_TO_DATE(?,'%Y-%m-%d'), STR_TO_DATE(?,'%Y-%m-%d'), ?, ?, ?, ?, ?, ?, ?, ?)");            
+            ps.setString(1, to.getNombre());
+            ps.setString(2, to.getFecha());
+            ps.setString(3, to.getFecha2());
+            ps.setDouble(4, to.getMonto());
+            ps.setDouble(5, to.getRh());
+            ps.setDouble(6, to.getMateriales());
+            ps.setDouble(7, to.getEquipos());
+            ps.setDouble(8, to.getAp());
+            ps.setDouble(9, to.getMovilidad());
+            ps.setDouble(10, to.getOtros());
+            ps.setInt(11, to.getIdActividad());
+            
+            if (ps.executeUpdate() == 1) {
+                r = 1;
+                System.out.println("Insertado!!!");
+            }
+        } catch (Exception e) {
+            System.out.println(" --ERROR ! "+e.getMessage());
+        } 
+        return r;
     }    
-    
+   public int eliminarTarea(int idtarea) {
+        int r = 0;
+        try {
+            getConexionDb();             
+            ps = con.prepareStatement(" delete from tareas where idtarea=? ");            
+            ps.setInt(1, idtarea);           
+            if (ps.executeUpdate() == 1) {
+                r = 1;
+                System.out.println("Eliminando!!!");
+            }
+        } catch (Exception e) {
+            System.out.println(" --ERROR ! "+e.getMessage());
+        } 
+        return r;
+    }    
+   public int actualizarMontoActividad(int actividad, double monto) {
+        int r = 0;
+        try {
+            getConexionDb();             
+            ps = con.prepareStatement(" UPDATE actividad SET presupuesto=? WHERE idactividad=? ");            
+            ps.setDouble(1, monto);           
+            ps.setInt(2, actividad);           
+            if (ps.executeUpdate() == 1) {
+                r = 1;
+                System.out.println("Actualizar !!!");
+            }
+        } catch (Exception e) {
+            System.out.println(" --ERROR ! "+e.getMessage());
+        } 
+        return r;
+    }    
     
 }

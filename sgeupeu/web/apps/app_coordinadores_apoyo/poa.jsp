@@ -4,6 +4,9 @@
     Author     : oscdmdz
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="sge.modelo.Ejeestrategico"%>
 <%@page import="sge.modelo.Facultad"%>
 <%@page import="sge.modelo.Filial"%>
@@ -25,7 +28,7 @@
         
               
              <%
-    Indicador name=(Indicador)request.getSession().getAttribute("indicador");
+                Indicador name=(Indicador)request.getSession().getAttribute("indicador");
                 List<Actividad> listaActividad=null;
                 List<Actividad> listaActividadIndicador=null;
                 listaActividad=(List<Actividad>)request.getSession().getAttribute("listaActividad"); 
@@ -38,8 +41,10 @@
                 Variables vr=(Variables)request.getSession().getAttribute("variable");
                 Ejeestrategico eje=(Ejeestrategico)request.getSession().getAttribute("eje"); 
                 double suma =0;
-                int estadoPoa=Integer.parseInt(request.getSession().getAttribute("estadoPOA").toString());                
-
+                int estadoPoa=Integer.parseInt(request.getSession().getAttribute("estadoPOA").toString());
+                sge.modelo.Usuario usuSess=(sge.modelo.Usuario)request.getSession().getAttribute("listaPerfilUsuario");
+                int idTipoAreaPri=usuSess.getIdtipoarea();
+                int idFilial=Integer.parseInt(usuSess.getIdfilial());
      %> 
      
  <script type="text/javascript">
@@ -48,13 +53,12 @@
         var regex = /^\d+(?:\.\d{0,2})$/;
         var regex2 = /^(?:\+|-)?\d+$/;
         
-
-
-        
-        
         form.submit(function () {
+
            
-        if (regex.test(($("#presupuesto").val()).trim()) || regex2.test(($("#presupuesto").val()).trim())){    
+      
+        if (regex.test(($("#presupuesto").val()).trim()) || regex2.test(($("#presupuesto").val()).trim())){
+         
         $.ajax({
         type: form.attr('method'),
         url: form.attr('action'),
@@ -66,10 +70,11 @@
         document.getElementById("addactividad").reset();        
         document.getElementById("waza").reset(); 
         }
-        });
+        });            
         }else{
             alert("El presupuesto debe ser un valor numerico!");
-        }        
+        }
+       
         return false;
         });
         
@@ -108,7 +113,7 @@
         
         var form3 = $(".editar");
         form3.submit(function () {
-           
+            
         if (regex.test(($("#presupuestoxx").val()).trim()) || regex2.test(($("#presupuestoxx").val()).trim())){
         $.ajax({
         type: form3.attr('method'),
@@ -124,13 +129,25 @@
         });
         }else{            
             alert("El presupuesto debe ser un valor numerico!"); 
-        }        
+        }
+        
         return false;
         });
         
-         function editarActividad(nombre, cant, nro, pres , rub, ene, feb, mar, abr, may, jun, jul, ago, set, oct, nov, dic, responsable, idPeriodometa, idMeta, idEstrategiaindicador, idEapfacultad, idActividad ){
-         
-           
+                
+</script>
+
+           <script type="text/javascript">
+
+function formindicador(numero) 
+{
+    var nro_indicador = document.getElementById("nro_indicador");
+    nro_indicador.value = numero;
+}
+
+
+function editarActividad(nombre, cant, nro, pres , rub, ene, feb, mar, abr, may, jun, jul, ago, set, oct, nov, dic, responsable, idPeriodometa, idMeta, idEstrategiaindicador, idEapfacultad, idActividad, idCuenta, idTipoAreaPri, idFilial){
+
            $("#accionxx").html(nombre);
            $("#cantidadxx").val(cant);          
            if(ene==1){
@@ -169,7 +186,7 @@
                   $("#inlineCheckbox12xx").attr('checked',true);
               }else{$("#inlineCheckbox12xx").attr('checked',false);}
            $("#presupuestoxx").val(pres);
-           $("#rubroxx").val(rub);
+           
            $("#responsablexx").val(responsable);
            
            $("#nro_indicador_3xx").val(nro);
@@ -178,16 +195,90 @@
            $("#idmetaxx").val(idMeta);
            $("#idestrategiaindicadorxx").val(idEstrategiaindicador);
            $("#ideapfacultadxx").val(idEapfacultad);
-    }        
-</script>
-
-           <script type="text/javascript">
-
-function formindicador(numero) 
-{
-    var nro_indicador = document.getElementById("nro_indicador");
-    nro_indicador.value = numero;
+           //idCuenta, idTipoAreaPri, idFilial
+           $("#rubroxx").val(""); 
+           $("#rubronombrexx").val("");
+            $.ajax({
+                type: "GET",
+                url: "../../IndicadorApoyo",
+                data: "opt=33&idcuenta="+idCuenta,
+                success: function(datos) {
+                    $("#rubroxx").val(parseInt(datos.toString())+"*"+rub);  
+                    $("#rubronombrexx").val(rub);
+                    $.ajax({
+                        type: "GET",
+                        url: "../../IndicadorApoyo",
+                        data: "opt=31&idtipoarea="+idTipoAreaPri+"&idfilial="+idFilial+"&rubro="+parseInt(datos.toString()),
+                        success: function(datos) {
+                            $("#subrubroxx").html(datos);
+                            $("#subrubroxx").val(idCuenta); 
+                        }
+                    });                     
+                }
+            });           
+    } 
+    
+function validarNumeroDecimales(){
+    if(isNaN($("#meta").val())){                    
+            alert("Se necesita un numero positivo o el valor cero");
+    }         
 }
+
+function subRubros(idTipoArea, idFilial){
+    $("#subrubro").html("");    
+    var dato=$("#rubro").val();
+    var res = dato.split("*"); 
+    $("#rubronombre").val(res[1]);
+    $.ajax({
+        type: "GET",
+        url: "../../IndicadorApoyo",
+        data: "opt=31&idtipoarea="+idTipoArea+"&idfilial="+idFilial+"&rubro="+res[0],
+        success: function(datos) {
+            $("#subrubro").html(datos);
+        }
+    });       
+}
+function extraeSaldo(idPeriodo, idEapFacultad){
+    $("#saldoreal").html("");
+   // alert(idPeriodo+" - "+idEapFacultad+"- "+ $("#subrubro").val());
+    $.ajax({
+        type: "GET",
+        url: "../../IndicadorApoyo",
+        data: "opt=32&idPeriodo="+idPeriodo+"&idEapFacultad="+idEapFacultad+"&subrubro="+$("#subrubro").val(),
+        success: function(datos) {
+            $("#saldoreal").html(datos);
+        }
+    });       
+}
+function subRubrosxx(idTipoArea, idFilial){
+    $("#subrubroxx").html("");    
+    var dato=$("#rubroxx").val();
+    var res = dato.split("*"); 
+    $("#rubronombrexx").val(res[1]);
+    $.ajax({
+        type: "GET",
+        url: "../../IndicadorApoyo",
+        data: "opt=31&idtipoarea="+idTipoArea+"&idfilial="+idFilial+"&rubro="+res[0],
+        success: function(datos) {
+            $("#subrubroxx").html(datos);
+        }
+    });       
+}
+function extraeSaldoxx(idPeriodo, idEapFacultad){
+    $("#saldorealxx").html("");
+   // alert(idPeriodo+" - "+idEapFacultad+"- "+ $("#subrubro").val());
+    $.ajax({
+        type: "GET",
+        url: "../../IndicadorApoyo",
+        data: "opt=32&idPeriodo="+idPeriodo+"&idEapFacultad="+idEapFacultad+"&subrubro="+$("#subrubroxx").val(),
+        success: function(datos) {
+            $("#saldorealxx").html(datos);
+        }
+    });       
+}
+
+
+
  </script>
     </head>
     <body>
@@ -200,7 +291,7 @@ function formindicador(numero)
                     
                     
          
-         <form id="addactividad" name="addactividad" action="<%=request.getContextPath()%>/IndicadorApoyo" method="POST">     
+         <form id="addactividad" name="addactividad" action="<%=request.getContextPath()%>/IndicadorApoyo"  method="POST">     
          
           <div  id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
@@ -213,14 +304,14 @@ function formindicador(numero)
 
                         
                         <tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
-                            <textarea rows="3" type="text" name="accion" placeholder="Acción"></textarea>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
+                            <textarea rows="2"  type="text" name="accion" id="accion" placeholder="Acción"></textarea>
                         </td>
                         </tr>
                         <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cantidad : </p></h6></td><td><input type="text" name="cantidad" placeholder="Cantidad"></td>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;Cantidad : </p></h6></td><td><input type="text" name="cantidad" placeholder="Cantidad"></td>
                         </tr><tr>   
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cronograma </p></h6></td>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>&nbsp;Cronograma </p></h6></td>
                         <td>
                             <table>
                                 <tr>
@@ -239,13 +330,13 @@ function formindicador(numero)
                                   <input type="checkbox" id="inlineCheckbox3" name="marzo" value="1"> Marzo
                                 </label>          
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
+                                 <td>
                                <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="abril" value="1"> Abril
                                 </label>         
-                                    </td>  
+                                    </td>                                     
+                                </tr>
+                                <tr>   
                                     <td>
                                   <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="mayo" value="1"> Mayo
@@ -255,9 +346,7 @@ function formindicador(numero)
                                 <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="junio" value="1"> Junio
                                 </label>        
-                                    </td>  
-                                </tr>
-                                <tr>
+                                    </td> 
                                     <td>
                                <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="julio" value="1"> Julio
@@ -267,15 +356,16 @@ function formindicador(numero)
                                  <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="agosto" value="1"> Agosto
                                 </label>       
-                                    </td>  
+                                    </td>                                     
+                                </tr>
+                                <tr>
+ 
                                     <td>
                                    <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="setiembre" value="1"> Setiembre
                                 </label>     
-                                    </td>  
-                                </tr>
-                                <tr>
-                                    <td>
+                                    </td> 
+                                   <td>
                                 <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="octubre" value="1"> Octubre
                                 </label>         
@@ -289,24 +379,58 @@ function formindicador(numero)
                                    <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="diciembre" value="1"> Diciembre
                                 </label>      
-                                    </td>  
+                                    </td>                                     
                                 </tr>
+
                             </table>
       
                         </td>   
-                        </tr><tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Presupuesto :</p></h6></td><td>
-                            <input type="text"  name="presupuesto" id="presupuesto" value="" >   
+                        </tr>
+                        
+                        <tr>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>Rubro </p></h6></td>
+                            <td>                            
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <%
+                ArrayList lista=null;
+                lista = (ArrayList)request.getSession().getAttribute("sesionNivelFinan");
+
+               
+                Iterator<Object> inter=lista.iterator();
+                                            %>                                            
+                                            <select name="rubro" id="rubro" style="width: 140px" onclick="subRubros('<%=idTipoAreaPri%>', '<%=idFilial%>')">
+                                            <%    
+                                            while(inter.hasNext()){
+                                                Map datos=  (Map)inter.next();                                             
+                                            %>
+                                            <option value="<%=datos.get("idNivelFinanciero")%>*<%=datos.get("nombre")%>"><%=datos.get("nombre")%></option>
+                                            <% } %>
+                                        </select>                                                                                  
+                                        </td>
+                                        <td> 
+                                        <input type="hidden" name="rubronombre" id="rubronombre" value="">
+                                        <select name="subrubro" id="subrubro" onclick="extraeSaldo('<%=p.getIdperiodometa()%>', '<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>')" style="width: 180px">
+                                            
+                                        </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                            </td> 
+                        </tr>
+                        
+                        <tr>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>Presupuesto</p></h6></td><td>
+                            S/.<input type="text"  name="presupuesto" placeholder="Coloque un monto" id="presupuesto" value=""  > <samp id="saldoreal" ></samp>
              
                         </td> 
                         </tr>
+
                         <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rubro :</p></h6></td><td>
-                                <input type="text"  name="rubro" value="" > </td> 
-                        </tr>
-                        <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Responsable :</p></h6></td><td>
-                                <input type="text"  name="responsable" value="" > </td> 
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>Responsable</p></h6></td><td>
+                                <input type="text"  name="responsable" id="responsable" value="" > </td> 
                         </tr>
                     </table>
                
@@ -321,6 +445,7 @@ function formindicador(numero)
                     <input type="hidden"  name="opt" value="13" >
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
                 <input type="submit" value="Aceptar" class="btn btn-primary" />
+          
         </div>
     </div>                   
    </form>             
@@ -342,14 +467,14 @@ function formindicador(numero)
 
 
                         <tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
-                            <textarea rows="3" type="text" name="accionxx" id="accionxx" placeholder="Acción"></textarea>
+                        <td><h6><p >&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
+                            <textarea rows="2" type="text" name="accionxx" id="accionxx" placeholder="Acción"></textarea>
                         </td>
                         </tr>
                         <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cantidad : </p></h6></td><td><input type="text" name="cantidadxx" id="cantidadxx"  ></td>
+                            <td><h6><p >&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;Cantidad : </p></h6></td><td><input type="text" name="cantidadxx" id="cantidadxx"  ></td>
                         </tr><tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cronograma : </p></h6></td>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>&nbsp;Cronograma</p></h6></td>
                         <td>
                             <table>
                                 <tr>
@@ -368,13 +493,14 @@ function formindicador(numero)
                                   <input type="checkbox" id="inlineCheckbox3xx" name="marzoxx" value="1"> Marzo
                                 </label>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td>
                                <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox4xx" name="abrilxx" value="1"> Abril
                                 </label>
-                                    </td>
+                                    </td>                                    
+                                </tr>
+                                <tr>
+
                                     <td>
                                   <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox5xx" name="mayoxx" value="1"> Mayo
@@ -385,8 +511,6 @@ function formindicador(numero)
                                   <input type="checkbox" id="inlineCheckbox6xx" name="junioxx" value="1"> Junio
                                 </label>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td>
                                <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox7xx" name="julioxx" value="1"> Julio
@@ -396,14 +520,15 @@ function formindicador(numero)
                                  <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox8xx" name="agostoxx" value="1"> Agosto
                                 </label>
-                                    </td>
+                                    </td>                                    
+                                </tr>
+                                <tr>
+
                                     <td>
                                    <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox9xx" name="setiembrexx" value="1"> Setiembre
                                 </label>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td>
                                 <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox10xx" name="octubrexx" value="1"> Octubre
@@ -418,23 +543,51 @@ function formindicador(numero)
                                    <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox12xx" name="diciembrexx" value="1"> Diciembre
                                 </label>
-                                    </td>
+                                    </td>                                    
                                 </tr>
                             </table>
 
                         </td>
-                        </tr><tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Presupuesto :</p></h6></td><td>
-                        <input type="text"  name="presupuestoxx" id="presupuestoxx" value="" >
+                        </tr>
+                        <tr>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>Rubro</p></h6></td>
+                            <td>
+                            <table>
+                                    <tr>
+                                        <td>
+                                            <%
+                                            lista=null;
+                                            lista = (ArrayList)request.getSession().getAttribute("sesionNivelFinan");
 
+               
+                                            inter=lista.iterator();
+                                            %>                                            
+                                            <select name="rubroxx" id="rubroxx" style="width: 140px" onclick="subRubrosxx('<%=idTipoAreaPri%>', '<%=idFilial%>')">
+                                            <%    
+                                            while(inter.hasNext()){
+                                                Map datos=  (Map)inter.next();                                             
+                                            %>
+                                            <option value="<%=datos.get("idNivelFinanciero")%>*<%=datos.get("nombre")%>"><%=datos.get("nombre")%></option>
+                                            <% } %>
+                                        </select>                                                                                  
+                                        </td>
+                                        <td> 
+                                        <input type="hidden" name="rubronombrexx" id="rubronombrexx" value="">
+                                        <select name="subrubroxx" id="subrubroxx" onclick="extraeSaldoxx('<%=p.getIdperiodometa()%>', '<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>')" style="width: 180px">
+                                            
+                                        </select>
+                                        </td>
+                                    </tr>
+                                </table>                                
+                            </td>
+                        </tr>                        
+                        <tr>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>Presupuesto</p></h6></td><td>
+                        S/.<input type="text"  name="presupuestoxx" id="presupuestoxx" value="" ><samp id="saldorealxx" ></samp>
                         </td>
                         </tr>
                         <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rubro :</p></h6></td><td>
-                                <input type="text"  name="rubroxx" id="rubroxx" value="" > </td>
-                        </tr>
-                        <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Responsable :</p></h6></td><td>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>Responsable</p></h6></td><td>
                                 <input type="text"  name="responsablexx" id="responsablexx" value="" > </td> 
                         </tr>                        
                     </table>
@@ -454,20 +607,23 @@ function formindicador(numero)
 
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
                 <input type="submit" value="Aceptar" class="btn btn-primary" />
+               
 
         </div>
        </div> 
        </form> 
                   
                     
+          
+          
+          
           <center><h4>Lista de Actividades &nbsp;&nbsp;&nbsp;&nbsp;
-
                   <% if(estadoPoa==1){ %>
                   <a  href="#myModal" role="button"  class="btn" data-toggle="modal" ><i class="icon-plus"></i>
                   </a>
                   <% }else{ %>
                   <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
-                  <% } %>               
+                  <% } %>
               </h4></center>
                
                     <table class="table table-bordered table-hover">
@@ -576,44 +732,66 @@ function formindicador(numero)
        <td  width="">s/ <%=me.getPresupuesto()%></td>
        <%suma=me.getPresupuesto()+suma;%>
        <td  width=""><%=me.getRubro()%></td>
-<td  width="">
+       
+        <td  width="">
+
         <% if(estadoPoa==1){ %>
-<a  href="#myModalX" role="button" onclick="editarActividad('<%=me.getAccion().toString().trim()%>', '<%=me.getCantidad()%>',
-                   '<%=me.getNro()%>','<%=me.getPresupuesto()%>', '<%=me.getRubro()%>','<%=me.getEnero()%>',
-                   '<%=me.getFebrero()%>','<%=me.getMarzo()%>','<%=me.getAbril()%>','<%=me.getMayo()%>',
-                   '<%=me.getJunio()%>','<%=me.getJulio()%>','<%=me.getAgosto()%>', '<%=me.getSetiembre()%>',
-                   '<%=me.getOctubre()%>','<%=me.getNoviembre()%>','<%=me.getDiciembre()%>','<%=me.getResponsable() %>'                   
-                   ,'<%=p.getIdperiodometa() %>'
-                   ,'<%=in.getIdmeta() %>'
-                   ,'<%=in.getIdestrategiaindicador() %>'
-                   ,'<%=eU.getIdeapfacultad() %>'
-                   ,'<%=me.getIdactividad() %>'
-                    )"
-                    class="btn" data-toggle="modal" ><i class="icon-edit"></i>
-</a>
+        
+        <a  href="#myModalX" role="button"  onclick="editarActividad(
+'<%=me.getAccion().toString().trim()%>'
+,'<%=me.getCantidad()%>'
+,'<%=me.getNro()%>'
+,'<%=me.getPresupuesto()%>'
+,'<%=me.getRubro()%>'
+,'<%=me.getEnero()%>'
+,'<%=me.getFebrero()%>'
+,'<%=me.getMarzo()%>'
+,'<%=me.getAbril()%>'
+,'<%=me.getMayo()%>'
+,'<%=me.getJunio()%>'
+,'<%=me.getJulio()%>'
+,'<%=me.getAgosto()%>'
+,'<%=me.getSetiembre()%>'
+,'<%=me.getOctubre()%>'
+,'<%=me.getNoviembre()%>'
+,'<%=me.getDiciembre()%>'
+,'<%=me.getResponsable()%>'                   
+,'<%=p.getIdperiodometa()%>'
+,'<%=in.getIdmeta()%>'
+,'<%=in.getIdestrategiaindicador()%>'
+,'<%=eU.getIdeapfacultad()%>'
+,'<%=me.getIdactividad()%>'
+,'<%=me.getIdCuenta()%>'  
+,'<%=idTipoAreaPri%>'
+,'<%=idFilial%>'        
+);" 
+                 class="btn" data-toggle="modal" ><i class="icon-edit"></i>
+        </a>
         <% } else{ %>
         <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
         <% } %>
+        </td>   
 
-       </td>       
+
+
        <td  width="">
-                  <% if(estadoPoa==1){ %>           
-<form class="eliminar" name="eliminar" action="<%=request.getContextPath()%>/IndicadorApoyo" method="POST"> 
-<input type="hidden"  name="nro_actividad" id="nro_indicador" />
-<input type="hidden"  name="nro_indicador_3" value="<%=vr.getNro()%>" />
-<input type="hidden"  name="idperiodometa" value="<%=p.getIdperiodometa()%>" />
-<input type="hidden"  name="idmeta<%=vr.getNro()%>" value="<%=in.getIdmeta()%>" />
-<input type="hidden"  name="idestrategiaindicador<%=vr.getNro()%>" value="<%=in.getIdestrategiaindicador()%>" />
-<input type="hidden"  name="ideapfacultad" value="<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>" />
-<input type="hidden"  name="idfilialfacultad" value="<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>" />
-<input type="hidden"  name="idfilial" value="<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>" />        
-<input type="hidden"  name="idactividad<%=me.getIdactividad()%>" value="<%=me.getIdactividad()%>" /> 
-<input type="hidden"  name="idtemporadaejeestrategico" value="<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>"/> 
-<input type="hidden"  name="opt" value="28" > 
-                          <center>   
-                         <button class="btn btn-mini btn-danger" onmouseover="formindicador(<%=me.getIdactividad()%>)" type="submit"><i class="icon-remove icon-white"></i></button>                       
-                          </center>
-                         </form>      
+                  <% if(estadoPoa==1){ %>          
+                <form class="eliminar" name="eliminar" action="<%=request.getContextPath()%>/IndicadorApoyo" method="POST">  
+                <input type="hidden"  name="nro_actividad" id="nro_indicador" />
+                <input type="hidden"  name="nro_indicador_3" value="<%=vr.getNro()%>" />
+                <input type="hidden"  name="idperiodometa" value="<%=p.getIdperiodometa()%>" />
+                <input type="hidden"  name="idmeta<%=vr.getNro()%>" value="<%=in.getIdmeta()%>" />
+                <input type="hidden"  name="idestrategiaindicador<%=vr.getNro()%>" value="<%=in.getIdestrategiaindicador()%>" />
+                <input type="hidden"  name="ideapfacultad" value="<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>" />
+                <input type="hidden"  name="idfilialfacultad" value="<%if(faU!=null){%><%=faU.getIdfilialfacultad()%><%}else{%>0<%}%>" />
+                <input type="hidden"  name="idfilial" value="<%if(fiU!=null){%><%=fiU.getIdfilial()%><%}else{%>0<%}%>" />        
+                <input type="hidden"  name="idactividad<%=me.getIdactividad()%>" value="<%=me.getIdactividad()%>" /> 
+                <input type="hidden"  name="idtemporadaejeestrategico" value="<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>"/> 
+                <input type="hidden"  name="opt" value="28" > 
+                <center>   
+                <button class="btn btn-mini btn-danger" onmouseover="formindicador(<%=me.getIdactividad()%>)" type="submit"><i class="icon-remove icon-white"></i></button>                       
+                </center>
+                </form>      
                 <% }else{ %>
                 <button class="btn"  rel="tooltip" title="Desactivado"  ><i class="icon-eye-close "></i></button> 
                 <% } %>            

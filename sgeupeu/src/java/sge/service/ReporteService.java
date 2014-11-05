@@ -72,4 +72,24 @@ public class ReporteService {
       dao=new ReportesDAO();
       return dao.reporteCarrerasPregrado(idfilial);
   }    
+  public ArrayList reporteNivelFinanciero(){
+      dao=new ReportesDAO();
+      return dao.reporteNivelFinanciero();
+  }    
+  public ArrayList reporteCuentaPorNivel(int idNivelFinanciero, int idFilial, int idtipoarea){
+      dao=new ReportesDAO();
+      return dao.reporteCuentaPorNivel(idNivelFinanciero, idFilial, idtipoarea);
+  }    
+  public double muestraSaldoDisponible(int idCuenta, int ideapfacultad, int idperiodo){
+      dao=new ReportesDAO();
+      return dao.muestraSaldoDisponible(idCuenta, ideapfacultad, idperiodo);
+  }    
+  public int idNivelfinanciero(int idCuenta){
+      dao=new ReportesDAO();
+      return dao.idNivelfinanciero(idCuenta);
+  }    
+  public double saldoTareas(int idActividad){
+      dao=new ReportesDAO();
+      return dao.saldoTareas(idActividad);
+  }    
 }

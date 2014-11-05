@@ -35,6 +35,17 @@ int setiembre;
 int octubre;
 int noviembre;
 int diciembre;
+int idCuenta;
+
+    public int getIdCuenta() {
+        return idCuenta;
+    }
+
+    public void setIdCuenta(int idCuenta) {
+        this.idCuenta = idCuenta;
+    }
+
+
 
     public String getResponsable() {
         return responsable;

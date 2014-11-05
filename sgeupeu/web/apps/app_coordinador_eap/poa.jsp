@@ -4,6 +4,9 @@
     Author     : oscdmdz
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="sge.modelo.Ejeestrategico"%>
 <%@page import="sge.modelo.Facultad"%>
 <%@page import="sge.modelo.Filial"%>
@@ -39,7 +42,9 @@
                 Ejeestrategico eje=(Ejeestrategico)request.getSession().getAttribute("eje"); 
                 double suma =0;
                 int estadoPoa=Integer.parseInt(request.getSession().getAttribute("estadoPOA").toString());
-
+                sge.modelo.Usuario usuSess=(sge.modelo.Usuario)request.getSession().getAttribute("listaPerfilUsuario");
+                int idTipoAreaPri=usuSess.getIdtipoarea();
+                int idFilial=Integer.parseInt(usuSess.getIdfilial());
      %> 
      
  <script type="text/javascript">
@@ -141,7 +146,7 @@ function formindicador(numero)
 }
 
 
-function editarActividad(nombre, cant, nro, pres , rub, ene, feb, mar, abr, may, jun, jul, ago, set, oct, nov, dic, responsable, idPeriodometa, idMeta, idEstrategiaindicador, idEapfacultad, idActividad){
+function editarActividad(nombre, cant, nro, pres , rub, ene, feb, mar, abr, may, jun, jul, ago, set, oct, nov, dic, responsable, idPeriodometa, idMeta, idEstrategiaindicador, idEapfacultad, idActividad, idCuenta, idTipoAreaPri, idFilial){
 
            $("#accionxx").html(nombre);
            $("#cantidadxx").val(cant);          
@@ -181,7 +186,7 @@ function editarActividad(nombre, cant, nro, pres , rub, ene, feb, mar, abr, may,
                   $("#inlineCheckbox12xx").attr('checked',true);
               }else{$("#inlineCheckbox12xx").attr('checked',false);}
            $("#presupuestoxx").val(pres);
-           $("#rubroxx").val(rub);
+           
            $("#responsablexx").val(responsable);
            
            $("#nro_indicador_3xx").val(nro);
@@ -190,13 +195,90 @@ function editarActividad(nombre, cant, nro, pres , rub, ene, feb, mar, abr, may,
            $("#idmetaxx").val(idMeta);
            $("#idestrategiaindicadorxx").val(idEstrategiaindicador);
            $("#ideapfacultadxx").val(idEapfacultad);
+           //idCuenta, idTipoAreaPri, idFilial
+           $("#rubroxx").val(""); 
+           $("#rubronombrexx").val("");
+            $.ajax({
+                type: "GET",
+                url: "../../Indicador",
+                data: "opt=33&idcuenta="+idCuenta,
+                success: function(datos) {
+                    $("#rubroxx").val(parseInt(datos.toString())+"*"+rub);  
+                    $("#rubronombrexx").val(rub);
+                    $.ajax({
+                        type: "GET",
+                        url: "../../Indicador",
+                        data: "opt=31&idtipoarea="+idTipoAreaPri+"&idfilial="+idFilial+"&rubro="+parseInt(datos.toString()),
+                        success: function(datos) {
+                            $("#subrubroxx").html(datos);
+                            $("#subrubroxx").val(idCuenta); 
+                        }
+                    });                     
+                }
+            });           
     } 
     
 function validarNumeroDecimales(){
     if(isNaN($("#meta").val())){                    
             alert("Se necesita un numero positivo o el valor cero");
     }         
-}       
+}
+
+function subRubros(idTipoArea, idFilial){
+    $("#subrubro").html("");    
+    var dato=$("#rubro").val();
+    var res = dato.split("*"); 
+    $("#rubronombre").val(res[1]);
+    $.ajax({
+        type: "GET",
+        url: "../../Indicador",
+        data: "opt=31&idtipoarea="+idTipoArea+"&idfilial="+idFilial+"&rubro="+res[0],
+        success: function(datos) {
+            $("#subrubro").html(datos);
+        }
+    });       
+}
+function extraeSaldo(idPeriodo, idEapFacultad){
+    $("#saldoreal").html("");
+   // alert(idPeriodo+" - "+idEapFacultad+"- "+ $("#subrubro").val());
+    $.ajax({
+        type: "GET",
+        url: "../../Indicador",
+        data: "opt=32&idPeriodo="+idPeriodo+"&idEapFacultad="+idEapFacultad+"&subrubro="+$("#subrubro").val(),
+        success: function(datos) {
+            $("#saldoreal").html(datos);
+        }
+    });       
+}
+function subRubrosxx(idTipoArea, idFilial){
+    $("#subrubroxx").html("");    
+    var dato=$("#rubroxx").val();
+    var res = dato.split("*"); 
+    $("#rubronombrexx").val(res[1]);
+    $.ajax({
+        type: "GET",
+        url: "../../Indicador",
+        data: "opt=31&idtipoarea="+idTipoArea+"&idfilial="+idFilial+"&rubro="+res[0],
+        success: function(datos) {
+            $("#subrubroxx").html(datos);
+        }
+    });       
+}
+function extraeSaldoxx(idPeriodo, idEapFacultad){
+    $("#saldorealxx").html("");
+   // alert(idPeriodo+" - "+idEapFacultad+"- "+ $("#subrubro").val());
+    $.ajax({
+        type: "GET",
+        url: "../../Indicador",
+        data: "opt=32&idPeriodo="+idPeriodo+"&idEapFacultad="+idEapFacultad+"&subrubro="+$("#subrubroxx").val(),
+        success: function(datos) {
+            $("#saldorealxx").html(datos);
+        }
+    });       
+}
+
+
+
  </script>
     </head>
     <body>
@@ -222,14 +304,14 @@ function validarNumeroDecimales(){
 
                         
                         <tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
-                            <textarea rows="3" type="text" name="accion" id="accion" placeholder="Acción"></textarea>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
+                            <textarea rows="2"  type="text" name="accion" id="accion" placeholder="Acción"></textarea>
                         </td>
                         </tr>
                         <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cantidad : </p></h6></td><td><input type="text" name="cantidad" placeholder="Cantidad"></td>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;Cantidad : </p></h6></td><td><input type="text" name="cantidad" placeholder="Cantidad"></td>
                         </tr><tr>   
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cronograma </p></h6></td>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>&nbsp;Cronograma </p></h6></td>
                         <td>
                             <table>
                                 <tr>
@@ -248,13 +330,13 @@ function validarNumeroDecimales(){
                                   <input type="checkbox" id="inlineCheckbox3" name="marzo" value="1"> Marzo
                                 </label>          
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
+                                 <td>
                                <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="abril" value="1"> Abril
                                 </label>         
-                                    </td>  
+                                    </td>                                     
+                                </tr>
+                                <tr>   
                                     <td>
                                   <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="mayo" value="1"> Mayo
@@ -264,9 +346,7 @@ function validarNumeroDecimales(){
                                 <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="junio" value="1"> Junio
                                 </label>        
-                                    </td>  
-                                </tr>
-                                <tr>
+                                    </td> 
                                     <td>
                                <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="julio" value="1"> Julio
@@ -276,15 +356,16 @@ function validarNumeroDecimales(){
                                  <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="agosto" value="1"> Agosto
                                 </label>       
-                                    </td>  
+                                    </td>                                     
+                                </tr>
+                                <tr>
+ 
                                     <td>
                                    <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="setiembre" value="1"> Setiembre
                                 </label>     
-                                    </td>  
-                                </tr>
-                                <tr>
-                                    <td>
+                                    </td> 
+                                   <td>
                                 <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="octubre" value="1"> Octubre
                                 </label>         
@@ -298,23 +379,57 @@ function validarNumeroDecimales(){
                                    <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox3" name="diciembre" value="1"> Diciembre
                                 </label>      
-                                    </td>  
+                                    </td>                                     
                                 </tr>
+
                             </table>
       
                         </td>   
-                        </tr><tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Presupuesto :</p></h6></td><td>
-                            <input type="text"  name="presupuesto" id="presupuesto" value=""  >   
+                        </tr>
+                        
+                        <tr>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>Rubro </p></h6></td>
+                            <td>                            
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <%
+                ArrayList lista=null;
+                lista = (ArrayList)request.getSession().getAttribute("sesionNivelFinan");
+
+               
+                Iterator<Object> inter=lista.iterator();
+                                            %>                                            
+                                            <select name="rubro" id="rubro" style="width: 140px" onclick="subRubros('<%=idTipoAreaPri%>', '<%=idFilial%>')">
+                                            <%    
+                                            while(inter.hasNext()){
+                                                Map datos=  (Map)inter.next();                                             
+                                            %>
+                                            <option value="<%=datos.get("idNivelFinanciero")%>*<%=datos.get("nombre")%>"><%=datos.get("nombre")%></option>
+                                            <% } %>
+                                        </select>                                                                                  
+                                        </td>
+                                        <td> 
+                                        <input type="hidden" name="rubronombre" id="rubronombre" value="">
+                                        <select name="subrubro" id="subrubro" onclick="extraeSaldo('<%=p.getIdperiodometa()%>', '<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>')" style="width: 180px">
+                                            
+                                        </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                            </td> 
+                        </tr>
+                        
+                        <tr>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>Presupuesto</p></h6></td><td>
+                            S/.<input type="text"  name="presupuesto" placeholder="Coloque un monto" id="presupuesto" value=""  > <samp id="saldoreal" ></samp>
              
                         </td> 
                         </tr>
+
                         <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rubro :</p></h6></td><td>
-                                <input type="text"  name="rubro" value="" > </td> 
-                        </tr>
-                        <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Responsable :</p></h6></td><td>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>Responsable</p></h6></td><td>
                                 <input type="text"  name="responsable" id="responsable" value="" > </td> 
                         </tr>
                     </table>
@@ -352,14 +467,14 @@ function validarNumeroDecimales(){
 
 
                         <tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
-                            <textarea rows="3" type="text" name="accionxx" id="accionxx" placeholder="Acción"></textarea>
+                        <td><h6><p >&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;Acción :</p></h6></td><td>
+                            <textarea rows="2" type="text" name="accionxx" id="accionxx" placeholder="Acción"></textarea>
                         </td>
                         </tr>
                         <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cantidad : </p></h6></td><td><input type="text" name="cantidadxx" id="cantidadxx"  ></td>
+                            <td><h6><p >&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;Cantidad : </p></h6></td><td><input type="text" name="cantidadxx" id="cantidadxx"  ></td>
                         </tr><tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cronograma : </p></h6></td>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>&nbsp;Cronograma</p></h6></td>
                         <td>
                             <table>
                                 <tr>
@@ -378,13 +493,14 @@ function validarNumeroDecimales(){
                                   <input type="checkbox" id="inlineCheckbox3xx" name="marzoxx" value="1"> Marzo
                                 </label>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td>
                                <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox4xx" name="abrilxx" value="1"> Abril
                                 </label>
-                                    </td>
+                                    </td>                                    
+                                </tr>
+                                <tr>
+
                                     <td>
                                   <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox5xx" name="mayoxx" value="1"> Mayo
@@ -395,8 +511,6 @@ function validarNumeroDecimales(){
                                   <input type="checkbox" id="inlineCheckbox6xx" name="junioxx" value="1"> Junio
                                 </label>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td>
                                <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox7xx" name="julioxx" value="1"> Julio
@@ -406,14 +520,15 @@ function validarNumeroDecimales(){
                                  <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox8xx" name="agostoxx" value="1"> Agosto
                                 </label>
-                                    </td>
+                                    </td>                                    
+                                </tr>
+                                <tr>
+
                                     <td>
                                    <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox9xx" name="setiembrexx" value="1"> Setiembre
                                 </label>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td>
                                 <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox10xx" name="octubrexx" value="1"> Octubre
@@ -428,23 +543,51 @@ function validarNumeroDecimales(){
                                    <label class="checkbox inline">
                                   <input type="checkbox" id="inlineCheckbox12xx" name="diciembrexx" value="1"> Diciembre
                                 </label>
-                                    </td>
+                                    </td>                                    
                                 </tr>
                             </table>
 
                         </td>
-                        </tr><tr>
-                        <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Presupuesto :</p></h6></td><td>
-                        <input type="text"  name="presupuestoxx" id="presupuestoxx" value="" >
+                        </tr>
+                        <tr>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>Rubro</p></h6></td>
+                            <td>
+                            <table>
+                                    <tr>
+                                        <td>
+                                            <%
+                                            lista=null;
+                                            lista = (ArrayList)request.getSession().getAttribute("sesionNivelFinan");
 
+               
+                                            inter=lista.iterator();
+                                            %>                                            
+                                            <select name="rubroxx" id="rubroxx" style="width: 140px" onclick="subRubrosxx('<%=idTipoAreaPri%>', '<%=idFilial%>')">
+                                            <%    
+                                            while(inter.hasNext()){
+                                                Map datos=  (Map)inter.next();                                             
+                                            %>
+                                            <option value="<%=datos.get("idNivelFinanciero")%>*<%=datos.get("nombre")%>"><%=datos.get("nombre")%></option>
+                                            <% } %>
+                                        </select>                                                                                  
+                                        </td>
+                                        <td> 
+                                        <input type="hidden" name="rubronombrexx" id="rubronombrexx" value="">
+                                        <select name="subrubroxx" id="subrubroxx" onclick="extraeSaldoxx('<%=p.getIdperiodometa()%>', '<%if(eU!=null){%><%=eU.getIdeapfacultad()%><%}else{%>0<%}%>')" style="width: 180px">
+                                            
+                                        </select>
+                                        </td>
+                                    </tr>
+                                </table>                                
+                            </td>
+                        </tr>                        
+                        <tr>
+                        <td><h6><p >&nbsp;<i class="icon-edit"></i>Presupuesto</p></h6></td><td>
+                        S/.<input type="text"  name="presupuestoxx" id="presupuestoxx" value="" ><samp id="saldorealxx" ></samp>
                         </td>
                         </tr>
                         <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rubro :</p></h6></td><td>
-                                <input type="text"  name="rubroxx" id="rubroxx" value="" > </td>
-                        </tr>
-                        <tr>
-                            <td><h6><p >&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Responsable :</p></h6></td><td>
+                            <td><h6><p >&nbsp;<i class="icon-edit"></i>Responsable</p></h6></td><td>
                                 <input type="text"  name="responsablexx" id="responsablexx" value="" > </td> 
                         </tr>                        
                     </table>
@@ -471,6 +614,9 @@ function validarNumeroDecimales(){
        </form> 
                   
                     
+          
+          
+          
           <center><h4>Lista de Actividades &nbsp;&nbsp;&nbsp;&nbsp;
                   <% if(estadoPoa==1){ %>
                   <a  href="#myModal" role="button"  class="btn" data-toggle="modal" ><i class="icon-plus"></i>
@@ -615,7 +761,10 @@ function validarNumeroDecimales(){
 ,'<%=in.getIdestrategiaindicador()%>'
 ,'<%=eU.getIdeapfacultad()%>'
 ,'<%=me.getIdactividad()%>'
-);"
+,'<%=me.getIdCuenta()%>'  
+,'<%=idTipoAreaPri%>'
+,'<%=idFilial%>'        
+);" 
                  class="btn" data-toggle="modal" ><i class="icon-edit"></i>
         </a>
         <% } else{ %>

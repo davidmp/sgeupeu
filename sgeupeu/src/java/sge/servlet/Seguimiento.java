@@ -97,7 +97,7 @@ public class Seguimiento extends HttpServlet {
                
                    Iterator<Object> inter2=listaEjes.iterator();
                     int i=0;
-                     while(inter2.hasNext()){
+                    while(inter2.hasNext()){
                     Map datos=  (Map)inter2.next();
                     i=i+1;
                     String color="#ffffff";

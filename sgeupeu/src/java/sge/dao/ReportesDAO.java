@@ -231,7 +231,7 @@ public class ReportesDAO extends DBConn{
     
     public ArrayList actividadesPOA(int idmeta, int mes1, int mes2){
         
-    String sql=" SELECT * FROM (SELECT validar_mes(?,?,a.idactividad) AS validar,  a.nro, a.accion, a.cantidad, a.responsable, a.idmeta,  a.enero, a.febrero, a.marzo, a.abril, a.mayo, a.junio, a.julio, a.agosto, a.setiembre, a.octubre, a.noviembre, a.diciembre, (CASE WHEN a.presupuesto IS NULL THEN '0' ELSE a.presupuesto END) AS presupuesto "
+    String sql=" SELECT * FROM (SELECT validar_mes(?,?,a.idactividad) AS validar, (SELECT IFNULL(SUM(t.monto),0) AS montotarea FROM tareas t WHERE t.idactividad=a.idactividad) AS montotarea, a.idactividad, a.nro, a.accion, a.cantidad, a.responsable, a.idmeta,  a.enero, a.febrero, a.marzo, a.abril, a.mayo, a.junio, a.julio, a.agosto, a.setiembre, a.octubre, a.noviembre, a.diciembre, (CASE WHEN a.presupuesto IS NULL THEN '0' ELSE a.presupuesto END) AS presupuesto "
             + " FROM actividad a, meta m WHERE a.idmeta=m.idmeta AND a.idmeta=? )  AS r WHERE validar=1  ";
         ArrayList Lista = new ArrayList(); 
         Map userPriv;
@@ -244,7 +244,9 @@ public class ReportesDAO extends DBConn{
             rs=ps.executeQuery();            
             while (rs.next()){          
                 userPriv = new HashMap();
+                userPriv.put("idactividad", rs.getInt("idactividad"));
                 userPriv.put("validar", rs.getInt("validar"));
+                userPriv.put("montotarea", rs.getDouble("montotarea"));
                 userPriv.put("nro", rs.getInt("nro"));
                 userPriv.put("accion", rs.getString("accion"));
                 userPriv.put("cantidad", rs.getInt("cantidad"));
@@ -485,5 +487,108 @@ public class ReportesDAO extends DBConn{
         finally{getCerrarConexion();}
         System.out.println(" Muetra las carreras!!! ..>"+Lista.toArray().length);
     return Lista;
+    }  
+    
+    public ArrayList reporteNivelFinanciero(){        
+    String sql=" SELECT * FROM nivel_financiero WHERE estado=1 ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();            
+            while (rs.next()){           
+                userPriv = new HashMap();
+                userPriv.put("idNivelFinanciero", rs.getInt("idNivelFinanciero"));
+                userPriv.put("nombre", rs.getString("nombre"));
+                userPriv.put("codigo", rs.getString("codigo"));
+                userPriv.put("sigla", rs.getString("sigla"));
+                userPriv.put("estado", rs.getInt("estado"));                                               
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra  Los Niveles Financieros!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }     
+    public ArrayList reporteCuentaPorNivel(int idNivelFinanciero, int idFilial, int idtipoarea){        
+   /* String sql=" SELECT * FROM cuenta WHERE idNivelFinanciero in (SELECT idNivelFinanciero FROM nivel_financiero WHERE sigla='OT') AND idFilial="+idFilial+" AND idtipoarea="+idtipoarea+" "
+            + " UNION ALL "
+            + " SELECT * FROM cuenta WHERE idNivelFinanciero IN (SELECT idNivelFinanciero FROM nivel_financiero WHERE idNivelFinanciero="+idNivelFinanciero+"  ) "
+            + " AND idFilial="+idFilial+" AND idtipoarea="+idtipoarea+" ";*/
+    String sql=" SELECT * FROM cuenta WHERE idNivelFinanciero IN (SELECT idNivelFinanciero FROM nivel_financiero WHERE idNivelFinanciero="+idNivelFinanciero+"  ) "
+            + " AND idFilial="+idFilial+" AND idtipoarea="+idtipoarea+" ";
+        ArrayList Lista = new ArrayList(); 
+        Map userPriv;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();            
+            while (rs.next()){           
+                userPriv = new HashMap();
+                userPriv.put("idCuenta", rs.getInt("idCuenta"));
+                userPriv.put("nombre", rs.getString("nombre"));
+                userPriv.put("codigo", rs.getString("codigo"));
+                userPriv.put("operativo", rs.getInt("operativo"));
+                userPriv.put("estado", rs.getInt("estado"));                                               
+                userPriv.put("idFilial", rs.getInt("idFilial"));                                               
+                userPriv.put("idtipoarea", rs.getInt("idtipoarea"));                                               
+                userPriv.put("idNivelFinanciero", rs.getInt("idNivelFinanciero"));                                               
+                Lista.add(userPriv);
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muetra Las Cuentas o partidas presupuestarias!!! ..>"+Lista.toArray().length);
+    return Lista;
+    }     
+    public double muestraSaldoDisponible(int idCuenta, int ideapfacultad, int idperiodo){        
+    String sql=" SELECT (saldodisponible-saldoprogramado) AS saldoreal FROM (SELECT '1' id, IFNULL(SUM(monto),0) AS saldodisponible "
+            + " FROM partida_presupuesto WHERE idperiodo="+idperiodo+" AND ideapfacultad="+ideapfacultad+" AND idcuenta="+idCuenta+" ) a "
+            + " INNER JOIN (SELECT '1' id, IFNULL(SUM(presupuesto),0) AS saldoprogramado "
+            + "FROM view_meta_actividad WHERE idperiodo="+idperiodo+" AND ideapfacultad="+ideapfacultad+" AND idcuenta="+idCuenta+" ) b USING(id) ";
+        double resultado=0;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();            
+            if (rs.next()){                                                        
+               resultado=rs.getDouble("saldoreal");
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muestra el saldo actual disponible!!! ..>");
+    return  resultado;
+    }     
+    
+    
+    public int idNivelfinanciero(int idCuenta){        
+    String sql=" SELECT idnivelfinanciero FROM cuenta WHERE idcuenta="+idCuenta+" ";
+        int resultado=0;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();            
+            if (rs.next()){                                                        
+               resultado=rs.getInt("idnivelfinanciero");
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muestra idNivel Financiero!!! ..>");
+    return  resultado;
+    }     
+    public double saldoTareas(int idActividad){        
+    String sql=" SELECT IFNULL(SUM(monto),0) AS monto FROM tareas WHERE idactividad="+idActividad+" ";
+        double resultado=0;
+        try {
+            getConexionDb();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();            
+            if (rs.next()){                                                        
+               resultado=rs.getDouble("monto");
+            } } catch (Exception e) {
+            }
+        finally{getCerrarConexion();}
+        System.out.println(" Muestra el saldo Financiero!!! ..>");
+    return  resultado;
     }     
 }

@@ -439,7 +439,7 @@ function validarNumeroAvance(numero){
                     <th rowspan="2">Estratégia</th>
                     <th rowspan="2">C&oacute;digo</th>
                     <th rowspan="2">Indicador</th>
-                    <th rowspan="2"><center>Meta m&iacute;nima</center></th>
+                    <th rowspan="2"><center>Punto de Control</center></th>
                     <th rowspan="2">Meta</th>
                     <th colspan="2">Avances</th>
                     <th rowspan="2">POA</th>
@@ -501,7 +501,7 @@ function validarNumeroAvance(numero){
                      <p></p>
                      <br>
                         <center>
-                            <button class="btn"  rel="tooltip" title="<%=in.getMetaideal()%>"><i class="icon-comment"></i></button>
+                            <button class='<% if(in.getMetaideal()==0){out.print("btn-mini"); }else{out.print("btn-mini btn-success");} %>'  rel="tooltip" title="<% if(in.getMetaideal()==0){out.print("EP"); }else{out.print(in.getMetaideal());} %>"><i class="icon-comment"></i></button>
                         </center>
                     </td>
                     
@@ -529,12 +529,12 @@ function validarNumeroAvance(numero){
                         <input type="hidden"  name="nro_indicador" id="nro_indicador" >
  <%if(in.getIdtipometa()==2){%>                             
 <div class="input-append">
-<input class="span6" type="text" name="meta<%=in.getNro()%>" id="meta<%=in.getNro()%>" placeholder="Meta" value="<%=in.getMeta()%>" <% if(idEjeEstrategicoX!=0){ out.print("disabled");}else{if(in.getEstadometa()==0){out.print("disabled");}}%>>
+<input class="span6" type="text" name="meta<%=in.getNro()%>" id="meta<%=in.getNro()%>" placeholder="Meta" value="<%=in.getMeta()%>" <% if(in.getEstadometa()==0){out.print("disabled");}%>>
 <span class="add-on">%</span>
 </div>                           
 <%}
  else{%>
- <input class="input-mini" type="text" name="meta<%=in.getNro()%>" id="meta<%=in.getNro()%>" placeholder="Meta" value="<%=in.getMeta()%>" <% if(idEjeEstrategicoX!=0){ out.print("disabled");}else{if(in.getEstadometa()==0){out.print("disabled");}}%>>
+ <input class="input-mini" type="text" name="meta<%=in.getNro()%>" id="meta<%=in.getNro()%>" placeholder="Meta" value="<%=in.getMeta()%>" <% if(in.getEstadometa()==0){out.print("disabled");}%>>
  <%}%>
                         <%if(in.getEstadometa()!=0){%>                                     
                         <input type="hidden"  name="idestrategiaindicador<%=in.getNro()%>" value="<%=in.getIdestrategiaindicador()%>" > 
@@ -550,7 +550,7 @@ function validarNumeroAvance(numero){
                         <input type="hidden"  name="idtemporadaejeestrategico" value="<%if(eje!=null){%><%=eje.getIdtemporadaejeestrategico()%><%}else{%>0<%}%>">     
                         <input type="hidden"  name="valor" value="<%if(name!=null){%><%=name.getNombre()%><%}%>" >
                         <%if(in.getEstadometa()!=0){%>
-                        <input type="submit"  onmouseover="formindicador(<%=in.getNro()%>);" value="Aceptar" <% if(idEjeEstrategicoX!=0){ out.print("disabled");}else{if(in.getEstadometa()==0){out.print("disabled");}}%> class="btn btn-mini btn-success"/>
+                        <input type="submit"  onmouseover="formindicador(<%=in.getNro()%>);" value="Aceptar" <% if(in.getEstadometa()==0){out.print("disabled");}%> class="btn btn-mini btn-success"/>
                         <%}%>                   
                         <%}%>                       
                         </center>
@@ -558,7 +558,10 @@ function validarNumeroAvance(numero){
                          <%}%> 
                         
                         </td>
-                       
+                <!--  
+                <%-- if(idEjeEstrategicoX!=0){ out.print("disabled");}else{if(in.getEstadometa()==0){out.print("disabled");}}--%>
+                <%-- if(idEjeEstrategicoX!=0){ out.print("disabled");}else{if(in.getEstadometa()==0){out.print("disabled");}}--%>
+                -->       
          <%-- META FIN--%>  
          
          
@@ -644,7 +647,9 @@ function validarNumeroAvance(numero){
                                             
                         
                         
-            <%-- FIN avance--%>                                     
+            <%-- FIN avance--%>      
+            
+            <%-- inicio POA--%>                                     
             
                  <td>   
                 <p></p>

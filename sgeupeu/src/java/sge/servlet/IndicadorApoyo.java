@@ -11,9 +11,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,6 +34,7 @@ import sge.directori.FileDirectori;
 import sge.service.GestionEstrategicoService;
 import sge.service.IndicadorService;
 import sge.service.OrganizacionService;
+import sge.service.ReporteService;
 import sge.service.SeguimientoService;
 
 /**
@@ -90,6 +93,7 @@ public class IndicadorApoyo extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         IndicadorService is;
+        ReporteService rs;
         int opt=0;
         int k=0;
         System.out.println("------------ INDICADOR CONTROLADOR --------");
@@ -357,6 +361,8 @@ public class IndicadorApoyo extends HttpServlet {
                     request.getSession().setAttribute("variable", is.nroVariable(request));
                     request.getSession().setAttribute("periodoMeta", is.periodoMeta(request));
                     request.getSession().setAttribute("estrategiaIndicador", is.estrategiaIndicador(request,is.estadometa(request),is.estadoavance(request),Integer.parseInt(idFilialPri)));
+                    rs=new ReporteService();
+                    request.getSession().setAttribute("sesionNivelFinan", rs.reporteNivelFinanciero()); 
                     response.sendRedirect(POA);
                     
                     break;}
@@ -636,8 +642,40 @@ public class IndicadorApoyo extends HttpServlet {
                     
                     response.sendRedirect(POA);
 
-                    break;}                    
+                    break;}
                     
+                    case 31:{
+                    int idfilial=Integer.parseInt(request.getParameter("idfilial")==null?"0":request.getParameter("idfilial")); 
+                    int idtipoarea=Integer.parseInt(request.getParameter("idtipoarea")==null?"0":request.getParameter("idtipoarea")); 
+                    int rubro=Integer.parseInt(request.getParameter("rubro")==null?"0":request.getParameter("rubro")); 
+                    rs=new ReporteService();
+                    ArrayList lista=rs.reporteCuentaPorNivel(rubro,idfilial, idtipoarea );
+                    Iterator<Object> inter=lista.iterator();
+                    while(inter.hasNext()){
+                    Map datos=  (Map)inter.next();
+                    
+                    out.print("<option value='"+datos.get("idCuenta")+"'> "+datos.get("nombre")+" </option>");                    
+                    }
+                     break;         
+                    }
+                    case 32:{
+                    int idPeriodo=Integer.parseInt(request.getParameter("idPeriodo")==null?"0":request.getParameter("idPeriodo")); 
+                    int idEapFacultad=Integer.parseInt(request.getParameter("idEapFacultad")==null?"0":request.getParameter("idEapFacultad")); 
+                    int subrubro=Integer.parseInt(request.getParameter("subrubro")==null?"0":request.getParameter("subrubro")); 
+                    rs=new ReporteService();
+                    double dato=0;
+                    dato=rs.muestraSaldoDisponible(subrubro, idEapFacultad,idPeriodo);
+                    out.print("S/. "+ dato);  
+                    break;
+                    }
+                    case 33:{
+                    int idcuenta=Integer.parseInt(request.getParameter("idcuenta")==null?"0":request.getParameter("idcuenta"));  
+                    rs=new ReporteService();
+                    int dato=0;
+                    dato=rs.idNivelfinanciero(idcuenta);
+                    out.print(dato);  
+                    break;
+                    }                    
             }
         } finally {            
             out.close();
